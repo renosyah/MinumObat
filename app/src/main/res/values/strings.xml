@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Minum Obat</string>
+    <string name="foreground_notification_message">Notifikasi sedang aktif...</string>
+</resources>

@@ -1,0 +1,12 @@
+range waktu : 
+00-00 am - 10.00 am = pagi
+10.01 am - 03.00 pm = siang
+03.01 pm - 11.59 pm = malam
+
+- tanggal range yang telah diinputkan dan sudah di set alaramnya tidak dapat digunakan lagi (untuk range waktu yang sudah diset tidak dapat menjadwalkan di dalam range waktu yang sama)
+- tidak berlaku pada tanggal yang telah lewat
+
+- warna karosel warna hijau berfungsi untuk meninformasikan range waktu yang sedang berlangsung
+- button slide warna hijau itu fungsinya sebagai tanda non aktif untuk notifikasi yang akan datang dan sedang terjadi
+- notifikasi keluar 3 kali ( 60 menit, 15 menit, 0 menit pada waktu minum obat)
+
