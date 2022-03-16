@@ -7,7 +7,7 @@ class TimeModel(var hour: Int = 0,var minute : Int = 0,var second : Int = 0,var 
     }
 
     override fun toString() : String{
-        return "${hour}-${minute}-${second} ${mode}"
+        return "${String.format("%02d",hour)}:${String.format("%02d",minute)}"
     }
 
     fun duplicate() : TimeModel {

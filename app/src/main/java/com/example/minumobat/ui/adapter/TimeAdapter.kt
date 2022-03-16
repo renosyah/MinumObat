@@ -39,7 +39,7 @@ class TimeAdapter : RecyclerView.Adapter<TimeAdapter.Holder> {
 
         when (show_what){
             SHOW_MODE -> holder.textview_time.text =  "${ item.label }"
-            else -> holder.textview_time.text = if (item.value != 0) "${ f.format(item.value) }" else ""
+            else -> holder.textview_time.text = if (item.value != 0 || item.label != "") "${ f.format(item.value) }" else ""
         }
         setBackgroundColor(holder, item.flag)
     }

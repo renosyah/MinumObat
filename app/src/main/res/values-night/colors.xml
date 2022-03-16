@@ -16,6 +16,7 @@
     <color name="mainAppBackground">#373737</color>
     <color name="mainAppBorder">@android:color/white</color>
     <color name="mainAppText">@android:color/white</color>
+    <color name="mainAppBorderTransparent">@android:color/white</color>
 
     <!-- Color for date picker. and other -->
     <color name="mainBackgroundDefault">@android:color/white</color>

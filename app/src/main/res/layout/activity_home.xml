@@ -91,7 +91,8 @@
                         android:layout_marginLeft="70dp"
                         android:layout_marginRight="70dp"
                         android:background="@color/mainAppBorder"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="visible">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -131,6 +132,7 @@
                     android:translationZ="3dp"
                     android:visibility="gone"
                     app:cardBackgroundColor="@color/mainBackgroundDefault"
+                    app:cardElevation="2dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout"
@@ -145,6 +147,67 @@
                         android:layout_margin="1dp" />
 
                 </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="55dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp"
+                    android:fontFamily="@font/nunitos_sans_regular"
+                    android:text="@string/set_alarm"
+                    android:textColor="@color/mainAppText"
+                    android:textSize="18sp"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                    tools:layout_editor_absoluteX="25dp" />
+
+                <include
+                    android:id="@+id/morning_detail_schedule"
+                    layout="@layout/layout_detail_schedule"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+                <LinearLayout
+                    android:id="@+id/margin_container_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@+id/morning_detail_schedule" />
+
+                <include
+                    android:id="@+id/afternoon_detail_schedule"
+                    layout="@layout/layout_detail_schedule"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/margin_container_1" />
+
+                <LinearLayout
+                    android:id="@+id/margin_container_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@+id/afternoon_detail_schedule" />
+
+                <include
+                    android:id="@+id/night_detail_schedule"
+                    layout="@layout/layout_detail_schedule"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/margin_container_2" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>

@@ -17,7 +17,7 @@ class LayoutTimePicker {
     private var minute : TimePicker
     private var selectedTime = TimeModel()
 
-    constructor(c: Context, v : View, onScroll : (TimeModel) -> Unit){
+    constructor(c: Context, v : View, startHour : Int, endHour : Int, onScroll : (TimeModel) -> Unit){
 
         val onModeScroll : (SimpleModel) -> Unit = { t ->
             selectedTime.mode = t.label
@@ -42,13 +42,13 @@ class LayoutTimePicker {
 
         val hours = ArrayList<SimpleModel>()
         hours.add(SimpleModel(label = "", value = 0, flag = SimpleModel.FLAG_UNSELECTED))
-        for (i in 1 until 13) hours.add(SimpleModel(label = "${ i }", value = i, flag = SimpleModel.FLAG_SELECTED))
+        for (i in startHour until endHour + 1) hours.add(SimpleModel(label = "${ i }", value = i, flag = SimpleModel.FLAG_SELECTED))
         hours.add(SimpleModel(label = "", value = 0, flag = SimpleModel.FLAG_UNSELECTED))
         this.hour = TimePicker(c, v.findViewById(R.id.recycleview_hour), hours, TimeAdapter.SHOW_HOUR, onHourScroll)
 
         val minutes = ArrayList<SimpleModel>()
         minutes.add(SimpleModel(label = "", value = 0, flag = SimpleModel.FLAG_UNSELECTED))
-        for (i in 1 until 60) minutes.add(SimpleModel(label = "${ i }", value = i, flag = SimpleModel.FLAG_SELECTED))
+        for (i in 0 until 60) minutes.add(SimpleModel(label = "${ i }", value = i, flag = SimpleModel.FLAG_SELECTED))
         this.minute = TimePicker(c, v.findViewById(R.id.recycleview_minute), minutes, TimeAdapter.SHOW_MINUTE, onMinuteScroll)
         minutes.add(SimpleModel(label = "", value = 0, flag = SimpleModel.FLAG_UNSELECTED))
     }

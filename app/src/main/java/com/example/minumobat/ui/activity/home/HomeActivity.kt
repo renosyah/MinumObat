@@ -26,9 +26,7 @@ import android.view.animation.RotateAnimation
 import android.view.animation.DecelerateInterpolator
 
 import android.view.animation.AnimationSet
-
-
-
+import com.example.minumobat.ui.layout.LayoutDetailSchedule
 
 
 class HomeActivity : AppCompatActivity() {
@@ -37,11 +35,15 @@ class HomeActivity : AppCompatActivity() {
 
     lateinit var darkModeSwitch : SwitchCompat
 
-    lateinit var linearLayoutPickDate : LinearLayout
     lateinit var layoutDatePickerContainer : CardView
     lateinit var textChooseDate : TextView
     lateinit var imageChooseDate : ImageView
+    lateinit var linearLayoutPickDate : LinearLayout
     lateinit var layoutDatePicker : LayoutDatePicker
+
+    lateinit var layoutMorningDetailSchedule : LayoutDetailSchedule
+    lateinit var layoutAfternoonDetailSchedule : LayoutDetailSchedule
+    lateinit var layoutNightDetailSchedule : LayoutDetailSchedule
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +86,18 @@ class HomeActivity : AppCompatActivity() {
             }
             textChooseDate.text = "$start - $end"
         }
+
+        layoutMorningDetailSchedule = LayoutDetailSchedule(this@HomeActivity, findViewById(R.id.morning_detail_schedule),R.drawable.morning, "Morning", 0, 10){
+
+        }
+        layoutAfternoonDetailSchedule = LayoutDetailSchedule(this@HomeActivity, findViewById(R.id.afternoon_detail_schedule),R.drawable.afternoon, "Afternoon", 3, 10){
+
+        }
+        layoutNightDetailSchedule = LayoutDetailSchedule(this@HomeActivity, findViewById(R.id.night_detail_schedule),R.drawable.night, "Night", 3, 11){
+
+        }
     }
+
 
     private fun rotateDropDownIcon(isShow : Boolean){
         val animSet = AnimationSet(true)

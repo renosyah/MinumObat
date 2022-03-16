@@ -25,7 +25,6 @@ class DetailScheduleViewModel : AndroidViewModel {
         }
     }
 
-
     fun update(c: DetailScheduleModel) = viewModelScope.launch {
         repository.update(c)
     }
