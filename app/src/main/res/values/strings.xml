@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Minum Obat</string>
     <string name="foreground_notification_message">Notifikasi sedang aktif...</string>
+    <string name="home_title">Kapan anda akan mengkonsumsi obat ?</string>
+    <string name="pick_a_date">Pilih Tanggal</string>
+    <string name="previous_month">  Prev  </string>
+    <string name="next_month">  Next  </string>
 </resources>

@@ -16,36 +16,35 @@
         <TextView
             android:id="@+id/texview_title"
             android:layout_width="0dp"
-            android:textColor="@color/textColorDefault"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:fontFamily="@font/nunitos_sans_extra_light"
             android:gravity="center|left"
             android:text="January 2025"
+            android:textColor="@color/textColorDefault"
             android:textSize="18sp" />
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center|right"
-            android:layout_height="wrap_content">
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/texview_prev"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/prev"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_margin="5dp"
-                android:textColor="@color/textColorDefault"
-                android:text=" prev "
-                android:textSize="18sp" />
+                android:layout_weight="1"
+                android:src="@drawable/prev" />
 
-            <TextView
-                android:id="@+id/texview_next"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/next"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_margin="5dp"
-                android:textColor="@color/textColorDefault"
-                android:text=" next "
-                android:textSize="18sp" />
+                android:layout_weight="1"
+                android:src="@drawable/next" />
 
         </LinearLayout>
 
@@ -61,57 +60,64 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/textColorDefault"
+            android:fontFamily="@font/nunitos_sans_light"
             android:text="SU"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="@color/textColorDefault" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/textColorDefault"
+            android:fontFamily="@font/nunitos_sans_light"
             android:text="MO"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="@color/textColorDefault" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/textColorDefault"
+            android:fontFamily="@font/nunitos_sans_light"
             android:text="TU"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="@color/textColorDefault" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/textColorDefault"
+            android:fontFamily="@font/nunitos_sans_light"
             android:text="WE"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="@color/textColorDefault" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/textColorDefault"
+            android:fontFamily="@font/nunitos_sans_light"
             android:text="TH"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="@color/textColorDefault" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/textColorDefault"
+            android:fontFamily="@font/nunitos_sans_light"
             android:text="FR"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="@color/textColorDefault" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/textColorDefault"
+            android:fontFamily="@font/nunitos_sans_light"
             android:text="SA"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="@color/textColorDefault" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

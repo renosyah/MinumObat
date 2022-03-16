@@ -30,6 +30,7 @@ android {
     }
     buildTypes.each {
         it.buildConfigField "boolean", "ENABLE_FOREGROUND", "true"
+        it.buildConfigField "String", "DB_NAME", "\"minum_obat_db\""
     }
 
     kotlinOptions {
@@ -57,6 +58,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.archLifecycleVersion"
     kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.archLifecycleVersion"
     androidTestImplementation "androidx.arch.core:core-testing:$rootProject.androidxArchVersion"
+
+    // ViewModel Kotlin support
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.archLifecycleVersion"
 }
 kapt {
     generateStubs = true

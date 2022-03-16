@@ -3,9 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable-v24/switch_rounded_thumb.xml" value="0.3828125" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/ic_launcher_background.xml" value="0.3828125" />
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/rounded_shape.xml" value="0.3828125" />
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/switch_rounded_thumb.xml" value="0.3828125" />
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/switch_rounded_track.xml" value="0.3828125" />
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/layout/activity_home.xml" value="0.3523550724637681" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/layout/activity_notification_splash.xml" value="0.35260416666666666" />
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/layout/date_adapter.xml" value="0.36666666666666664" />
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/layout/date_dialog.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>

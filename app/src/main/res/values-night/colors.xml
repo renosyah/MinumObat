@@ -8,7 +8,16 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- Color for date picker. -->
+    <!-- dark mode switch. -->
+    <color name="darkModeSwitchBackground">@color/white</color>
+    <color name="darkModeSwitchThumbColor">@color/black</color>
+
+    <!-- Background -->
+    <color name="mainAppBackground">#373737</color>
+    <color name="mainAppBorder">@android:color/white</color>
+    <color name="mainAppText">@android:color/white</color>
+
+    <!-- Color for date picker. and other -->
     <color name="mainBackgroundDefault">@android:color/white</color>
 
     <color name="textColorDefault">@color/white</color>
@@ -16,15 +25,15 @@
     <color name="textColorCurrent">@color/black</color>
     <color name="textColorSelected">@color/white</color>
 
-    <color name="layoutBackgroundDefault">@color/black</color>
-    <color name="layoutBackgroundUnreach">@color/black</color>
+    <color name="layoutBackgroundDefault">#373737</color>
+    <color name="layoutBackgroundUnreach">#373737</color>
     <color name="layoutBackgroundCurrent">@color/white</color>
     <color name="layoutBackgroundSelected">@color/white</color>
 
-    <color name="layoutPanelDefault">@color/black</color>
-    <color name="layoutPanelUreach">@color/black</color>
+    <color name="layoutPanelDefault">#373737</color>
+    <color name="layoutPanelUreach">#373737</color>
     <color name="layoutPanelCurrent">@color/white</color>
-    <color name="layoutPanelSelected">@color/black</color>
+    <color name="layoutPanelSelected">#373737</color>
     <!--   -->
 
     <!-- Color for time picker. -->

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.minumobat.R
 import com.example.minumobat.model.SimpleModel
 import com.example.minumobat.model.time_picker_model.TimeModel
-import com.example.minumobat.ui.adapter.TimeAdapter
+import com.example.range_date_picker.adapter.TimeAdapter
 
 
 class LayoutTimePicker {
