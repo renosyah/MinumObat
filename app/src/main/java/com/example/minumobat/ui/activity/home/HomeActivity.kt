@@ -126,9 +126,10 @@ class HomeActivity : AppCompatActivity() {
             morningTime!!.mode = it.mode
             morningTime!!.status = DetailScheduleModel.STATUS_ON
 
-            setAlarmButton.visibility = View.VISIBLE
-
-        }, { displayDescriptionDialogForLayout(it) })
+        }, {
+                displayDescriptionDialogForLayout(it)
+                setAlarmButton.visibility = View.VISIBLE
+        })
         layoutMorningDetailSchedule.layoutID = 1
 
         layoutAfternoonDetailSchedule = LayoutDetailSchedule(context,
@@ -141,9 +142,10 @@ class HomeActivity : AppCompatActivity() {
             afternoonTime!!.mode = it.mode
             afternoonTime!!.status = DetailScheduleModel.STATUS_ON
 
-            setAlarmButton.visibility = View.VISIBLE
-
-        }, { displayDescriptionDialogForLayout(it) })
+        }, {
+                displayDescriptionDialogForLayout(it)
+                setAlarmButton.visibility = View.VISIBLE
+        })
         layoutAfternoonDetailSchedule.layoutID = 2
 
         layoutNightDetailSchedule = LayoutDetailSchedule(context,
@@ -156,8 +158,10 @@ class HomeActivity : AppCompatActivity() {
             nightTime!!.mode = it.mode
             nightTime!!.status = DetailScheduleModel.STATUS_ON
 
-            setAlarmButton.visibility = View.VISIBLE
-        }, { displayDescriptionDialogForLayout(it) })
+        }, {
+                displayDescriptionDialogForLayout(it)
+                setAlarmButton.visibility = View.VISIBLE
+        })
         layoutNightDetailSchedule.layoutID = 3
     }
 
@@ -179,7 +183,7 @@ class HomeActivity : AppCompatActivity() {
             override fun setValue(value: Long) {
                 super.setValue(value)
                 saveDetailSchedule(value)
-                //Log.e("schedule_save", "id : ${value}")
+                Log.e("schedule_save", "id : ${value}")
             }
         })
     }
@@ -190,7 +194,8 @@ class HomeActivity : AppCompatActivity() {
             ViewModelProvider(context as ViewModelStoreOwner).get(DetailScheduleViewModel::class.java).add(morningTime!!, object : MutableLiveData<Long>() {
                 override fun setValue(value: Long) {
                     super.setValue(value)
-                    //Log.e("morning", "id : ${value}")
+                    Log.e("morning", "id : ${value}")
+                    Log.e("morning", "time : ${morningTime!!.hour}-${morningTime!!.minute}")
                 }
             })
 
@@ -200,7 +205,8 @@ class HomeActivity : AppCompatActivity() {
             ViewModelProvider(context as ViewModelStoreOwner).get(DetailScheduleViewModel::class.java).add(afternoonTime!!, object : MutableLiveData<Long>() {
                 override fun setValue(value: Long) {
                     super.setValue(value)
-                    //Log.e("afternoon", "id : ${value}")
+                    Log.e("afternoon", "id : ${value}")
+                    Log.e("afternoon", "time : ${afternoonTime!!.hour}-${afternoonTime!!.minute}")
                 }
             })
 
@@ -210,7 +216,8 @@ class HomeActivity : AppCompatActivity() {
             ViewModelProvider(context as ViewModelStoreOwner).get(DetailScheduleViewModel::class.java).add(nightTime!!, object : MutableLiveData<Long>() {
                 override fun setValue(value: Long) {
                     super.setValue(value)
-                    //Log.e("night", "id : ${value}")
+                    Log.e("night", "id : ${value}")
+                    Log.e("night", "time : ${nightTime!!.hour}-${nightTime!!.minute}")
                 }
             })
 

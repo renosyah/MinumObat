@@ -27,8 +27,6 @@ class LayoutDetailSchedule {
     lateinit var layoutTimePickerView : View
     lateinit var layoutTimePicker : LayoutTimePicker
 
-    var selectedTime = TimeModel()
-
     constructor(c: Context, v : View, image : Int, text : String, startHour : Int, endHour : Int, onScroll : (TimeModel) -> Unit, onDescriptionClick : (Int) -> Unit)  {
 
         imageTime = v.findViewById(R.id.image_time)
@@ -41,13 +39,11 @@ class LayoutDetailSchedule {
         openTimePickerButton.visibility = View.VISIBLE
         openTimePickerButton.setOnClickListener {
             toggleLayoutTimePicker()
-            onScroll.invoke(selectedTime)
         }
 
         layoutDetailSchedule = v.findViewById(R.id.layout_detail_schedule)
         layoutDetailSchedule.setOnClickListener {
             toggleLayoutTimePicker()
-            onScroll.invoke(selectedTime)
         }
 
         timeInputDisplayLayout = v.findViewById(R.id.time_input_display_layout)
@@ -62,7 +58,7 @@ class LayoutDetailSchedule {
             openTimePickerButton.visibility = View.GONE
             timeDisplayTextView.text = it.toString()
             amPmDisplayText.text = it.mode
-            selectedTime = it.duplicate()
+            onScroll.invoke(it.duplicate())
         },{
             onDescriptionClick.invoke(layoutID)
         })
