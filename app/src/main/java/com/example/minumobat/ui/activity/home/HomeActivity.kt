@@ -14,6 +14,8 @@ import com.example.minumobat.util.Utils.Companion.isMyServiceRunning
 
 import androidx.appcompat.app.AppCompatDelegate
 import android.content.res.Configuration
+import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -26,7 +28,15 @@ import android.view.animation.RotateAnimation
 import android.view.animation.DecelerateInterpolator
 
 import android.view.animation.AnimationSet
+import android.widget.FrameLayout
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
+import com.example.minumobat.model.detail_schedule_model.DetailScheduleModel
+import com.example.minumobat.model.schedule_model.ScheduleModel
+import com.example.minumobat.model.schedule_model.ScheduleViewModel
 import com.example.minumobat.ui.layout.LayoutDetailSchedule
+import androidx.lifecycle.ViewModelStoreOwner
+import com.example.minumobat.model.detail_schedule_model.DetailScheduleViewModel
 
 
 class HomeActivity : AppCompatActivity() {
@@ -44,6 +54,15 @@ class HomeActivity : AppCompatActivity() {
     lateinit var layoutMorningDetailSchedule : LayoutDetailSchedule
     lateinit var layoutAfternoonDetailSchedule : LayoutDetailSchedule
     lateinit var layoutNightDetailSchedule : LayoutDetailSchedule
+
+    lateinit var setAlarmButton : FrameLayout
+
+    var scheduleModel : ScheduleModel? = null
+
+    var morningTime : DetailScheduleModel? = null
+    var afternoonTime : DetailScheduleModel? = null
+    var nightTime : DetailScheduleModel? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,24 +99,123 @@ class HomeActivity : AppCompatActivity() {
             rotateDropDownIcon(isShow)
         }
 
-        layoutDatePicker = LayoutDatePicker(this@HomeActivity, findViewById(R.id.layout_date_picker)){ start,end ->
+        setAlarmButton = findViewById(R.id.set_alarm_button)
+        setAlarmButton.visibility = View.GONE
+        setAlarmButton.setOnClickListener {
+            saveSchedule()
+        }
+
+        layoutDatePicker = LayoutDatePicker(context, findViewById(R.id.layout_date_picker)){ start,end ->
             if (start.isEmpty() or end.isEmpty()){
                 return@LayoutDatePicker
             }
+
             textChooseDate.text = "$start - $end"
+            scheduleModel = ScheduleModel()
+            scheduleModel!!.startDate = start.parseToDate()
+            scheduleModel!!.endDate = end.parseToDate()
         }
 
-        layoutMorningDetailSchedule = LayoutDetailSchedule(this@HomeActivity, findViewById(R.id.morning_detail_schedule),R.drawable.morning, "Morning", 0, 10){
+        layoutMorningDetailSchedule = LayoutDetailSchedule(context,
+            findViewById(R.id.morning_detail_schedule),R.drawable.morning, context.getString(R.string.morning), 0, 10, {
+            morningTime = DetailScheduleModel()
+            morningTime!!.name = context.getString(R.string.morning)
+            morningTime!!.description = ""
+            morningTime!!.hour = it.hour
+            morningTime!!.minute = it.minute
+            morningTime!!.mode = it.mode
+            morningTime!!.status = DetailScheduleModel.STATUS_ON
 
-        }
-        layoutAfternoonDetailSchedule = LayoutDetailSchedule(this@HomeActivity, findViewById(R.id.afternoon_detail_schedule),R.drawable.afternoon, "Afternoon", 3, 10){
+            setAlarmButton.visibility = View.VISIBLE
 
-        }
-        layoutNightDetailSchedule = LayoutDetailSchedule(this@HomeActivity, findViewById(R.id.night_detail_schedule),R.drawable.night, "Night", 3, 11){
+        }, { displayDescriptionDialogForLayout(it) })
+        layoutMorningDetailSchedule.layoutID = 1
 
+        layoutAfternoonDetailSchedule = LayoutDetailSchedule(context,
+            findViewById(R.id.afternoon_detail_schedule),R.drawable.afternoon, context.getString(R.string.afternoon), 3, 10, {
+            afternoonTime = DetailScheduleModel()
+            afternoonTime!!.name = context.getString(R.string.afternoon)
+            afternoonTime!!.description = ""
+            afternoonTime!!.hour = it.hour
+            afternoonTime!!.minute = it.minute
+            afternoonTime!!.mode = it.mode
+            afternoonTime!!.status = DetailScheduleModel.STATUS_ON
+
+            setAlarmButton.visibility = View.VISIBLE
+
+        }, { displayDescriptionDialogForLayout(it) })
+        layoutAfternoonDetailSchedule.layoutID = 2
+
+        layoutNightDetailSchedule = LayoutDetailSchedule(context,
+            findViewById(R.id.night_detail_schedule),R.drawable.night, context.getString(R.string.night), 3, 11, {
+            nightTime = DetailScheduleModel()
+            nightTime!!.name = context.getString(R.string.night)
+            nightTime!!.description = ""
+            nightTime!!.hour = it.hour
+            nightTime!!.minute = it.minute
+            nightTime!!.mode = it.mode
+            nightTime!!.status = DetailScheduleModel.STATUS_ON
+
+            setAlarmButton.visibility = View.VISIBLE
+        }, { displayDescriptionDialogForLayout(it) })
+        layoutNightDetailSchedule.layoutID = 3
+    }
+
+    private fun displayDescriptionDialogForLayout(id : Int){
+        when(id){
+            1 -> { layoutMorningDetailSchedule.setDescription("hello") }
+            2 -> { layoutAfternoonDetailSchedule.setDescription("gellj") }
+            3 -> { layoutNightDetailSchedule.setDescription("yello") }
         }
     }
 
+    private fun saveSchedule(){
+        if (scheduleModel == null){
+            return
+        }
+
+        val scheduleViewModel = ViewModelProvider(context as ViewModelStoreOwner).get(ScheduleViewModel::class.java)
+        scheduleViewModel.add(scheduleModel!!, object : MutableLiveData<Long>() {
+            override fun setValue(value: Long) {
+                super.setValue(value)
+                saveDetailSchedule(value)
+                //Log.e("schedule_save", "id : ${value}")
+            }
+        })
+    }
+
+    fun saveDetailSchedule(scheduleId : Long){
+        if (morningTime != null){
+            morningTime!!.scheduleID = scheduleId
+            ViewModelProvider(context as ViewModelStoreOwner).get(DetailScheduleViewModel::class.java).add(morningTime!!, object : MutableLiveData<Long>() {
+                override fun setValue(value: Long) {
+                    super.setValue(value)
+                    //Log.e("morning", "id : ${value}")
+                }
+            })
+
+        }
+        if (afternoonTime != null){
+            afternoonTime!!.scheduleID = scheduleId
+            ViewModelProvider(context as ViewModelStoreOwner).get(DetailScheduleViewModel::class.java).add(afternoonTime!!, object : MutableLiveData<Long>() {
+                override fun setValue(value: Long) {
+                    super.setValue(value)
+                    //Log.e("afternoon", "id : ${value}")
+                }
+            })
+
+        }
+        if (nightTime != null){
+            nightTime!!.scheduleID = scheduleId
+            ViewModelProvider(context as ViewModelStoreOwner).get(DetailScheduleViewModel::class.java).add(nightTime!!, object : MutableLiveData<Long>() {
+                override fun setValue(value: Long) {
+                    super.setValue(value)
+                    //Log.e("night", "id : ${value}")
+                }
+            })
+
+        }
+    }
 
     private fun rotateDropDownIcon(isShow : Boolean){
         val animSet = AnimationSet(true)

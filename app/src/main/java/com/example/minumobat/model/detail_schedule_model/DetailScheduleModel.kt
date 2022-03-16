@@ -25,25 +25,28 @@ class DetailScheduleModel {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "uid")
-    var Uid: Long = 0L
+    var uid: Long = 0L
 
     @ColumnInfo(name = "schedule_id")
-    var ScheduleID : Long = 0L
+    var scheduleID : Long = 0L
 
     @ColumnInfo(name = "name")
-    var Name: String = ""
+    var name: String = ""
 
     @ColumnInfo(name = "description")
-    var Description: String = ""
+    var description: String = ""
 
     @ColumnInfo(name = "hour")
-    var Hour: Int = 0
+    var hour: Int = 0
 
     @ColumnInfo(name = "minute")
-    var Minute: Int = 0
+    var minute: Int = 0
+
+    @ColumnInfo(name = "mode")
+    var mode: String = ""
 
     @ColumnInfo(name = "status")
-    var Status: Int = 0
+    var status: Int = 0
 
     constructor() {}
 }

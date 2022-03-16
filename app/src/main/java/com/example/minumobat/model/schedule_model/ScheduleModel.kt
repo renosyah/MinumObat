@@ -14,11 +14,11 @@ class ScheduleModel {
 
     @ColumnInfo(name = "start_date")
     @TypeConverters(DateConverter::class)
-    var StartDate: Date? = null
+    var startDate: Date? = null
 
     @ColumnInfo(name = "end_date")
     @TypeConverters(DateConverter::class)
-    var EndDate: Date? = null
+    var endDate: Date? = null
 
     constructor() {}
 }

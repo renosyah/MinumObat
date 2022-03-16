@@ -71,6 +71,7 @@
             android:padding="25dp">
 
             <TextView
+                android:id="@+id/description_text"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -80,7 +81,7 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/texyview_description"
+                android:id="@+id/description_button"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

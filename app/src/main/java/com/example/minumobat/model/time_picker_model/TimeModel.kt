@@ -12,7 +12,7 @@ class TimeModel(var hour: Int = 0,var minute : Int = 0,var second : Int = 0,var 
 
     fun duplicate() : TimeModel {
         return TimeModel(
-            hour, minute, second,mode
+            hour, minute, second, mode
         )
     }
 }

@@ -1,7 +1,9 @@
 package com.example.minumobat.model.date_picker_model
 
+import java.sql.Date
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 class DateModel(var day : Int = 0, var month : Int = 0, var years : Int = 0, var flag : Int = FLAG_UNSELECTED, var flag_action : Int = FLAG_NONE){
     companion object {
@@ -24,6 +26,14 @@ class DateModel(var day : Int = 0, var month : Int = 0, var years : Int = 0, var
         return  DateModel(
             day, month, years, flag, flag_action
         )
+    }
+
+    fun parseToDate() : Date{
+        val cal: Calendar = Calendar.getInstance()
+        cal.set(Calendar.YEAR, this.years)
+        cal.set(Calendar.MONTH, this.month)
+        cal.set(Calendar.DAY_OF_MONTH, this.day)
+        return Date(cal.time.time)
     }
 
     fun isMoreOrEqualThan(date : DateModel) : Boolean {

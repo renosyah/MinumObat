@@ -12,6 +12,7 @@ import com.example.minumobat.model.time_picker_model.TimeModel
 
 class LayoutDetailSchedule {
 
+    var layoutID = 0
     lateinit var layoutDetailSchedule : CardView
 
     lateinit var imageTime : ImageView
@@ -23,9 +24,12 @@ class LayoutDetailSchedule {
     lateinit var timeDisplayTextView: TextView
     lateinit var amPmDisplayText : TextView
 
-    lateinit var layoutTimePicker : View
+    lateinit var layoutTimePickerView : View
+    lateinit var layoutTimePicker : LayoutTimePicker
 
-    constructor(c: Context, v : View, image : Int, text : String, startHour : Int, endHour : Int, onScroll : (TimeModel) -> Unit)  {
+    var selectedTime = TimeModel()
+
+    constructor(c: Context, v : View, image : Int, text : String, startHour : Int, endHour : Int, onScroll : (TimeModel) -> Unit, onDescriptionClick : (Int) -> Unit)  {
 
         imageTime = v.findViewById(R.id.image_time)
         imageTime.setImageResource(image)
@@ -37,11 +41,13 @@ class LayoutDetailSchedule {
         openTimePickerButton.visibility = View.VISIBLE
         openTimePickerButton.setOnClickListener {
             toggleLayoutTimePicker()
+            onScroll.invoke(selectedTime)
         }
 
         layoutDetailSchedule = v.findViewById(R.id.layout_detail_schedule)
         layoutDetailSchedule.setOnClickListener {
             toggleLayoutTimePicker()
+            onScroll.invoke(selectedTime)
         }
 
         timeInputDisplayLayout = v.findViewById(R.id.time_input_display_layout)
@@ -50,17 +56,24 @@ class LayoutDetailSchedule {
         timeDisplayTextView = v.findViewById(R.id.time_display_text)
         amPmDisplayText = v.findViewById(R.id.am_pm_display)
 
-        layoutTimePicker = v.findViewById(R.id.layout_time_picker)
-        LayoutTimePicker(c, layoutTimePicker, startHour, endHour){
+        layoutTimePickerView = v.findViewById(R.id.layout_time_picker)
+        layoutTimePicker = LayoutTimePicker(c, layoutTimePickerView, startHour, endHour,{
             timeInputDisplayLayout.visibility = View.VISIBLE
             openTimePickerButton.visibility = View.GONE
             timeDisplayTextView.text = it.toString()
             amPmDisplayText.text = it.mode
-            onScroll.invoke(it.duplicate())
-        }
+            selectedTime = it.duplicate()
+        },{
+            onDescriptionClick.invoke(layoutID)
+        })
+    }
+
+    fun setDescription(text : String){
+        layoutTimePicker.description.text = text
+        textTime.text = text
     }
 
     private fun toggleLayoutTimePicker(){
-        layoutTimePicker.visibility = if (layoutTimePicker.visibility == View.GONE) View.VISIBLE else View.GONE
+        layoutTimePickerView.visibility = if (layoutTimePickerView.visibility == View.GONE) View.VISIBLE else View.GONE
     }
 }

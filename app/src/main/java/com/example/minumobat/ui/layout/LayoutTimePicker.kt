@@ -2,6 +2,7 @@ package com.example.minumobat.ui.layout
 
 import android.content.Context
 import android.view.View
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -12,12 +13,21 @@ import com.example.range_date_picker.adapter.TimeAdapter
 
 
 class LayoutTimePicker {
+    lateinit var description : TextView
+    lateinit var descriptionButton : TextView
+
     private var mode : TimePicker
     private var hour : TimePicker
     private var minute : TimePicker
-    private var selectedTime = TimeModel()
+    var selectedTime = TimeModel()
 
-    constructor(c: Context, v : View, startHour : Int, endHour : Int, onScroll : (TimeModel) -> Unit){
+    constructor(c: Context, v : View, startHour : Int, endHour : Int, onScroll : (TimeModel) -> Unit, onDescriptionClick : () -> Unit){
+
+        description = v.findViewById(R.id.description_text)
+        descriptionButton = v.findViewById(R.id.description_button)
+        descriptionButton.setOnClickListener {
+            onDescriptionClick.invoke()
+        }
 
         val onModeScroll : (SimpleModel) -> Unit = { t ->
             selectedTime.mode = t.label
