@@ -1,7 +1,9 @@
 package com.example.minumobat.util
 
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.example.minumobat.R
 import com.example.minumobat.model.date_picker_model.DateModel
 import com.example.minumobat.model.date_picker_model.DatePickerModel
 import java.time.LocalDate
@@ -82,20 +84,20 @@ class DatePickerUtil {
            return  arr
        }
 
-       fun getMonthName(month: Int): String? {
+       fun getMonthName(ctx : Context, month: Int): String? {
            return when (month) {
-               0 -> "Januari"
-               1 -> "Februari"
-               2 -> "Maret"
-               3 -> "April"
-               4 -> "Mei"
-               5 -> "Juni"
-               6 -> "Juli"
-               7 -> "Agustus"
-               8 -> "September"
-               9 -> "Oktober"
-               10 -> "November"
-               11 -> "Desember"
+               0 -> ctx.getString(R.string.january)
+               1 -> ctx.getString(R.string.february)
+               2 -> ctx.getString(R.string.march)
+               3 -> ctx.getString(R.string.april)
+               4 -> ctx.getString(R.string.may)
+               5 -> ctx.getString(R.string.june)
+               6 -> ctx.getString(R.string.july)
+               7 -> ctx.getString(R.string.august)
+               8 -> ctx.getString(R.string.september)
+               9 -> ctx.getString(R.string.october)
+               10 -> ctx.getString(R.string.november)
+               11 -> ctx.getString(R.string.december)
                else -> ""
            }
        }

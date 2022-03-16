@@ -14,10 +14,10 @@ import com.example.minumobat.model.date_picker_model.DateModel
 class DateAdapter : RecyclerView.Adapter<DateAdapter.Holder> {
 
     var context: Context
-    var list : ArrayList<DateModel>? = null
-    var onClick : (DateModel) -> Unit
+    var list : ArrayList<DateModel> = ArrayList()
+    var onClick : (DateModel, Int) -> Unit
 
-    constructor(context: Context, list : ArrayList<DateModel>, onClick : (DateModel) -> Unit) : super() {
+    constructor(context: Context, list : ArrayList<DateModel>, onClick : (DateModel, Int) -> Unit) : super() {
         this.context = context
         this.list = list
         this.onClick = onClick
@@ -40,7 +40,7 @@ class DateAdapter : RecyclerView.Adapter<DateAdapter.Holder> {
         setBackgroundColor(holder, if (item.flag_action == DateModel.FLAG_NONE) item.flag else item.flag_action)
 
         holder.layout_background.setOnClickListener {
-            onClick.invoke(item)
+            onClick.invoke(item, position)
         }
     }
 

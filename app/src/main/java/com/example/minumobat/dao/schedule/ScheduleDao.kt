@@ -13,8 +13,8 @@ interface ScheduleDao {
 
     fun getAllByCurrentDate(now: Date): LiveData<List<ScheduleModel>>
 
-    @Insert
-    suspend fun add(data : ScheduleModel)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun add(data : ScheduleModel): Long
 
     @Update
     suspend  fun update(data : ScheduleModel)

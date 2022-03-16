@@ -17,8 +17,8 @@ class DetailScheduleRepository {
         return detailSchedule.getAllByScheduleId(scheduleId)
     }
 
-    suspend fun add(c: DetailScheduleModel) {
-        detailSchedule.add(c)
+    suspend fun add(c: DetailScheduleModel): Long {
+        return detailSchedule.add(c)
     }
 
     suspend fun update(c: DetailScheduleModel) {

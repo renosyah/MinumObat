@@ -21,6 +21,14 @@ import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
 import com.example.minumobat.ui.layout.LayoutDatePicker
+import android.view.animation.RotateAnimation
+
+import android.view.animation.DecelerateInterpolator
+
+import android.view.animation.AnimationSet
+
+
+
 
 
 class HomeActivity : AppCompatActivity() {
@@ -67,12 +75,34 @@ class HomeActivity : AppCompatActivity() {
         linearLayoutPickDate.setOnClickListener {
             val isShow = layoutDatePickerContainer.visibility == View.VISIBLE
             layoutDatePickerContainer.visibility = if (isShow) View.GONE else View.VISIBLE
-            imageChooseDate.rotation = if (isShow) 0.toFloat() else 180.toFloat()
+            rotateDropDownIcon(isShow)
         }
 
-        layoutDatePicker = LayoutDatePicker(this@HomeActivity, findViewById(R.id.layout_date_picker)){ item ->
-            textChooseDate.text = item.toString()
+        layoutDatePicker = LayoutDatePicker(this@HomeActivity, findViewById(R.id.layout_date_picker)){ start,end ->
+            if (start.isEmpty() or end.isEmpty()){
+                return@LayoutDatePicker
+            }
+            textChooseDate.text = "$start - $end"
         }
+    }
+
+    private fun rotateDropDownIcon(isShow : Boolean){
+        val animSet = AnimationSet(true)
+        animSet.interpolator = DecelerateInterpolator()
+        animSet.fillAfter = true
+        animSet.isFillEnabled = true
+
+        val animRotate = RotateAnimation(
+            if (isShow) -180.0f else 0f,
+            if (isShow) 0f else -180.0f,
+            RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+            RotateAnimation.RELATIVE_TO_SELF, 0.5f
+        )
+
+        animRotate.duration = 350
+        animRotate.fillAfter = true
+        animSet.addAnimation(animRotate)
+        imageChooseDate.startAnimation(animSet)
     }
 
     private fun checkService(context : Context){

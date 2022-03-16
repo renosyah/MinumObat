@@ -10,7 +10,7 @@ import java.sql.Date
 class ScheduleModel {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "uid")
-    var Uid: Int = 0
+    var Uid: Long = 0L
 
     @ColumnInfo(name = "start_date")
     @TypeConverters(DateConverter::class)

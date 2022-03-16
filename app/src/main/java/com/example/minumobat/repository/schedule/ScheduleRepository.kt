@@ -18,8 +18,8 @@ class ScheduleRepository {
         return sheduleDao.getAllByCurrentDate(now)
     }
 
-    suspend fun add(c: ScheduleModel) {
-        sheduleDao.add(c)
+    suspend fun add(c: ScheduleModel): Long {
+        return sheduleDao.add(c)
     }
 
     suspend fun update(c: ScheduleModel) {

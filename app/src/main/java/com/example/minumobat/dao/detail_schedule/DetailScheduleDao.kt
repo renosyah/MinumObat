@@ -9,11 +9,11 @@ interface DetailScheduleDao {
     @Query("SELECT * FROM detail_schedule WHERE schedule_id = :scheduleId")
     fun getAllByScheduleId(scheduleId : Int): LiveData<List<DetailScheduleModel>>
 
-    @Insert
-    suspend fun add(detail : DetailScheduleModel)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun add(detail : DetailScheduleModel) : Long
 
     @Update
-    suspend  fun update(detail : DetailScheduleModel)
+    suspend fun update(detail : DetailScheduleModel)
 
     @Delete
     suspend fun delete(detail : DetailScheduleModel)

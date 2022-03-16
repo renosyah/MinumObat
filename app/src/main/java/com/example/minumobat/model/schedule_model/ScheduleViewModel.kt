@@ -3,6 +3,7 @@ package com.example.minumobat.model.schedule_model
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.minumobat.repository.schedule.ScheduleRepository
 import kotlinx.coroutines.launch
@@ -19,8 +20,10 @@ class ScheduleViewModel : AndroidViewModel {
         return repository.getAllByCurrentDate(now)
     }
 
-    fun add(c: ScheduleModel) = viewModelScope.launch {
-        repository.add(c)
+    fun add(c: ScheduleModel, result : MutableLiveData<Long>){
+        viewModelScope.launch {
+            result.value = repository.add(c)
+        }
     }
 
     fun update(c: ScheduleModel) = viewModelScope.launch {

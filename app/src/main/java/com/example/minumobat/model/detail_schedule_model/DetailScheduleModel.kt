@@ -25,10 +25,10 @@ class DetailScheduleModel {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "uid")
-    var Uid: Int = 0
+    var Uid: Long = 0L
 
     @ColumnInfo(name = "schedule_id")
-    var ScheduleID : Int = 0
+    var ScheduleID : Long = 0L
 
     @ColumnInfo(name = "name")
     var Name: String = ""
