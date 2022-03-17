@@ -28,7 +28,7 @@ class DetailScheduleRepository {
     }
 
     suspend fun update(c: DetailScheduleModel) {
-        detailSchedule.delete(c)
+        detailSchedule.update(c)
     }
 
     suspend fun delete(c: DetailScheduleModel) {

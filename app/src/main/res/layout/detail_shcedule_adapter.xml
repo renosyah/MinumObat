@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_margin="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/adapter_layout"
+    android:layout_width="180dp"
+    android:layout_height="270dp"
+    android:background="@drawable/detail_shcedule_adapter_border_shape"
+    android:orientation="vertical"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="2dp"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/detail_schedule_switch"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="right|center"
+            android:thumb="@drawable/switch_rounded_thumb"
+            app:thumbTint="@color/darkModeSwitchThumbColor"
+            app:track="@drawable/switch_rounded_track" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name_detail_schedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/nunitos_sans_extra_bold"
+                android:text="name"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/time_detail_schedule"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nunitos_sans_extra_bold"
+                    android:text="22:30"
+                    android:textColor="@color/white"
+                    android:textSize="38sp" />
+
+                <TextView
+                    android:id="@+id/time_detail_schedule_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:fontFamily="@font/nunitos_sans_extra_bold"
+                    android:text="AM"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/description_detail_schedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/nunitos_sans_light"
+                android:maxLines="2"
+                android:text="name aaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

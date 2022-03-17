@@ -33,14 +33,20 @@ import com.example.minumobat.model.schedule_model.ScheduleViewModel
 import com.example.minumobat.ui.layout.LayoutDetailSchedule
 import androidx.lifecycle.ViewModelStoreOwner
 import com.example.minumobat.model.detail_schedule_model.DetailScheduleViewModel
+import com.example.minumobat.ui.activity.schedule_page.SchedulePageActivity
 import com.example.minumobat.ui.dialog.DialogEditDescription
+import com.example.minumobat.util.Utils
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
 
 
 class HomeActivity : AppCompatActivity() {
-
+    companion object {
+        fun createIntent(ctx : Context) : Intent {
+            return Intent(ctx, HomeActivity::class.java)
+        }
+    }
     lateinit var context: Context
 
     lateinit var darkModeSwitch : SwitchCompat
@@ -77,7 +83,7 @@ class HomeActivity : AppCompatActivity() {
     private fun initWidget(){
         context = this@HomeActivity
 
-        checkService(context)
+        //checkService(context)
 
         scheduleViewModel = ViewModelProvider(context as ViewModelStoreOwner).get(ScheduleViewModel::class.java)
         detailScheduleViewModel = ViewModelProvider(context as ViewModelStoreOwner).get(DetailScheduleViewModel::class.java)
@@ -124,9 +130,9 @@ class HomeActivity : AppCompatActivity() {
         }
 
         layoutMorningDetailSchedule = LayoutDetailSchedule(context,
-            findViewById(R.id.morning_detail_schedule),R.drawable.morning, context.getString(R.string.morning), 0, 10, {
+            findViewById(R.id.morning_detail_schedule),R.drawable.morning, context.getString(R.string.morning), ArrayList<Int>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)), {
             morningTime = DetailScheduleModel()
-            morningTime!!.name = context.getString(R.string.morning)
+            morningTime!!.name = Utils.NAME_MORNING
             morningTime!!.description = layoutMorningDetailSchedule.descriptionText
             morningTime!!.hour = it.hour
             morningTime!!.minute = it.minute
@@ -140,9 +146,9 @@ class HomeActivity : AppCompatActivity() {
         layoutMorningDetailSchedule.layoutID = 1
 
         layoutAfternoonDetailSchedule = LayoutDetailSchedule(context,
-            findViewById(R.id.afternoon_detail_schedule),R.drawable.afternoon, context.getString(R.string.afternoon), 3, 10, {
+            findViewById(R.id.afternoon_detail_schedule),R.drawable.afternoon, context.getString(R.string.afternoon), ArrayList<Int>(Arrays.asList(10, 11, 12, 1, 2, 3)), {
             afternoonTime = DetailScheduleModel()
-            afternoonTime!!.name = context.getString(R.string.afternoon)
+            afternoonTime!!.name = Utils.NAME_AFTERNOON
             afternoonTime!!.description = layoutAfternoonDetailSchedule.descriptionText
             afternoonTime!!.hour = it.hour
             afternoonTime!!.minute = it.minute
@@ -156,9 +162,9 @@ class HomeActivity : AppCompatActivity() {
         layoutAfternoonDetailSchedule.layoutID = 2
 
         layoutNightDetailSchedule = LayoutDetailSchedule(context,
-            findViewById(R.id.night_detail_schedule),R.drawable.night, context.getString(R.string.night), 3, 11, {
+            findViewById(R.id.night_detail_schedule),R.drawable.night, context.getString(R.string.night), ArrayList<Int>(Arrays.asList(3, 4, 5, 6, 7, 8, 9, 10, 11)), {
             nightTime = DetailScheduleModel()
-            nightTime!!.name = context.getString(R.string.night)
+            nightTime!!.name = Utils.NAME_NIGHT
             nightTime!!.description = layoutNightDetailSchedule.descriptionText
             nightTime!!.hour = it.hour
             nightTime!!.minute = it.minute

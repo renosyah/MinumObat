@@ -16,11 +16,11 @@ class TimeModel(var hour: Int = 0,var minute : Int = 0,var second : Int = 0,var 
     }
 
     fun toStringWithPmAm() : String {
-        return "${String.format("%02d",hour)}:${String.format("%02d",minute)} ${mode}"
+        return "${String.format("%02d",hour)}:${String.format("%02d",minute)}:00 ${mode}"
     }
 
     fun parseToTime() : Time {
-        return Time(SimpleDateFormat("hh:mm:ss a").parse(toStringWithPmAm()).time)
+        return Time(SimpleDateFormat("KK:mm:ss a").parse(toStringWithPmAm()).time)
     }
 
     fun duplicate() : TimeModel {

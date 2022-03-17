@@ -15,6 +15,7 @@ import android.media.RingtoneManager
 import android.media.Ringtone
 import android.net.Uri
 import com.example.minumobat.ui.activity.home.HomeActivity
+import com.example.minumobat.ui.activity.schedule_page.SchedulePageActivity
 import java.lang.Exception
 import java.util.*
 import kotlin.concurrent.schedule
@@ -57,7 +58,7 @@ class NotificationSplashActivity : AppCompatActivity() {
         anim.start()
 
         Timer().schedule(3500){
-            startActivity(Intent(context, HomeActivity::class.java))
+            startActivity(SchedulePageActivity.createIntent(context))
             finish()
         }
     }

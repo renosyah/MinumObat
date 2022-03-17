@@ -64,9 +64,7 @@ class NotifService : LifecycleService() {
                 if (intent == null){
                     return
                 }
-
                 if (intent.action == Intent.ACTION_TIME_TICK){
-
                     val now = Date(Calendar.getInstance().time.time)
                     scheduleViewModel.getAllByCurrentDate(now,object : MutableLiveData<List<ScheduleModel>>() {
                         override fun setValue(value: List<ScheduleModel>) {
@@ -78,7 +76,6 @@ class NotifService : LifecycleService() {
 
                         }
                     })
-
                     // query schedule by current date
                     detailScheduleViewModel.getAllByCurrentDate(now, object : MutableLiveData<List<DetailScheduleModel>>() {
                         override fun setValue(value: List<DetailScheduleModel>) {

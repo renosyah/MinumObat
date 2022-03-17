@@ -21,7 +21,7 @@ class LayoutTimePicker {
     private var minute : TimePicker
     var selectedTime = TimeModel()
 
-    constructor(c: Context, v : View, startHour : Int, endHour : Int, onScroll : (TimeModel) -> Unit, onDescriptionClick : () -> Unit){
+    constructor(c: Context, v : View, rangeHour : ArrayList<Int>, onScroll : (TimeModel) -> Unit, onDescriptionClick : () -> Unit){
 
         description = v.findViewById(R.id.description_text)
         descriptionButton = v.findViewById(R.id.description_button)
@@ -52,7 +52,7 @@ class LayoutTimePicker {
 
         val hours = ArrayList<SimpleModel>()
         hours.add(SimpleModel(label = "", value = 0, flag = SimpleModel.FLAG_UNSELECTED))
-        for (i in startHour until endHour + 1) hours.add(SimpleModel(label = "${ i }", value = i, flag = SimpleModel.FLAG_SELECTED))
+        for (i in rangeHour) hours.add(SimpleModel(label = "${ i }", value = i, flag = SimpleModel.FLAG_SELECTED))
         hours.add(SimpleModel(label = "", value = 0, flag = SimpleModel.FLAG_UNSELECTED))
         this.hour = TimePicker(c, v.findViewById(R.id.recycleview_hour), hours, TimeAdapter.SHOW_HOUR, onHourScroll)
 

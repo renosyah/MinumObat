@@ -30,7 +30,7 @@ class LayoutDetailSchedule {
     var descriptionText : String = ""
     var phoneNumberText : String = ""
 
-    constructor(c: Context, v : View, image : Int, text : String, startHour : Int, endHour : Int, onScroll : (TimeModel) -> Unit, onDescriptionClick : (Int) -> Unit)  {
+    constructor(c: Context, v : View, image : Int, text : String, rangeHour : ArrayList<Int>, onScroll : (TimeModel) -> Unit, onDescriptionClick : (Int) -> Unit)  {
 
         this.imageTime = v.findViewById(R.id.image_time)
         this.imageTime.setImageResource(image)
@@ -56,7 +56,7 @@ class LayoutDetailSchedule {
         this.amPmDisplayText = v.findViewById(R.id.am_pm_display)
 
         this.layoutTimePickerView = v.findViewById(R.id.layout_time_picker)
-        this.layoutTimePicker = LayoutTimePicker(c, layoutTimePickerView, startHour, endHour,{
+        this.layoutTimePicker = LayoutTimePicker(c, layoutTimePickerView, rangeHour,{
             timeInputDisplayLayout.visibility = View.VISIBLE
             openTimePickerButton.visibility = View.GONE
             timeDisplayTextView.text = it.toString()

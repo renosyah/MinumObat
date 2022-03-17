@@ -29,6 +29,12 @@
     <!-- notification splash screen -->
     <color name="mainAppNotificationSplashBackground">#2AAC1B</color>
 
+
+    <!-- detail schedule adapter background -->
+    <color name="detailScheduleAdapterBackgroundNormal">#373737</color>
+    <color name="detailScheduleAdapterBackgroundSelected">#2AAC1B</color>
+    <color name="detailScheduleAdapterBorder">@android:color/transparent</color>
+
     <!-- Color for date picker. and other -->
     <color name="mainBackgroundDefault">@android:color/transparent</color>
 

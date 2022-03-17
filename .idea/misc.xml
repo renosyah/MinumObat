@@ -18,6 +18,8 @@
         <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/bell_ring_stage_3.xml" value="0.3675925925925926" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/button_border.xml" value="0.3828125" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/button_border_reverse.xml" value="0.3828125" />
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/detail_shcedule_adapter_border_shape.xml" value="0.3769230769230769" />
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/detail_shcedule_adapter_border_shape_selected.xml" value="0.3769230769230769" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/ic_launcher_background.xml" value="0.3828125" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/panel_radius.xml" value="0.3828125" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/panel_top_radius.xml" value="0.3828125" />
@@ -28,8 +30,10 @@
         <entry key="..\:/project/android/MinumObat/app/src/main/res/layout/activity_home.xml" value="0.3523550724637681" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/layout/activity_notification_splash.xml" value="0.35260416666666666" />
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/layout/activity_schedule_page.xml" value="0.33" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/layout/date_adapter.xml" value="0.36666666666666664" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/layout/date_dialog.xml" value="0.36666666666666664" />
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/layout/detail_shcedule_adapter.xml" value="0.5" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/layout/dialog_input_description.xml" value="0.33" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/layout/layout_detail_schedule.xml" value="0.36666666666666664" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/layout/time_dialog.xml" value="0.36666666666666664" />

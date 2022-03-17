@@ -27,7 +27,7 @@ class ScheduleRepository {
     }
 
     suspend fun update(c: ScheduleModel) {
-        sheduleDao.delete(c)
+        sheduleDao.update(c)
     }
 
     suspend fun delete(c: ScheduleModel) {

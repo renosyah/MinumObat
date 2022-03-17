@@ -15,10 +15,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MinumObat">
         <activity
-            android:name=".ui.activity.notification_splash.NotificationSplashActivity"
+            android:name=".ui.activity.schedule_page.SchedulePageActivity"
             android:exported="true">
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
         </activity>
+        <activity
+            android:name=".ui.activity.notification_splash.NotificationSplashActivity"
+            android:exported="true"/>
 
         <receiver
             android:name=".service.AppReceiver"
@@ -42,11 +50,6 @@
         <activity
             android:name=".ui.activity.home.HomeActivity"
             android:exported="true">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
     </application>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mainAppBackground"
+    tools:context=".ui.activity.schedule_page.SchedulePageActivity">
+
+    <TextView
+        android:id="@+id/title_shcedule_page"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="125dp"
+        android:layout_marginRight="165dp"
+        android:layout_marginBottom="45dp"
+        android:fontFamily="@font/nunitos_sans_extra_bold"
+        android:text="@string/schedule_page_title"
+        android:textColor="@color/mainAppText"
+        android:textSize="28sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/detail_schedule_recycleview"
+        android:clipToPadding="false"
+        android:paddingStart="28dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/swipe_image"
+        android:layout_width="match_parent"
+        android:gravity="bottom"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunitos_sans_light"
+                android:gravity="center|bottom"
+                android:text="@string/swipe_up" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:scaleType="center"
+                android:src="@drawable/arrow_up" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>
