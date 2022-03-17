@@ -24,4 +24,6 @@
     <string name="cancel">Cancel</string>
     <string name="add">Add</string>
     <string name="description">Description</string>
+    <string name="six_ten_minute">60 minute, prepare your medicine</string>
+    <string name="five_ten_minute">15 minute remain</string>
 </resources>

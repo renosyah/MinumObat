@@ -1,0 +1,14 @@
+drop database testing_db;
+create database testing_db;
+use testing_db;
+
+
+create table table_a(id int, name text);
+create table table_b(id int,a_id int,stuff text);
+
+insert into table_a(id, name) values (1, "reno"),(2, "rukka"),(3, "ade");
+insert into table_b(id, a_id, stuff) values (1, 1, "pc"),(2, 1, "potato"),(3, 1, "key");
+insert into table_b(id, a_id, stuff) values (4, 2, "yougurt"),(5, 2, "ice"),(6, 2, "car");
+insert into table_b(id, a_id, stuff) values (7, 3, "banana"),(8, 3, "fuse"),(9, 3, "gun");
+
+select b.* from table_b b left join table_a a on a.id = b.a_id where a.name in ('reno','ade');

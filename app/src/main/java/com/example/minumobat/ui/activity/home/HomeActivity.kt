@@ -77,7 +77,7 @@ class HomeActivity : AppCompatActivity() {
     private fun initWidget(){
         context = this@HomeActivity
 
-        //checkService(context)
+        checkService(context)
 
         scheduleViewModel = ViewModelProvider(context as ViewModelStoreOwner).get(ScheduleViewModel::class.java)
         detailScheduleViewModel = ViewModelProvider(context as ViewModelStoreOwner).get(DetailScheduleViewModel::class.java)
@@ -135,7 +135,7 @@ class HomeActivity : AppCompatActivity() {
 
         }, {
                 displayDescriptionDialogForLayout(it)
-                setAlarmButton.visibility = View.VISIBLE
+                setAlarmButton.visibility = if (scheduleModel != null) View.VISIBLE else View.GONE
         })
         layoutMorningDetailSchedule.layoutID = 1
 
@@ -151,7 +151,7 @@ class HomeActivity : AppCompatActivity() {
 
         }, {
                 displayDescriptionDialogForLayout(it)
-                setAlarmButton.visibility = View.VISIBLE
+                setAlarmButton.visibility = if (scheduleModel != null) View.VISIBLE else View.GONE
         })
         layoutAfternoonDetailSchedule.layoutID = 2
 
@@ -167,7 +167,7 @@ class HomeActivity : AppCompatActivity() {
 
         }, {
                 displayDescriptionDialogForLayout(it)
-                setAlarmButton.visibility = View.VISIBLE
+                setAlarmButton.visibility = if (scheduleModel != null) View.VISIBLE else View.GONE
         })
         layoutNightDetailSchedule.layoutID = 3
     }

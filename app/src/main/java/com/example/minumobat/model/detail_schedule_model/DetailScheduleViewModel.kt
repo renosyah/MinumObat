@@ -8,6 +8,7 @@ import com.example.minumobat.repository.detail_schedule.DetailScheduleRepository
 import androidx.lifecycle.viewModelScope
 import com.example.minumobat.model.schedule_model.ScheduleModel
 import kotlinx.coroutines.launch
+import java.sql.Date
 
 class DetailScheduleViewModel : AndroidViewModel {
     private lateinit var repository: DetailScheduleRepository
@@ -16,9 +17,15 @@ class DetailScheduleViewModel : AndroidViewModel {
         repository = DetailScheduleRepository(application)
     }
 
-    fun getAllByScheduleId(scheduleId : Int, result : MutableLiveData<List<DetailScheduleModel>>) {
+    fun getAllByScheduleId(scheduleIds : List<Int>, result : MutableLiveData<List<DetailScheduleModel>>) {
         viewModelScope.launch {
-            result.value = repository.getAllByScheduleId(scheduleId)
+            result.value = repository.getAllByScheduleId(scheduleIds)
+        }
+    }
+
+    fun getAllByCurrentDate(now: Date, result : MutableLiveData<List<DetailScheduleModel>>) {
+        viewModelScope.launch {
+            result.value = repository.getAllByCurrentDate(now)
         }
     }
 

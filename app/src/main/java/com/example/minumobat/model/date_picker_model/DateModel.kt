@@ -31,7 +31,7 @@ class DateModel(var day : Int = 0, var month : Int = 0, var years : Int = 0, var
     fun parseToDate() : Date{
         val cal: Calendar = Calendar.getInstance()
         cal.set(Calendar.YEAR, this.years)
-        cal.set(Calendar.MONTH, this.month)
+        cal.set(Calendar.MONTH, this.month - 1)
         cal.set(Calendar.DAY_OF_MONTH, this.day)
         return Date(cal.time.time)
     }

@@ -6,12 +6,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/mainAppNotificationSplashBackground"
     tools:context=".ui.activity.notification_splash.NotificationSplashActivity">
 
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/time_message"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="TextView" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75dp"
+        android:layout_marginLeft="65dp"
+        android:layout_marginRight="65dp"
+        android:textAlignment="center"
+        android:text="14:03"
+        android:fontFamily="@font/nunitos_sans_bold"
+        android:textColor="@color/mainAppTextReverse"
+        android:textSize="68sp" />
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/image_ring"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bell_ring_animation" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:src="@drawable/bell" />
+
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/description_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="65dp"
+        android:layout_marginRight="65dp"
+        android:layout_marginBottom="45dp"
+        android:textAlignment="center"
+        android:text="@string/home_title"
+        android:fontFamily="@font/nunitos_sans_bold"
+        android:textColor="@color/mainAppTextReverse"
+        android:textSize="22sp" />
+
 </LinearLayout>

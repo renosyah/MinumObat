@@ -19,10 +19,15 @@
     <color name="mainAppText">#373737</color>
     <color name="mainAppBorderTransparent">@android:color/transparent</color>
 
+    <!-- button reverse color -->
     <color name="mainAppTextReverse">@color/white</color>
     <color name="mainAppTextReverseBackground">@color/black</color>
 
+    <!-- edit text -->
     <color name="mainAppEditTextBackground">#DADADA</color>
+
+    <!-- notification splash screen -->
+    <color name="mainAppNotificationSplashBackground">#2AAC1B</color>
 
     <!-- Color for date picker. and other -->
     <color name="mainBackgroundDefault">@android:color/transparent</color>
