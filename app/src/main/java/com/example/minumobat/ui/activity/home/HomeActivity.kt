@@ -14,6 +14,7 @@ import com.example.minumobat.util.Utils.Companion.isMyServiceRunning
 
 import androidx.appcompat.app.AppCompatDelegate
 import android.content.res.Configuration
+import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
@@ -37,6 +38,9 @@ import com.example.minumobat.model.schedule_model.ScheduleViewModel
 import com.example.minumobat.ui.layout.LayoutDetailSchedule
 import androidx.lifecycle.ViewModelStoreOwner
 import com.example.minumobat.model.detail_schedule_model.DetailScheduleViewModel
+import com.example.minumobat.ui.dialog.DialogEditDescription
+import java.util.*
+import kotlin.concurrent.schedule
 
 
 class HomeActivity : AppCompatActivity() {
@@ -62,6 +66,8 @@ class HomeActivity : AppCompatActivity() {
     var morningTime : DetailScheduleModel? = null
     var afternoonTime : DetailScheduleModel? = null
     var nightTime : DetailScheduleModel? = null
+
+    var isSaving = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -120,7 +126,7 @@ class HomeActivity : AppCompatActivity() {
             findViewById(R.id.morning_detail_schedule),R.drawable.morning, context.getString(R.string.morning), 0, 10, {
             morningTime = DetailScheduleModel()
             morningTime!!.name = context.getString(R.string.morning)
-            morningTime!!.description = ""
+            morningTime!!.description = layoutMorningDetailSchedule.descriptionText
             morningTime!!.hour = it.hour
             morningTime!!.minute = it.minute
             morningTime!!.mode = it.mode
@@ -136,7 +142,7 @@ class HomeActivity : AppCompatActivity() {
             findViewById(R.id.afternoon_detail_schedule),R.drawable.afternoon, context.getString(R.string.afternoon), 3, 10, {
             afternoonTime = DetailScheduleModel()
             afternoonTime!!.name = context.getString(R.string.afternoon)
-            afternoonTime!!.description = ""
+            afternoonTime!!.description = layoutAfternoonDetailSchedule.descriptionText
             afternoonTime!!.hour = it.hour
             afternoonTime!!.minute = it.minute
             afternoonTime!!.mode = it.mode
@@ -152,7 +158,7 @@ class HomeActivity : AppCompatActivity() {
             findViewById(R.id.night_detail_schedule),R.drawable.night, context.getString(R.string.night), 3, 11, {
             nightTime = DetailScheduleModel()
             nightTime!!.name = context.getString(R.string.night)
-            nightTime!!.description = ""
+            nightTime!!.description = layoutNightDetailSchedule.descriptionText
             nightTime!!.hour = it.hour
             nightTime!!.minute = it.minute
             nightTime!!.mode = it.mode
@@ -166,15 +172,33 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun displayDescriptionDialogForLayout(id : Int){
-        when(id){
-            1 -> { layoutMorningDetailSchedule.setDescription("hello") }
-            2 -> { layoutAfternoonDetailSchedule.setDescription("gellj") }
-            3 -> { layoutNightDetailSchedule.setDescription("yello") }
-        }
+        val dialog = DialogEditDescription(object : (String,String) -> Unit {
+            override fun invoke(description: String, phoneNumber: String) {
+                when(id){
+                    1 -> {
+                        layoutMorningDetailSchedule.phoneNumberText = phoneNumber
+                        layoutMorningDetailSchedule.setDescription(description)
+                    }
+                    2 -> {
+                        layoutAfternoonDetailSchedule.phoneNumberText = phoneNumber
+                        layoutAfternoonDetailSchedule.setDescription(description)
+                    }
+                    3 -> {
+                        layoutMorningDetailSchedule.phoneNumberText = phoneNumber
+                        layoutNightDetailSchedule.setDescription(description)
+                    }
+                }
+            }
+        })
+        dialog.show(supportFragmentManager, "dialog edit description")
     }
 
     private fun saveSchedule(){
         if (scheduleModel == null){
+            return
+        }
+
+        if (isSaving){
             return
         }
 
@@ -189,6 +213,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun saveDetailSchedule(scheduleId : Long){
+
         if (morningTime != null){
             morningTime!!.scheduleID = scheduleId
             ViewModelProvider(context as ViewModelStoreOwner).get(DetailScheduleViewModel::class.java).add(morningTime!!, object : MutableLiveData<Long>() {
@@ -198,7 +223,6 @@ class HomeActivity : AppCompatActivity() {
                     Log.e("morning", "time : ${morningTime!!.hour}-${morningTime!!.minute}")
                 }
             })
-
         }
         if (afternoonTime != null){
             afternoonTime!!.scheduleID = scheduleId
@@ -209,7 +233,6 @@ class HomeActivity : AppCompatActivity() {
                     Log.e("afternoon", "time : ${afternoonTime!!.hour}-${afternoonTime!!.minute}")
                 }
             })
-
         }
         if (nightTime != null){
             nightTime!!.scheduleID = scheduleId
@@ -220,9 +243,16 @@ class HomeActivity : AppCompatActivity() {
                     Log.e("night", "time : ${nightTime!!.hour}-${nightTime!!.minute}")
                 }
             })
+        }
 
+        isSaving = true
+
+        Timer().schedule(1000){
+            startActivity(Intent(context, HomeActivity::class.java))
+            finish()
         }
     }
+
 
     private fun rotateDropDownIcon(isShow : Boolean){
         val animSet = AnimationSet(true)

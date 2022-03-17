@@ -27,33 +27,36 @@ class LayoutDetailSchedule {
     lateinit var layoutTimePickerView : View
     lateinit var layoutTimePicker : LayoutTimePicker
 
+    var descriptionText : String = ""
+    var phoneNumberText : String = ""
+
     constructor(c: Context, v : View, image : Int, text : String, startHour : Int, endHour : Int, onScroll : (TimeModel) -> Unit, onDescriptionClick : (Int) -> Unit)  {
 
-        imageTime = v.findViewById(R.id.image_time)
-        imageTime.setImageResource(image)
+        this.imageTime = v.findViewById(R.id.image_time)
+        this.imageTime.setImageResource(image)
 
-        textTime = v.findViewById(R.id.text_time)
-        textTime.text = text
+        this.textTime = v.findViewById(R.id.text_time)
+        this.textTime.text = text
 
-        openTimePickerButton = v.findViewById(R.id.open_time_picker_button)
-        openTimePickerButton.visibility = View.VISIBLE
-        openTimePickerButton.setOnClickListener {
+        this.openTimePickerButton = v.findViewById(R.id.open_time_picker_button)
+        this.openTimePickerButton.visibility = View.VISIBLE
+        this.openTimePickerButton.setOnClickListener {
             toggleLayoutTimePicker()
         }
 
-        layoutDetailSchedule = v.findViewById(R.id.layout_detail_schedule)
-        layoutDetailSchedule.setOnClickListener {
+        this.layoutDetailSchedule = v.findViewById(R.id.layout_detail_schedule)
+        this.layoutDetailSchedule.setOnClickListener {
             toggleLayoutTimePicker()
         }
 
-        timeInputDisplayLayout = v.findViewById(R.id.time_input_display_layout)
-        timeInputDisplayLayout.visibility = View.GONE
+        this.timeInputDisplayLayout = v.findViewById(R.id.time_input_display_layout)
+        this.timeInputDisplayLayout.visibility = View.GONE
 
-        timeDisplayTextView = v.findViewById(R.id.time_display_text)
-        amPmDisplayText = v.findViewById(R.id.am_pm_display)
+        this.timeDisplayTextView = v.findViewById(R.id.time_display_text)
+        this.amPmDisplayText = v.findViewById(R.id.am_pm_display)
 
-        layoutTimePickerView = v.findViewById(R.id.layout_time_picker)
-        layoutTimePicker = LayoutTimePicker(c, layoutTimePickerView, startHour, endHour,{
+        this.layoutTimePickerView = v.findViewById(R.id.layout_time_picker)
+        this.layoutTimePicker = LayoutTimePicker(c, layoutTimePickerView, startHour, endHour,{
             timeInputDisplayLayout.visibility = View.VISIBLE
             openTimePickerButton.visibility = View.GONE
             timeDisplayTextView.text = it.toString()
@@ -65,11 +68,12 @@ class LayoutDetailSchedule {
     }
 
     fun setDescription(text : String){
-        layoutTimePicker.description.text = text
-        textTime.text = text
+        this.descriptionText = text
+        this.layoutTimePicker.descriptionButton.text = this.descriptionText
+        this.textTime.text = this.descriptionText
     }
 
     private fun toggleLayoutTimePicker(){
-        layoutTimePickerView.visibility = if (layoutTimePickerView.visibility == View.GONE) View.VISIBLE else View.GONE
+        this.layoutTimePickerView.visibility = if (this.layoutTimePickerView.visibility == View.GONE) View.VISIBLE else View.GONE
     }
 }

@@ -7,6 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="green_button">#18ED00</color>
 
     <!-- dark mode switch. -->
     <color name="darkModeSwitchBackground">#979797</color>
@@ -17,6 +18,11 @@
     <color name="mainAppBorder">#373737</color>
     <color name="mainAppText">#373737</color>
     <color name="mainAppBorderTransparent">@android:color/transparent</color>
+
+    <color name="mainAppTextReverse">@color/white</color>
+    <color name="mainAppTextReverseBackground">@color/black</color>
+
+    <color name="mainAppEditTextBackground">#DADADA</color>
 
     <!-- Color for date picker. and other -->
     <color name="mainBackgroundDefault">@android:color/transparent</color>

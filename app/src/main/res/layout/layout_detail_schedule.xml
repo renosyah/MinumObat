@@ -48,7 +48,10 @@
                     android:gravity="center|left"
                     android:text="Morning"
                     android:textColor="@color/mainAppText"
-                    android:textSize="22sp" />
+                    android:textSize="22sp"
+                    android:maxLines="1"
+                    android:maxLength="10"
+                    android:ellipsize="end" />
 
                 <FrameLayout
                     android:id="@+id/open_time_picker_button"
