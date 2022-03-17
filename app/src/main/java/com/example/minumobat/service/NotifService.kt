@@ -8,7 +8,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
-import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleOwner
@@ -48,7 +47,7 @@ class NotifService : LifecycleService() {
         s_intentFilter.addAction(Intent.ACTION_TIME_TICK)
 
         timeChangedReceiver = object : BroadcastReceiver() {
-            override fun onReceive(p0: Context?, intent: Intent?) {
+            override fun onReceive(p0: Context, intent: Intent?) {
                 if (intent == null){
                     return
                 }

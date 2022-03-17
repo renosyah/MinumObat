@@ -13,7 +13,7 @@ class DetailScheduleRepository {
         this.detailSchedule = AppDatabase.getDatabase(application).detailScheduleDao()
     }
 
-    fun getAllByScheduleId(scheduleId : Int): LiveData<List<DetailScheduleModel>> {
+    suspend fun getAllByScheduleId(scheduleId : Int): List<DetailScheduleModel> {
         return detailSchedule.getAllByScheduleId(scheduleId)
     }
 

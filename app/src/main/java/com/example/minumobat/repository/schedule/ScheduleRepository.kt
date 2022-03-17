@@ -14,8 +14,12 @@ class ScheduleRepository {
         this.sheduleDao = AppDatabase.getDatabase(application).scheduleDao()
     }
 
-    fun getAllByCurrentDate(now: Date): LiveData<List<ScheduleModel>> {
+    suspend fun getAllByCurrentDate(now: Date): List<ScheduleModel> {
         return sheduleDao.getAllByCurrentDate(now)
+    }
+
+    suspend fun getAllExistingSchedule(start: Date, end: Date): List<ScheduleModel> {
+        return sheduleDao.getAllExistingSchedule(start, end)
     }
 
     suspend fun add(c: ScheduleModel): Long {

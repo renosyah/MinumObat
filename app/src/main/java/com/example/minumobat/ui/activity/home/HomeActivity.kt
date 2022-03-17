@@ -14,13 +14,8 @@ import com.example.minumobat.util.Utils.Companion.isMyServiceRunning
 
 import androidx.appcompat.app.AppCompatDelegate
 import android.content.res.Configuration
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
 import com.example.minumobat.ui.layout.LayoutDatePicker
@@ -29,7 +24,7 @@ import android.view.animation.RotateAnimation
 import android.view.animation.DecelerateInterpolator
 
 import android.view.animation.AnimationSet
-import android.widget.FrameLayout
+import android.widget.*
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.minumobat.model.detail_schedule_model.DetailScheduleModel
@@ -40,6 +35,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import com.example.minumobat.model.detail_schedule_model.DetailScheduleViewModel
 import com.example.minumobat.ui.dialog.DialogEditDescription
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
 
 
@@ -55,6 +51,9 @@ class HomeActivity : AppCompatActivity() {
     lateinit var linearLayoutPickDate : LinearLayout
     lateinit var layoutDatePicker : LayoutDatePicker
 
+    lateinit var scheduleViewModel : ScheduleViewModel
+    lateinit var detailScheduleViewModel : DetailScheduleViewModel
+
     lateinit var layoutMorningDetailSchedule : LayoutDetailSchedule
     lateinit var layoutAfternoonDetailSchedule : LayoutDetailSchedule
     lateinit var layoutNightDetailSchedule : LayoutDetailSchedule
@@ -69,7 +68,6 @@ class HomeActivity : AppCompatActivity() {
 
     var isSaving = false
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -80,6 +78,9 @@ class HomeActivity : AppCompatActivity() {
         context = this@HomeActivity
 
         //checkService(context)
+
+        scheduleViewModel = ViewModelProvider(context as ViewModelStoreOwner).get(ScheduleViewModel::class.java)
+        detailScheduleViewModel = ViewModelProvider(context as ViewModelStoreOwner).get(DetailScheduleViewModel::class.java)
 
         val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         darkModeSwitch = findViewById(R.id.dark_mode_switch)
@@ -108,7 +109,7 @@ class HomeActivity : AppCompatActivity() {
         setAlarmButton = findViewById(R.id.set_alarm_button)
         setAlarmButton.visibility = View.GONE
         setAlarmButton.setOnClickListener {
-            saveSchedule()
+            validate()
         }
 
         layoutDatePicker = LayoutDatePicker(context, findViewById(R.id.layout_date_picker)){ start,end ->
@@ -193,7 +194,7 @@ class HomeActivity : AppCompatActivity() {
         dialog.show(supportFragmentManager, "dialog edit description")
     }
 
-    private fun saveSchedule(){
+    private fun validate(){
         if (scheduleModel == null){
             return
         }
@@ -202,7 +203,19 @@ class HomeActivity : AppCompatActivity() {
             return
         }
 
-        val scheduleViewModel = ViewModelProvider(context as ViewModelStoreOwner).get(ScheduleViewModel::class.java)
+        scheduleViewModel.getAllExistingSchedule(scheduleModel!!.startDate!!, scheduleModel!!.endDate!!, object : MutableLiveData<List<ScheduleModel>>() {
+            override fun setValue(value: List<ScheduleModel>) {
+                super.setValue(value)
+                if ( ! value.isEmpty()){
+                    Toast.makeText(context, "Invalid date range!", Toast.LENGTH_SHORT).show()
+                    return
+                }
+                saveSchedule()
+            }
+        })
+    }
+
+    private fun saveSchedule(){
         scheduleViewModel.add(scheduleModel!!, object : MutableLiveData<Long>() {
             override fun setValue(value: Long) {
                 super.setValue(value)
@@ -213,10 +226,9 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun saveDetailSchedule(scheduleId : Long){
-
         if (morningTime != null){
             morningTime!!.scheduleID = scheduleId
-            ViewModelProvider(context as ViewModelStoreOwner).get(DetailScheduleViewModel::class.java).add(morningTime!!, object : MutableLiveData<Long>() {
+            detailScheduleViewModel.add(morningTime!!, object : MutableLiveData<Long>() {
                 override fun setValue(value: Long) {
                     super.setValue(value)
                     Log.e("morning", "id : ${value}")
@@ -226,7 +238,7 @@ class HomeActivity : AppCompatActivity() {
         }
         if (afternoonTime != null){
             afternoonTime!!.scheduleID = scheduleId
-            ViewModelProvider(context as ViewModelStoreOwner).get(DetailScheduleViewModel::class.java).add(afternoonTime!!, object : MutableLiveData<Long>() {
+            detailScheduleViewModel.add(afternoonTime!!, object : MutableLiveData<Long>() {
                 override fun setValue(value: Long) {
                     super.setValue(value)
                     Log.e("afternoon", "id : ${value}")
@@ -236,7 +248,7 @@ class HomeActivity : AppCompatActivity() {
         }
         if (nightTime != null){
             nightTime!!.scheduleID = scheduleId
-            ViewModelProvider(context as ViewModelStoreOwner).get(DetailScheduleViewModel::class.java).add(nightTime!!, object : MutableLiveData<Long>() {
+            detailScheduleViewModel.add(nightTime!!, object : MutableLiveData<Long>() {
                 override fun setValue(value: Long) {
                     super.setValue(value)
                     Log.e("night", "id : ${value}")

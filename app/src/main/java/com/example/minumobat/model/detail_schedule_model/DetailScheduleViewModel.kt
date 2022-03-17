@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.minumobat.repository.detail_schedule.DetailScheduleRepository
 import androidx.lifecycle.viewModelScope
+import com.example.minumobat.model.schedule_model.ScheduleModel
 import kotlinx.coroutines.launch
 
 class DetailScheduleViewModel : AndroidViewModel {
@@ -15,8 +16,10 @@ class DetailScheduleViewModel : AndroidViewModel {
         repository = DetailScheduleRepository(application)
     }
 
-    fun getAllByScheduleId(scheduleId : Int): LiveData<List<DetailScheduleModel>>{
-        return repository.getAllByScheduleId(scheduleId)
+    fun getAllByScheduleId(scheduleId : Int, result : MutableLiveData<List<DetailScheduleModel>>) {
+        viewModelScope.launch {
+            result.value = repository.getAllByScheduleId(scheduleId)
+        }
     }
 
     fun add(c: DetailScheduleModel, result : MutableLiveData<Long>){

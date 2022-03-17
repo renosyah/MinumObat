@@ -16,8 +16,16 @@ class ScheduleViewModel : AndroidViewModel {
         repository = ScheduleRepository(application)
     }
 
-    fun getAllByCurrentDate(now: Date): LiveData<List<ScheduleModel>> {
-        return repository.getAllByCurrentDate(now)
+    fun getAllByCurrentDate(now: Date, result: MutableLiveData<List<ScheduleModel>>) {
+        viewModelScope.launch {
+            result.value = repository.getAllByCurrentDate(now)
+        }
+    }
+
+    fun getAllExistingSchedule(start: Date, end: Date, result: MutableLiveData<List<ScheduleModel>>) {
+        viewModelScope.launch {
+            result.value = repository.getAllExistingSchedule(start, end)
+        }
     }
 
     fun add(c: ScheduleModel, result : MutableLiveData<Long>){
