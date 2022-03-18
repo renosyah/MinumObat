@@ -19,7 +19,7 @@ class Utils {
 
         fun MORNING_RANGE_START() : Time {
             val cal = Calendar.getInstance()
-            cal.set(Calendar.HOUR_OF_DAY,1)
+            cal.set(Calendar.HOUR_OF_DAY,0)
             cal.set(Calendar.MINUTE,1)
             cal.set(Calendar.SECOND,0)
             return Time(cal.time.time)

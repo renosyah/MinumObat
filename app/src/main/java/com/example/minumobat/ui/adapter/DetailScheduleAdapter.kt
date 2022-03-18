@@ -35,14 +35,14 @@ class DetailScheduleAdapter : RecyclerView.Adapter<DetailScheduleAdapter.Holder>
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val item = list.get(position)
-        val current = TimeModel(item.hour, item.minute, 0, item.mode)
+        val current = TimeModel.fromTime(item.time)
         holder.layout.setBackgroundResource(
             if (Utils.isBetween(item.name, current)) R.drawable.detail_shcedule_adapter_border_shape_selected
             else R.drawable.detail_shcedule_adapter_border_shape)
 
         holder.name.text = item.name
-        holder.time.text = TimeModel(item.hour, item.minute, 0, item.mode).toString()
-        holder.mode.text = item.mode
+        holder.time.text = current.toString()
+        holder.mode.text = current.mode
         holder.description.text = item.description
         holder.switch.isChecked = (item.status == DetailScheduleModel.STATUS_ON)
 

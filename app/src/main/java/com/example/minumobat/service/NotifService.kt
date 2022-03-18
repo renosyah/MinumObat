@@ -65,6 +65,7 @@ class NotifService : LifecycleService() {
                 if (intent == null){
                     return
                 }
+
                 if (intent.action == Intent.ACTION_TIME_TICK){
                     val now = Date(Calendar.getInstance().time.time)
                     scheduleViewModel.getAllByCurrentDate(now,object : MutableLiveData<List<ScheduleModel>>() {
@@ -86,38 +87,34 @@ class NotifService : LifecycleService() {
                             }
 
                             for (i in value){
-                                if (i.status == DetailScheduleModel.STATUS_OFF){
-                                    continue
-                                }
+                                if (i.status == DetailScheduleModel.STATUS_OFF) continue
+                                if (i.time == null) continue
 
                                 // before 60 minute
-                                var comparer = TimeModel(i.hour,i.minute,0,i.mode).parseToTime()
                                 var currrentTime = getCurrentTime(60)
-                                Log.e("60 minute", "${comparer} ${currrentTime}")
+                                Log.e("60 minute", "${i.time} ${currrentTime}")
 
-                                if (isMatch(comparer,currrentTime)){
-                                    sendNotification(context, context.getString(R.string.six_ten_minute), TimeModel(i.hour,i.minute,0,i.mode).toString())
+                                if (isMatch(i.time!!,currrentTime)){
+                                    sendNotification(context, context.getString(R.string.six_ten_minute), TimeModel.fromTime(i.time).toString())
                                     return
                                 }
 
                                 // before 15 minute
-                                comparer = TimeModel(i.hour,i.minute,0,i.mode).parseToTime()
                                 currrentTime = getCurrentTime(15)
-                                Log.e("15 minute", "${comparer} ${currrentTime}")
+                                Log.e("15 minute", "${i.time} ${currrentTime}")
 
-                                if (isMatch(comparer,currrentTime)){
-                                    sendNotification(context,context.getString(R.string.five_ten_minute), TimeModel(i.hour,i.minute,0,i.mode).toString())
+                                if (isMatch(i.time!!,currrentTime)){
+                                    sendNotification(context,context.getString(R.string.five_ten_minute), TimeModel.fromTime(i.time).toString())
                                     return
                                 }
 
                                 // 0 minute
-                                comparer = TimeModel(i.hour,i.minute,0,i.mode).parseToTime()
                                 currrentTime = getCurrentTime(0)
-                                Log.e("on time", "${comparer} ${currrentTime}")
+                                Log.e("on time", "${i.time} ${currrentTime}")
                                 Log.e("----", "----")
 
-                                if (isMatch(comparer,currrentTime)){
-                                    sendNotification(context, i.description, TimeModel(i.hour,i.minute,0,i.mode).toString())
+                                if (isMatch(i.time!!,currrentTime)){
+                                    sendNotification(context, i.description, TimeModel.fromTime(i.time).toString())
                                     return
                                 }
                             }

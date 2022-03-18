@@ -47,6 +47,42 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginTop="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/nunitos_sans_regular"
+                android:gravity="center|left"
+                android:text="@string/edit_doctor_name"
+                android:textColor="@color/mainAppText"
+                android:textSize="22sp" />
+
+            <EditText
+                android:id="@+id/doctor_name_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rounded_edittext"
+                android:ems="10"
+                android:gravity="top"
+                android:inputType="textPersonName"
+                android:maxLength="12"
+                android:minHeight="40dp"
+                android:padding="10dp"
+                android:textColor="@color/textColorUnreach"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -74,7 +110,7 @@
                 android:gravity="top"
                 android:inputType="number"
                 android:maxLength="12"
-                android:minHeight="80dp"
+                android:minHeight="40dp"
                 android:padding="10dp"
                 android:textColor="@color/textColorUnreach"
                 tools:ignore="SpeakableTextPresentCheck" />
@@ -97,7 +133,7 @@
                 android:layout_width="120dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -120,14 +156,14 @@
             <FrameLayout
                 android:layout_width="20dp"
                 android:layout_height="50dp"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <FrameLayout
                 android:id="@+id/add_button"
                 android:layout_width="120dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="match_parent"

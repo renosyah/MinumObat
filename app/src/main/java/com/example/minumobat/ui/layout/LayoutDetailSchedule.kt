@@ -27,10 +27,9 @@ class LayoutDetailSchedule {
     lateinit var layoutTimePickerView : View
     lateinit var layoutTimePicker : LayoutTimePicker
 
-    var descriptionText : String = ""
-    var phoneNumberText : String = ""
+    constructor(c: Context, id : Int, v : View, image : Int, text : String, rangeHour : ArrayList<Int>, onScroll : (TimeModel) -> Unit, onDescriptionClick : (Int) -> Unit)  {
 
-    constructor(c: Context, v : View, image : Int, text : String, rangeHour : ArrayList<Int>, onScroll : (TimeModel) -> Unit, onDescriptionClick : (Int) -> Unit)  {
+        this.layoutID = id
 
         this.imageTime = v.findViewById(R.id.image_time)
         this.imageTime.setImageResource(image)
@@ -68,9 +67,8 @@ class LayoutDetailSchedule {
     }
 
     fun setDescription(text : String){
-        this.descriptionText = text
-        this.layoutTimePicker.descriptionButton.text = this.descriptionText
-        this.textTime.text = this.descriptionText
+        this.layoutTimePicker.descriptionButton.text = text
+        this.textTime.text = text
     }
 
     private fun toggleLayoutTimePicker(){

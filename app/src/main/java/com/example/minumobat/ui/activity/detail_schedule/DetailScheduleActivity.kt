@@ -68,19 +68,20 @@ class DetailScheduleActivity : AppCompatActivity() {
         detailScheduleModel = intent.getSerializableExtra("detail_schedule") as DetailScheduleModel
         nextDetailScheduleModel = intent.getSerializableExtra("next_detail_schedule") as DetailScheduleModel
 
+        val current = TimeModel.fromTime(detailScheduleModel.time)
         time = findViewById(R.id.time)
-        time.text = TimeModel(detailScheduleModel.hour,detailScheduleModel.minute, 0 ,detailScheduleModel.mode).toString()
+        time.text = current.toString()
 
         mode = findViewById(R.id.mode)
-        mode.text = " ${detailScheduleModel.mode}"
+        mode.text = current.mode
+
+        val nextCurrent = TimeModel.fromTime(nextDetailScheduleModel.time)
 
         nextTime = findViewById(R.id.next_schedule_time)
-        nextTime.text = TimeModel(nextDetailScheduleModel.hour,nextDetailScheduleModel.minute, 0 ,nextDetailScheduleModel.mode).toString()
+        nextTime.text = nextCurrent.toString()
 
         nextMode = findViewById(R.id.next_schedule_mode)
-        nextMode.text = " ${nextDetailScheduleModel.mode}"
-
-        val current = TimeModel(nextDetailScheduleModel.hour, nextDetailScheduleModel.minute, 0, nextDetailScheduleModel.mode)
+        nextMode.text = nextCurrent.mode
 
         nextScheduleSwitch = findViewById(R.id.next_schedule_switch)
         nextScheduleSwitch.isChecked = (nextDetailScheduleModel.status == DetailScheduleModel.STATUS_ON)
@@ -100,13 +101,11 @@ class DetailScheduleActivity : AppCompatActivity() {
         description.text = detailScheduleModel.description
 
         emergencyNumber = findViewById(R.id.phone_number_emergency)
-        emergencyNumber.text = detailScheduleModel.emergencyNumber
+        emergencyNumber.text = "${detailScheduleModel.name} ${detailScheduleModel.emergencyNumber}"
         emergencyNumber.setOnClickListener {
             startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:${detailScheduleModel.emergencyNumber}")))
         }
     }
-
-
 
     private fun checkSwitch(item : DetailScheduleModel, current : TimeModel){
         val check = (item.status == DetailScheduleModel.STATUS_ON)

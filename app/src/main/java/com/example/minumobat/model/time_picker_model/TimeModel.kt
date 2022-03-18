@@ -1,36 +1,48 @@
 package com.example.minumobat.model.time_picker_model
 
-import java.sql.Date
+
 import java.sql.Time
-import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
 
 class TimeModel(var hour: Int = 0,var minute : Int = 0,var second : Int = 0,var mode : String = AM){
     companion object {
         val AM = "AM"
         val PM = "PM"
+
+        fun fromTime(time : Time?) : TimeModel{
+            if (time == null) return TimeModel(0,0,0,"")
+            val cal = Calendar.getInstance()
+            cal.time = time
+            return TimeModel(
+                cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE), 0 ,
+                if (cal.get(Calendar.AM_PM) == Calendar.AM) TimeModel.AM else TimeModel.PM
+            )
+        }
     }
 
     override fun toString() : String {
-        return "${String.format("%02d",hour)}:${String.format("%02d",minute)}"
+        return "${String.format("%02d",this.hour)}:${String.format("%02d",this.minute)}"
     }
 
     fun toStringWithPmAm() : String {
-        return "${String.format("%02d",hour)}:${String.format("%02d",minute)}:00 ${mode}"
+        return "${String.format("%02d",this.hour)}:${String.format("%02d",this.minute)}:00 ${this.mode}"
     }
 
     fun parseToTime() : Time {
         val cal = Calendar.getInstance()
-        cal.set(Calendar.HOUR,hour)
-        cal.set(Calendar.MINUTE,minute)
-        cal.set(Calendar.SECOND,second)
-        cal.set(Calendar.AM_PM,if (mode == AM) Calendar.AM else Calendar.PM)
+        cal.set(Calendar.HOUR,this.hour)
+        cal.set(Calendar.MINUTE,this.minute)
+        cal.set(Calendar.SECOND,this.second)
+        cal.set(Calendar.AM_PM,if (this.mode == AM) Calendar.AM else Calendar.PM)
         return Time(cal.time.time)
     }
 
+
+
+
     fun duplicate() : TimeModel {
         return TimeModel(
-            hour, minute, second, mode
+            this.hour, this.minute, this.second, this.mode
         )
     }
 }
