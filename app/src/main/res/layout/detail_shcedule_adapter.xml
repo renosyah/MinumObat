@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_margin="10dp"
+    android:layout_margin="5dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/adapter_layout"
     android:layout_width="180dp"
     android:layout_height="270dp"
-    android:background="@drawable/detail_shcedule_adapter_border_shape"
+    android:background="@drawable/detail_shcedule_adapter_border_shape_selected"
     android:orientation="vertical"
     android:paddingLeft="12dp"
     android:paddingRight="12dp">
@@ -20,10 +20,10 @@
             android:id="@+id/detail_schedule_switch"
             android:layout_width="match_parent"
             android:layout_height="48dp"
+            android:checked="true"
             android:layout_gravity="right|center"
-            android:thumb="@drawable/switch_rounded_thumb"
-            app:thumbTint="@color/darkModeSwitchThumbColor"
-            app:track="@drawable/switch_rounded_track" />
+            android:thumb="@drawable/switch_rounded_thumb_enable"
+            app:track="@drawable/switch_rounded_track_enable_selected" />
 
         <LinearLayout
             android:layout_width="match_parent"

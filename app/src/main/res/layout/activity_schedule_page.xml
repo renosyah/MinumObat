@@ -18,14 +18,16 @@
         android:layout_marginRight="165dp"
         android:layout_marginBottom="45dp"
         android:fontFamily="@font/nunitos_sans_extra_bold"
+        android:textStyle="bold"
         android:text="@string/schedule_page_title"
         android:textColor="@color/mainAppText"
-        android:textSize="28sp" />
+        android:textSize="32sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/detail_schedule_recycleview"
         android:clipToPadding="false"
         android:paddingStart="28dp"
+        android:paddingEnd="45dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

@@ -9,7 +9,13 @@
         <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable-night/button_border.xml" value="0.3828125" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable-night/button_border_reverse.xml" value="0.3828125" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable-night/rounded_edittext.xml" value="0.3828125" />
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable-night/switch_rounded_thumb_disable.xml" value="0.3769230769230769" />
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable-night/switch_rounded_thumb_enable.xml" value="0.3769230769230769" />
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable-night/switch_rounded_thumb_enable_selected.xml" value="0.3769230769230769" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable-night/switch_rounded_track.xml" value="0.3828125" />
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable-night/switch_rounded_track_disable.xml" value="0.3769230769230769" />
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable-night/switch_rounded_track_enable.xml" value="0.3769230769230769" />
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable-night/switch_rounded_track_enable_selected.xml" value="0.3769230769230769" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable-v24/switch_rounded_thumb.xml" value="0.3828125" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/bell_ring_1.xml" value="0.29074074074074074" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/bell_ring_animation.xml" value="0.3828125" />
@@ -26,7 +32,14 @@
         <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/rounded_edittext.xml" value="0.3828125" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/rounded_shape.xml" value="0.3828125" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/switch_rounded_thumb.xml" value="0.3828125" />
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/switch_rounded_thumb_disable.xml" value="0.3769230769230769" />
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/switch_rounded_thumb_enable.xml" value="0.3769230769230769" />
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/switch_rounded_thumb_enable_selected.xml" value="0.3769230769230769" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/switch_rounded_track.xml" value="0.3828125" />
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/switch_rounded_track_disable.xml" value="0.3769230769230769" />
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/switch_rounded_track_disable_selected.xml" value="0.3769230769230769" />
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/switch_rounded_track_enable.xml" value="0.3769230769230769" />
+        <entry key="..\:/project/android/MinumObat/app/src/main/res/drawable/switch_rounded_track_enable_selected.xml" value="0.3769230769230769" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/layout/activity_home.xml" value="0.3523550724637681" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/project/android/MinumObat/app/src/main/res/layout/activity_notification_splash.xml" value="0.35260416666666666" />

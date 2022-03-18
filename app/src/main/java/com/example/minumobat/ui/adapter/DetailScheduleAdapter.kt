@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.minumobat.R
 import com.example.minumobat.model.detail_schedule_model.DetailScheduleModel
@@ -41,12 +42,39 @@ class DetailScheduleAdapter : RecyclerView.Adapter<DetailScheduleAdapter.Holder>
         holder.time.text = TimeModel(item.hour, item.minute, 0, item.mode).toString()
         holder.mode.text = item.mode
         holder.description.text = item.description
+        holder.switch.isChecked = (item.status == DetailScheduleModel.STATUS_ON)
 
-        holder.switch.isChecked = (item.status == DetailScheduleModel.STATUS_OFF)
         holder.switch.setOnCheckedChangeListener {compoundButton, b ->
-            item.status = if (item.status == DetailScheduleModel.STATUS_OFF) DetailScheduleModel.STATUS_ON else DetailScheduleModel.STATUS_OFF
+            item.status = if (b) DetailScheduleModel.STATUS_ON else DetailScheduleModel.STATUS_OFF
+            checkSwitch(holder, item, current)
             onClick.invoke(item, position)
         }
+
+        checkSwitch(holder, item, current)
+    }
+
+    private fun checkSwitch(holder: Holder, item : DetailScheduleModel, current : TimeModel){
+        val check = (item.status == DetailScheduleModel.STATUS_ON)
+
+        var thumbDrawable = ContextCompat.getDrawable(context,R.drawable.switch_rounded_thumb_disable)
+        var trackDrawable = ContextCompat.getDrawable(context, R.drawable.switch_rounded_track_disable)
+
+        if (Utils.isBetween(item.name, current)){
+            if (check) {
+                thumbDrawable = ContextCompat.getDrawable(context,R.drawable.switch_rounded_thumb_enable_selected)
+                trackDrawable = ContextCompat.getDrawable(context, R.drawable.switch_rounded_track_enable_selected)
+            }
+
+        } else {
+            if (check) {
+                thumbDrawable = ContextCompat.getDrawable(context,R.drawable.switch_rounded_thumb_enable)
+                trackDrawable = ContextCompat.getDrawable(context, R.drawable.switch_rounded_track_enable)
+            }
+
+        }
+
+        holder.switch.thumbDrawable = thumbDrawable
+        holder.switch.trackDrawable = trackDrawable
     }
 
     override fun getItemCount(): Int {

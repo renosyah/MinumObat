@@ -20,7 +20,12 @@ class TimeModel(var hour: Int = 0,var minute : Int = 0,var second : Int = 0,var 
     }
 
     fun parseToTime() : Time {
-        return Time(SimpleDateFormat("KK:mm:ss a").parse(toStringWithPmAm()).time)
+        val cal = Calendar.getInstance()
+        cal.set(Calendar.HOUR,hour)
+        cal.set(Calendar.MINUTE,minute)
+        cal.set(Calendar.SECOND,second)
+        cal.set(Calendar.AM_PM,if (mode == AM) Calendar.AM else Calendar.PM)
+        return Time(cal.time.time)
     }
 
     fun duplicate() : TimeModel {

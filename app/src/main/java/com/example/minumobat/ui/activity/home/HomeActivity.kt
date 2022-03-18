@@ -83,7 +83,7 @@ class HomeActivity : AppCompatActivity() {
     private fun initWidget(){
         context = this@HomeActivity
 
-        //checkService(context)
+        checkService(context)
 
         scheduleViewModel = ViewModelProvider(context as ViewModelStoreOwner).get(ScheduleViewModel::class.java)
         detailScheduleViewModel = ViewModelProvider(context as ViewModelStoreOwner).get(DetailScheduleViewModel::class.java)

@@ -27,6 +27,7 @@ import com.example.minumobat.model.schedule_model.ScheduleModel
 import com.example.minumobat.model.schedule_model.ScheduleViewModel
 import com.example.minumobat.model.time_picker_model.TimeModel
 import java.sql.Date
+import java.sql.Time
 import java.util.Calendar
 
 class NotifService : LifecycleService() {
@@ -85,28 +86,37 @@ class NotifService : LifecycleService() {
                             }
 
                             for (i in value){
-                                // before 60 minute
-                                var comparer = TimeModel(i.hour,i.minute,0,i.mode).toStringWithPmAm()
-                                var currrentTime = calendarTimeToTimeModel(getCurrentTime(60)).toStringWithPmAm()
-                                Log.e("query detail", "${comparer} ${currrentTime}")
+                                if (i.status == DetailScheduleModel.STATUS_OFF){
+                                    continue
+                                }
 
-                                if (comparer == currrentTime){
+                                // before 60 minute
+                                var comparer = TimeModel(i.hour,i.minute,0,i.mode).parseToTime()
+                                var currrentTime = getCurrentTime(60)
+                                Log.e("60 minute", "${comparer} ${currrentTime}")
+
+                                if (isMatch(comparer,currrentTime)){
                                     sendNotification(context, context.getString(R.string.six_ten_minute), TimeModel(i.hour,i.minute,0,i.mode).toString())
                                     return
                                 }
 
                                 // before 15 minute
-                                comparer = TimeModel(i.hour,i.minute,0,i.mode).toStringWithPmAm()
-                                currrentTime = calendarTimeToTimeModel(getCurrentTime(15)).toStringWithPmAm()
-                                if (comparer == currrentTime){
+                                comparer = TimeModel(i.hour,i.minute,0,i.mode).parseToTime()
+                                currrentTime = getCurrentTime(15)
+                                Log.e("15 minute", "${comparer} ${currrentTime}")
+
+                                if (isMatch(comparer,currrentTime)){
                                     sendNotification(context,context.getString(R.string.five_ten_minute), TimeModel(i.hour,i.minute,0,i.mode).toString())
                                     return
                                 }
 
                                 // 0 minute
-                                comparer = TimeModel(i.hour,i.minute,0,i.mode).toStringWithPmAm()
-                                currrentTime = calendarTimeToTimeModel(getCurrentTime(0)).toStringWithPmAm()
-                                if (comparer == currrentTime){
+                                comparer = TimeModel(i.hour,i.minute,0,i.mode).parseToTime()
+                                currrentTime = getCurrentTime(0)
+                                Log.e("on time", "${comparer} ${currrentTime}")
+                                Log.e("----", "----")
+
+                                if (isMatch(comparer,currrentTime)){
                                     sendNotification(context, i.description, TimeModel(i.hour,i.minute,0,i.mode).toString())
                                     return
                                 }
@@ -203,19 +213,14 @@ class NotifService : LifecycleService() {
         notificationManager.notify(id, notificationBuilder.build())
     }
 
-    private fun calendarTimeToTimeModel(current : Calendar) : TimeModel {
-        return TimeModel(
-            current.get(Calendar.HOUR),
-            current.get(Calendar.MINUTE),
-            0,
-            if (current.get(Calendar.AM_PM) == Calendar.PM) TimeModel.PM else TimeModel.AM
-        )
-    }
-
-    private fun getCurrentTime(addMinute : Int):Calendar {
+    private fun getCurrentTime(addMinute : Int) : Time {
         val current = Calendar.getInstance()
         current.add(Calendar.MINUTE, addMinute)
         current.set(Calendar.SECOND, 0)
-        return current
+        return Time(current.time.time)
+    }
+
+    private fun isMatch(t1: Time, t2 : Time) : Boolean {
+        return "$t1" == "$t2"
     }
 }
