@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.example.minumobat.model.schedule_model.ScheduleModel
+import java.io.Serializable
 
 @Entity(
     tableName = "detail_schedule",
@@ -17,7 +18,7 @@ import com.example.minumobat.model.schedule_model.ScheduleModel
     )
 ])
 
-class DetailScheduleModel {
+class DetailScheduleModel : Serializable{
     companion object {
         val STATUS_ON = 1
         val STATUS_OFF = 0
@@ -35,6 +36,9 @@ class DetailScheduleModel {
 
     @ColumnInfo(name = "description")
     var description: String = ""
+
+    @ColumnInfo(name = "emergency_number")
+    var emergencyNumber: String = ""
 
     @ColumnInfo(name = "hour")
     var hour: Int = 0

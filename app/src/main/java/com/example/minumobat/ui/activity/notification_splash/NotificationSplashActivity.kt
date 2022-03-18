@@ -1,22 +1,14 @@
 package com.example.minumobat.ui.activity.notification_splash
 
-import android.content.ClipDescription
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.animation.Animation
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.example.minumobat.R
-import android.media.RingtoneManager
-
-import android.media.Ringtone
-import android.net.Uri
-import com.example.minumobat.ui.activity.home.HomeActivity
 import com.example.minumobat.ui.activity.schedule_page.SchedulePageActivity
-import java.lang.Exception
 import java.util.*
 import kotlin.concurrent.schedule
 

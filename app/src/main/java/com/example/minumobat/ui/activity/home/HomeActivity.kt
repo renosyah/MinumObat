@@ -131,13 +131,14 @@ class HomeActivity : AppCompatActivity() {
 
         layoutMorningDetailSchedule = LayoutDetailSchedule(context,
             findViewById(R.id.morning_detail_schedule),R.drawable.morning, context.getString(R.string.morning), ArrayList<Int>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)), {
-            morningTime = DetailScheduleModel()
-            morningTime!!.name = Utils.NAME_MORNING
-            morningTime!!.description = layoutMorningDetailSchedule.descriptionText
-            morningTime!!.hour = it.hour
-            morningTime!!.minute = it.minute
-            morningTime!!.mode = it.mode
-            morningTime!!.status = DetailScheduleModel.STATUS_ON
+                morningTime = DetailScheduleModel()
+                morningTime!!.name = Utils.NAME_MORNING
+                morningTime!!.description = layoutMorningDetailSchedule.descriptionText
+                morningTime!!.emergencyNumber = layoutMorningDetailSchedule.phoneNumberText
+                morningTime!!.hour = it.hour
+                morningTime!!.minute = it.minute
+                morningTime!!.mode = it.mode
+                morningTime!!.status = DetailScheduleModel.STATUS_ON
 
         }, {
                 displayDescriptionDialogForLayout(it)
@@ -147,13 +148,14 @@ class HomeActivity : AppCompatActivity() {
 
         layoutAfternoonDetailSchedule = LayoutDetailSchedule(context,
             findViewById(R.id.afternoon_detail_schedule),R.drawable.afternoon, context.getString(R.string.afternoon), ArrayList<Int>(Arrays.asList(10, 11, 12, 1, 2, 3)), {
-            afternoonTime = DetailScheduleModel()
-            afternoonTime!!.name = Utils.NAME_AFTERNOON
-            afternoonTime!!.description = layoutAfternoonDetailSchedule.descriptionText
-            afternoonTime!!.hour = it.hour
-            afternoonTime!!.minute = it.minute
-            afternoonTime!!.mode = it.mode
-            afternoonTime!!.status = DetailScheduleModel.STATUS_ON
+                afternoonTime = DetailScheduleModel()
+                afternoonTime!!.name = Utils.NAME_AFTERNOON
+                afternoonTime!!.description = layoutAfternoonDetailSchedule.descriptionText
+                afternoonTime!!.emergencyNumber = layoutAfternoonDetailSchedule.phoneNumberText
+                afternoonTime!!.hour = it.hour
+                afternoonTime!!.minute = it.minute
+                afternoonTime!!.mode = it.mode
+                afternoonTime!!.status = DetailScheduleModel.STATUS_ON
 
         }, {
                 displayDescriptionDialogForLayout(it)
@@ -163,13 +165,14 @@ class HomeActivity : AppCompatActivity() {
 
         layoutNightDetailSchedule = LayoutDetailSchedule(context,
             findViewById(R.id.night_detail_schedule),R.drawable.night, context.getString(R.string.night), ArrayList<Int>(Arrays.asList(3, 4, 5, 6, 7, 8, 9, 10, 11)), {
-            nightTime = DetailScheduleModel()
-            nightTime!!.name = Utils.NAME_NIGHT
-            nightTime!!.description = layoutNightDetailSchedule.descriptionText
-            nightTime!!.hour = it.hour
-            nightTime!!.minute = it.minute
-            nightTime!!.mode = it.mode
-            nightTime!!.status = DetailScheduleModel.STATUS_ON
+                nightTime = DetailScheduleModel()
+                nightTime!!.name = Utils.NAME_NIGHT
+                nightTime!!.description = layoutNightDetailSchedule.descriptionText
+                nightTime!!.emergencyNumber = layoutNightDetailSchedule.phoneNumberText
+                nightTime!!.hour = it.hour
+                nightTime!!.minute = it.minute
+                nightTime!!.mode = it.mode
+                nightTime!!.status = DetailScheduleModel.STATUS_ON
 
         }, {
                 displayDescriptionDialogForLayout(it)
@@ -185,14 +188,29 @@ class HomeActivity : AppCompatActivity() {
                     1 -> {
                         layoutMorningDetailSchedule.phoneNumberText = phoneNumber
                         layoutMorningDetailSchedule.setDescription(description)
+
+                        if (morningTime != null){
+                            morningTime!!.description = description
+                            morningTime!!.emergencyNumber = phoneNumber
+                        }
                     }
                     2 -> {
                         layoutAfternoonDetailSchedule.phoneNumberText = phoneNumber
                         layoutAfternoonDetailSchedule.setDescription(description)
+
+                        if (afternoonTime != null){
+                            afternoonTime!!.description = description
+                            afternoonTime!!.emergencyNumber = phoneNumber
+                        }
                     }
                     3 -> {
                         layoutMorningDetailSchedule.phoneNumberText = phoneNumber
                         layoutNightDetailSchedule.setDescription(description)
+
+                        if (nightTime != null){
+                            nightTime!!.description = description
+                            nightTime!!.emergencyNumber = phoneNumber
+                        }
                     }
                 }
             }

@@ -39,6 +39,7 @@ class DateAdapter : RecyclerView.Adapter<DateAdapter.Holder> {
         holder.textview_day.text =  "${ item.day }"
         setBackgroundColor(holder, if (item.flag_action == DateModel.FLAG_NONE) item.flag else item.flag_action)
 
+        if (item.flag == DateModel.FLAG_NOT_AVALIABLE) return
         holder.layout_background.setOnClickListener {
             onClick.invoke(item, position)
         }

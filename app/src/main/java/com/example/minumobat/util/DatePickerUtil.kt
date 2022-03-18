@@ -37,6 +37,7 @@ class DatePickerUtil {
                        val _td = DateModel(day = i - dayOfWeek, month = d.month , years = d.year)
                        val _nd = DateModel(day = today.dayOfMonth, month = today.monthValue , years = today.year)
                        _td.flag = checkIfDateIsToday(_td,_nd)
+                       //_td.flag = checkIfDateIsPast(_td, _nd)
                        d.days.add(_td)
                    }
                }
@@ -63,6 +64,11 @@ class DatePickerUtil {
 
        private fun checkIfDateIsToday(d : DateModel, today : DateModel) : Int{
            if (d.toString() == today.toString()) return DateModel.FLAG_CURRENT
+           return DateModel.FLAG_UNSELECTED
+       }
+
+       private fun checkIfDateIsPast(d : DateModel, today : DateModel) : Int{
+           if (d.parseToDate().before(today.parseToDate())) return DateModel.FLAG_NOT_AVALIABLE
            return DateModel.FLAG_UNSELECTED
        }
 

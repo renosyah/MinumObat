@@ -20,11 +20,13 @@ class DetailScheduleAdapter : RecyclerView.Adapter<DetailScheduleAdapter.Holder>
     var context: Context
     var list : ArrayList<DetailScheduleModel> = ArrayList()
     var onClick : (DetailScheduleModel, Int) -> Unit
+    var onSwitch : (DetailScheduleModel, Int) -> Unit
 
-    constructor(context: Context, list : ArrayList<DetailScheduleModel>, onClick : (DetailScheduleModel, Int) -> Unit) : super() {
+    constructor(context: Context, list : ArrayList<DetailScheduleModel>, onClick : (DetailScheduleModel, Int) -> Unit, onSwitch : (DetailScheduleModel, Int) -> Unit) : super() {
         this.context = context
         this.list = list
         this.onClick = onClick
+        this.onSwitch = onSwitch
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -47,7 +49,11 @@ class DetailScheduleAdapter : RecyclerView.Adapter<DetailScheduleAdapter.Holder>
         holder.switch.setOnCheckedChangeListener {compoundButton, b ->
             item.status = if (b) DetailScheduleModel.STATUS_ON else DetailScheduleModel.STATUS_OFF
             checkSwitch(holder, item, current)
-            onClick.invoke(item, position)
+            onSwitch.invoke(item, position)
+        }
+
+        holder.layout.setOnClickListener {
+            onClick.invoke(item,position)
         }
 
         checkSwitch(holder, item, current)

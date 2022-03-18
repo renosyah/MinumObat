@@ -12,6 +12,7 @@ class DateModel(var day : Int = 0, var month : Int = 0, var years : Int = 0, var
         val FLAG_SELECTED = 2
         val FLAG_CURRENT = 3
         val FLAG_UNREACH = 4
+        val FLAG_NOT_AVALIABLE = 5
     }
 
     override fun toString() : String{

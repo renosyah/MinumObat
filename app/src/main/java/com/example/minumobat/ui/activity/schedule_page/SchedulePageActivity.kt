@@ -1,12 +1,14 @@
 package com.example.minumobat.ui.activity.schedule_page
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
@@ -16,6 +18,7 @@ import com.example.minumobat.R
 import com.example.minumobat.model.detail_schedule_model.DetailScheduleModel
 import com.example.minumobat.model.detail_schedule_model.DetailScheduleViewModel
 import com.example.minumobat.model.schedule_model.ScheduleModel
+import com.example.minumobat.ui.activity.detail_schedule.DetailScheduleActivity
 import com.example.minumobat.ui.activity.home.HomeActivity
 import com.example.minumobat.ui.adapter.DetailScheduleAdapter
 import com.example.minumobat.util.OnSwipeTouchListener
@@ -57,6 +60,11 @@ class SchedulePageActivity : AppCompatActivity() {
 
         this.detailScheduleRecycleview = findViewById(R.id.detail_schedule_recycleview)
         detailScheduleViewModel = ViewModelProvider(context as ViewModelStoreOwner).get(DetailScheduleViewModel::class.java)
+
+        query()
+    }
+
+    private fun query(){
         detailScheduleViewModel.getAllByCurrentDate(Date(Calendar.getInstance().time.time), object : MutableLiveData<List<DetailScheduleModel>>() {
             override fun setValue(value: List<DetailScheduleModel>) {
                 super.setValue(value)
@@ -68,12 +76,23 @@ class SchedulePageActivity : AppCompatActivity() {
     }
 
     private fun setAdapter(details : ArrayList<DetailScheduleModel>){
-        this.detailScheduleAdapter = DetailScheduleAdapter(context,details){ detail, pos ->
+        this.detailScheduleAdapter = DetailScheduleAdapter(context,details, { detail, pos ->
+            val nextPos = if (pos + 1 > detailScheduleAdapter.list.size - 1) 0 else pos + 1
+            resultLauncher.launch(DetailScheduleActivity.createIntent(context, detail, detailScheduleAdapter.list[nextPos]))
+
+        },{ detail, pos ->
             detailScheduleViewModel.update(detail)
-        }
+        })
         this.detailScheduleRecycleview.adapter = detailScheduleAdapter
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         this.detailScheduleRecycleview.layoutManager = layoutManager
+    }
+
+    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data
+            query()
+        }
     }
 }
 
