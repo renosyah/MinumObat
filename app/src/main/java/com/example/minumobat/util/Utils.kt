@@ -17,6 +17,7 @@ class Utils {
         val NAME_AFTERNOON = "AFTERNOON"
         val NAME_NIGHT = "NIGHT"
 
+        // range waktu pagi
         fun MORNING_RANGE_START() : Time {
             val cal = Calendar.getInstance()
             cal.set(Calendar.HOUR_OF_DAY,0)
@@ -31,6 +32,8 @@ class Utils {
             cal.set(Calendar.SECOND,0)
             return Time(cal.time.time)
         }
+
+        // range waktu siang
         fun AFTERNOON_RANGE_START() : Time {
             val cal = Calendar.getInstance()
             cal.set(Calendar.HOUR_OF_DAY,10)
@@ -45,6 +48,8 @@ class Utils {
             cal.set(Calendar.SECOND,0)
             return Time(cal.time.time)
         }
+
+        // range waktu malam
         fun NIGHT_RANGE_START() : Time {
             val cal = Calendar.getInstance()
             cal.set(Calendar.HOUR_OF_DAY,15)
@@ -60,6 +65,9 @@ class Utils {
             return Time(cal.time.time)
         }
 
+        // fungsi untuk menetukan apakah
+        // waktu berada di dalam range
+        // waktu yang telah di tentukan
         fun isBetween(name : String, current : TimeModel) : Boolean {
             val now = Time(Calendar.getInstance().time.time)
             //Log.e("now", "${now}  ${current.parseToTime()}")
@@ -86,6 +94,9 @@ class Utils {
         val NOTIF_CHANNEL_DES: String = BuildConfig.APPLICATION_ID.toString() + "_NOTIFICATION_DES"
         val importance = NotificationManager.IMPORTANCE_HIGH
 
+        // fungsi untuk mengecheck
+        // pakah sercive app sedang berjalan
+        // atau terhenti
         fun isMyServiceRunning(c: Context, s: Class<*>): Boolean {
             val manager = (c.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager)
             for (service in manager.getRunningServices(Int.MAX_VALUE)) {

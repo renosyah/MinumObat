@@ -6,9 +6,11 @@ import android.view.View
 import android.view.GestureDetector
 import java.lang.Exception
 
+// kelas untuk deteksi gesture
+// implementasi di menu saat slide keatas
+// untuk buka menu home
 class OnSwipeTouchListener : View.OnTouchListener {
     lateinit var gestureDetector: GestureDetector
-
     constructor(ctx: Context,onSwipeTop : () -> Unit) {
         gestureDetector = GestureDetector(ctx, GestureListener(onSwipeTop))
     }
@@ -19,10 +21,7 @@ class OnSwipeTouchListener : View.OnTouchListener {
         private val SWIPE_THRESHOLD = 100
         private val SWIPE_VELOCITY_THRESHOLD = 100
 
-
-        override fun onDown(e: MotionEvent?): Boolean {
-            return true
-        }
+        override fun onDown(e: MotionEvent?): Boolean { return true }
 
         override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
             var result = false

@@ -12,6 +12,8 @@ import java.time.YearMonth
 @RequiresApi(Build.VERSION_CODES.O)
 class DatePickerUtil {
    companion object {
+
+       // funsi untuk menampilkan tanggal kalender
        fun setDateToNow(selectedDate: LocalDate): DatePickerModel {
            val d = DatePickerModel()
            val today = LocalDate.now()
@@ -50,7 +52,6 @@ class DatePickerUtil {
                    pos--
                }
            }
-
            val nextMonth = getDateFromMonth(selectedDate.plusMonths(1))
            pos = 0
            for (i in 0 until d.days.size){
@@ -62,19 +63,25 @@ class DatePickerUtil {
            return d
        }
 
+       // fungsi komparasi untuk
+       // menentukan apakah tanggal itu hari ini
        private fun checkIfDateIsToday(d : DateModel, today : DateModel) : Int{
            if (d.toString() == today.toString()) return DateModel.FLAG_CURRENT
            return DateModel.FLAG_UNSELECTED
        }
 
+       // fungsi komparasi untuk
+       // menentukan apakah tanggal telah lewat
        private fun checkIfDateIsPast(d : DateModel, today : DateModel) : Int{
            if (d.parseToDate().before(today.parseToDate())) return DateModel.FLAG_NOT_AVALIABLE
            return DateModel.FLAG_UNSELECTED
        }
 
+       // fungsi komparasi untuk
+       // mendapatkan tangal dari
+       // bulan yang telah di set
        private fun getDateFromMonth(date: LocalDate): ArrayList<Int>{
            val arr = ArrayList<Int>()
-
            val yearMonth: YearMonth = YearMonth.from(date)
            val daysInMonth: Int = yearMonth.lengthOfMonth()
            val firstOfMonth: LocalDate = date.withDayOfMonth(1)
@@ -90,6 +97,8 @@ class DatePickerUtil {
            return  arr
        }
 
+       // fungsi komparasi untuk
+       // mendapatkan nama bulan
        fun getMonthName(ctx : Context, month: Int): String? {
            return when (month) {
                0 -> ctx.getString(R.string.january)

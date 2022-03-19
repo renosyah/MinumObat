@@ -5,6 +5,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
 
+// class untuk format tanggal
 class DateModel(var day : Int = 0, var month : Int = 0, var years : Int = 0, var flag : Int = FLAG_UNSELECTED, var flag_action : Int = FLAG_NONE){
     companion object {
         val FLAG_NONE = 0
@@ -15,20 +16,24 @@ class DateModel(var day : Int = 0, var month : Int = 0, var years : Int = 0, var
         val FLAG_NOT_AVALIABLE = 5
     }
 
+    // koneversi ke string
     override fun toString() : String{
         return "${String.format("%02d",day)}/${String.format("%02d",month)}/${years}"
     }
 
+    // jika tanggal kosong
     fun isEmpty() : Boolean {
         return day == 0 && month == 0 && years == 0
     }
 
+    // duplikasi instance
     fun duplicate() : DateModel {
         return  DateModel(
             day, month, years, flag, flag_action
         )
     }
 
+    // fungsi untuk parsing ke bentuk sql Date
     fun parseToDate() : Date{
         val cal: Calendar = Calendar.getInstance()
         cal.set(Calendar.YEAR, this.years)
@@ -37,6 +42,9 @@ class DateModel(var day : Int = 0, var month : Int = 0, var years : Int = 0, var
         return Date(cal.time.time)
     }
 
+    // fungsi komparasi untuk menentukan
+    // apakah kurang dari tanggal
+    // inputan di parameter fungsi
     fun isMoreOrEqualThan(date : DateModel) : Boolean {
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val firstDate= LocalDate.parse(date.toString(), formatter)
@@ -44,6 +52,9 @@ class DateModel(var day : Int = 0, var month : Int = 0, var years : Int = 0, var
         return secondDate >= firstDate
     }
 
+    // fungsi komparasi untuk menentukan
+    // apakah lebih dari tanggal
+    // inputan di parameter fungsi
     fun isLessOrEqualThan(date : DateModel) : Boolean {
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val firstDate= LocalDate.parse(date.toString(), formatter)

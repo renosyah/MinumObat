@@ -30,8 +30,11 @@ import java.sql.Date
 import java.sql.Time
 import java.util.Calendar
 
+// kelas notfikasi service
+// adalah kelas service yang akan berjalan
+// pararel dengan aplikasi
+// namun tidak satu proses
 class NotifService : LifecycleService() {
-
     companion object {
         val ACTION_CHANGE_TIME_SCHEDULE_FOR_NOTIFICATION = "android.intent.action.ACTION_EXPIRED_CHANGE_TIME_SCHEDULE_FOR_NOTIFICATION"
     }
@@ -44,62 +47,73 @@ class NotifService : LifecycleService() {
     lateinit var scheduleViewModel: ScheduleViewModel
     lateinit var detailScheduleViewModel : DetailScheduleViewModel
 
+    // fungsi pada saat
+    // instance service
+    // dibuat
     override fun onCreate() {
         super.onCreate()
 
+        // inisalisasi intance
         context = this@NotifService
         lifecycleOwner = this@NotifService
-
         detailScheduleViewModel = DetailScheduleViewModel(application)
         scheduleViewModel = ScheduleViewModel(application)
 
+        // mulai foreground service
+        // jika setting project ENABLE_FOREGROUND di set true
         if (BuildConfig.ENABLE_FOREGROUND) {
             startForeground()
         }
 
+        // tambahkan intent filter
+        // yang mana : intent untuk setiap menit berganti
         s_intentFilter.addAction(ACTION_CHANGE_TIME_SCHEDULE_FOR_NOTIFICATION)
         s_intentFilter.addAction(Intent.ACTION_TIME_TICK)
 
+        // inisialisasi broadcast receiver
+        // untuk menghandle setiap menit yang berganti
         timeChangedReceiver = object : BroadcastReceiver() {
             override fun onReceive(p0: Context, intent: Intent?) {
                 if (intent == null){
                     return
                 }
 
+                // jika perintah adalah menit yang berganti
                 if (intent.action == Intent.ACTION_TIME_TICK){
                     val now = Date(Calendar.getInstance().time.time)
-                    scheduleViewModel.getAllByCurrentDate(now,object : MutableLiveData<List<ScheduleModel>>() {
-                        override fun setValue(value: List<ScheduleModel>) {
-                            super.setValue(value)
-                            for (i in value){
-                                Log.e("query schedule", "$now ${i.startDate}-${i.endDate}")
-                                Log.e("----", "----")
-                            }
 
-                        }
-                    })
-                    // query schedule by current date
+                    // query schedule dengan tanggal saat ini
                     detailScheduleViewModel.getAllByCurrentDate(now, object : MutableLiveData<List<DetailScheduleModel>>() {
                         override fun setValue(value: List<DetailScheduleModel>) {
                             super.setValue(value)
+
+                            // stop jika data kosong
                             if (value.isEmpty()){
                                 return
                             }
 
+                            // iterasi dengan loop untuk
+                            // setiap data yang berhasil di query
                             for (i in value){
-                                if (i.status == DetailScheduleModel.STATUS_OFF) continue
-                                if (i.time == null) continue
+                                // jika status di off atau waktu tidak valid
+                                // lanjutkan ke iterasi selanjutnya
+                                if (i.status == DetailScheduleModel.STATUS_OFF || i.time == null) continue
 
                                 // before 60 minute
                                 var currrentTime = getCurrentTime(60)
                                 Log.e("60 minute", "${i.time} ${currrentTime}")
 
+                                // jika sesuai waktu sekarang + 60 menit
+                                // apakah sesai dengan waktu yang ingin dinotif
+                                // kirimkan notifikasi
                                 if (isMatch(i.time!!,currrentTime)){
                                     sendNotification(context, context.getString(R.string.six_ten_minute), TimeModel.fromTime(i.time).toString())
                                     return
                                 }
 
-                                // before 15 minute
+                                // jika sesuai waktu sekarang + 15 menit
+                                // apakah sesai dengan waktu yang ingin dinotif
+                                // kirimkan notifikasi
                                 currrentTime = getCurrentTime(15)
                                 Log.e("15 minute", "${i.time} ${currrentTime}")
 
@@ -108,7 +122,9 @@ class NotifService : LifecycleService() {
                                     return
                                 }
 
-                                // 0 minute
+                                // jika sesuai waktu sekarang
+                                // apakah sesai dengan waktu yang ingin dinotif
+                                // kirimkan notifikasi
                                 currrentTime = getCurrentTime(0)
                                 Log.e("on time", "${i.time} ${currrentTime}")
                                 Log.e("----", "----")
@@ -123,9 +139,15 @@ class NotifService : LifecycleService() {
                 }
             }
         }
+
+        // registrasi broadcast receiver
         registerReceiver(timeChangedReceiver, s_intentFilter)
     }
 
+    // fungsi untuk menghandle saat service
+    // dimulai, dan mngeset status dan kelakuan service
+    // dalam kasus ini, service akan dibiarkan menyala
+    // selama aplikasi tidak di stop oleh user
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
         if (timeChangedReceiver != null){
@@ -134,6 +156,8 @@ class NotifService : LifecycleService() {
         return START_STICKY
     }
 
+    // pada saat service dihancurkan
+    // hilangkan registrasi broadcast receiver
     override fun onDestroy() {
         super.onDestroy()
         try {
@@ -143,11 +167,16 @@ class NotifService : LifecycleService() {
         }
     }
 
+    // saat ini tidak digunakan
+    // karna service independen dari
+    // aplikasi
     override fun onBind(intent: Intent): IBinder? {
         super.onBind(intent)
         return null
     }
 
+    // pada saat aplikasi di swipe
+    // restart service
     override fun onTaskRemoved(rootIntent: Intent?) {
         super.onTaskRemoved(rootIntent)
         try {
@@ -163,6 +192,11 @@ class NotifService : LifecycleService() {
 
     private val ONGOING_NOTIFICATION_ID: Int = Random(System.currentTimeMillis()).nextInt(100)
 
+    // fungsi untuk menampilkan notifikasi
+    // foreground service
+    // yang mana akan muncul notifkasi yang tidak bisa
+    // dihilangkan, tujuan untuj memberi tau user
+    // app sedang berjalan
     private fun startForeground() {
         val channel = NotificationChannel(
             NOTIF_CHANNEL_ID.toString() + "_FOREGROUND",
@@ -185,6 +219,9 @@ class NotifService : LifecycleService() {
         }
     }
 
+    // fungsi untuk memunculkan notifikasi
+    // yang mana saat dilik akan diarahkan
+    // ke halama splash notifikasi
     private fun sendNotification(ctx : Context, description : String, time : String) {
         val mapIntent = NotificationSplashActivity.createIntent(ctx, description, time)
         mapIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -210,6 +247,8 @@ class NotifService : LifecycleService() {
         notificationManager.notify(id, notificationBuilder.build())
     }
 
+    // fungsi untuk mendapatkan waktu saat ini
+    // tampa detik dan mili detik
     private fun getCurrentTime(addMinute : Int) : Time {
         val current = Calendar.getInstance()
         current.add(Calendar.MINUTE, addMinute)
@@ -217,6 +256,8 @@ class NotifService : LifecycleService() {
         return Time(current.time.time)
     }
 
+    // apakah waktu sesuai dengan
+    // mengkomparasi di bentuk string
     private fun isMatch(t1: Time, t2 : Time) : Boolean {
         return "$t1" == "$t2"
     }
