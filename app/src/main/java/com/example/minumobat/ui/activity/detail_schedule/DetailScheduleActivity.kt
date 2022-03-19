@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
@@ -36,6 +37,8 @@ class DetailScheduleActivity : AppCompatActivity() {
     
     lateinit var nextTime : TextView
     lateinit var nextMode : TextView
+
+    lateinit var textNextShcedule : TextView
     lateinit var nextScheduleSwitch : SwitchCompat
     lateinit var nextScheduleLayout : CardView
 
@@ -76,6 +79,8 @@ class DetailScheduleActivity : AppCompatActivity() {
         mode.text = current.mode
 
         val nextCurrent = TimeModel.fromTime(nextDetailScheduleModel.time)
+        textNextShcedule = findViewById(R.id.text_next_shcedule)
+        textNextShcedule.visibility = if (Utils.isBetween(nextDetailScheduleModel.name, nextCurrent)) View.INVISIBLE else View.VISIBLE
 
         nextTime = findViewById(R.id.next_schedule_time)
         nextTime.text = nextCurrent.toString()
@@ -85,23 +90,23 @@ class DetailScheduleActivity : AppCompatActivity() {
 
         nextScheduleSwitch = findViewById(R.id.next_schedule_switch)
         nextScheduleSwitch.isChecked = (nextDetailScheduleModel.status == DetailScheduleModel.STATUS_ON)
-        checkSwitch(nextDetailScheduleModel,current)
+        checkSwitch(nextDetailScheduleModel,nextCurrent)
         nextScheduleSwitch.setOnCheckedChangeListener {compoundButton, b ->
             nextDetailScheduleModel.status = if (b) DetailScheduleModel.STATUS_ON else DetailScheduleModel.STATUS_OFF
             detailScheduleViewModel.update(nextDetailScheduleModel)
-            checkSwitch(nextDetailScheduleModel,current)
+            checkSwitch(nextDetailScheduleModel,nextCurrent)
         }
 
         nextScheduleLayout  = findViewById(R.id.layout_next_schedule)
         nextScheduleLayout.setBackgroundResource(
-                if (Utils.isBetween(nextDetailScheduleModel.name, current)) R.drawable.detail_shcedule_adapter_border_shape_selected
+                if (Utils.isBetween(nextDetailScheduleModel.name, nextCurrent)) R.drawable.detail_shcedule_adapter_border_shape_selected
                 else R.drawable.detail_shcedule_adapter_border_shape)
 
         description = findViewById(R.id.description)
         description.text = detailScheduleModel.description
 
         emergencyNumber = findViewById(R.id.phone_number_emergency)
-        emergencyNumber.text = "${detailScheduleModel.name} ${detailScheduleModel.emergencyNumber}"
+        emergencyNumber.text = "${detailScheduleModel.doctorName} ${detailScheduleModel.emergencyNumber}"
         emergencyNumber.setOnClickListener {
             startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:${detailScheduleModel.emergencyNumber}")))
         }

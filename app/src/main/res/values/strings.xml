@@ -30,4 +30,5 @@
     <string name="swipe_up">Swipe up to go home</string>
     <string name="emergency_phone">Emergency call</string>
     <string name="edit_doctor_name">Doctor Name</string>
+    <string name="next_schedule">Next schedule</string>
 </resources>
