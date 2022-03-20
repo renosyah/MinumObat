@@ -28,42 +28,66 @@ import kotlin.collections.ArrayList
 
 class SchedulePageActivity : AppCompatActivity() {
     companion object {
+
+        // fungsi static untuk intent
+        // jika dari activity lain ingin
+        // menjalankan activity ini
         fun createIntent(ctx : Context) : Intent {
             return Intent(ctx, SchedulePageActivity::class.java)
         }
     }
 
+    // deklarasi variabel
+    // yang digunakan dalam
+    // activity ini
     lateinit var context: Context
     lateinit var title : TextView
     lateinit var imageSwipe : LinearLayout
-
     lateinit var detailScheduleViewModel: DetailScheduleViewModel
     lateinit var detailScheduleRecycleview : RecyclerView
     lateinit var detailScheduleAdapter: DetailScheduleAdapter
 
+    // fungsi yang akan dijalankan pertama kali saat
+    // activity di buat dan diproses serta ditampilkan
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_schedule_page)
         initWidget()
     }
 
+    // fungsi yang akan dijalankan
+    // untuk inisialisasi variabel
+    // dan memanggil fungsi awal
     @SuppressLint("ClickableViewAccessibility")
     fun initWidget(){
         this.context = this@SchedulePageActivity
 
+        // inisialisasi judul halaman
+        // dan latou yang digunakan untuk swipe
         this.title = findViewById(R.id.title_shcedule_page)
         this.imageSwipe = findViewById(R.id.swipe_image)
+
+        // saat layout di swipe keatas oleh user
+        // maka akan memanggil activity home
         this.imageSwipe.setOnTouchListener(OnSwipeTouchListener(context) {
             startActivity(HomeActivity.createIntent(context))
             overridePendingTransition(R.anim.slide_up,R.anim.no_change)
         })
 
+        // inisialisasi recycleview data2 schedule
+        // sekaligus inisialisasi intance yang digunakan
+        // untuk query data2 dari database
         this.detailScheduleRecycleview = findViewById(R.id.detail_schedule_recycleview)
         detailScheduleViewModel = ViewModelProvider(context as ViewModelStoreOwner).get(DetailScheduleViewModel::class.java)
 
+        // memanggil fungsi query
         query()
     }
 
+    // fungsi query untuk
+    // melakukan query ke database
+    // dan mengambil data schedule
+    // berdasarkan tanggal wajtu saat ini
     private fun query(){
         detailScheduleViewModel.getAllByCurrentDate(Date(Calendar.getInstance().time.time), object : MutableLiveData<List<DetailScheduleModel>>() {
             override fun setValue(value: List<DetailScheduleModel>) {
@@ -75,12 +99,20 @@ class SchedulePageActivity : AppCompatActivity() {
         })
     }
 
+    // fungsi untuk mengeset adapter
+    // daftar schedule yang berhasil
+    // diambil dari database
     private fun setAdapter(details : ArrayList<DetailScheduleModel>){
         this.detailScheduleAdapter = DetailScheduleAdapter(context,details, { detail, pos ->
+
+            // saat data di tekan maka
+            // akan diarahkan ke menu detail
             val nextPos = if (pos + 1 > detailScheduleAdapter.list.size - 1) 0 else pos + 1
             resultLauncher.launch(DetailScheduleActivity.createIntent(context, detail, detailScheduleAdapter.list[nextPos]))
-
         },{ detail, pos ->
+
+            // saat tombol switch di klik
+            // update data
             detailScheduleViewModel.update(detail)
         })
         this.detailScheduleRecycleview.adapter = detailScheduleAdapter
@@ -88,7 +120,10 @@ class SchedulePageActivity : AppCompatActivity() {
         this.detailScheduleRecycleview.layoutManager = layoutManager
     }
 
-    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    // variabel yang digunakan untuk
+    // menangani saat activity selesai dijalankan
+    // dan akan memanggil ulang fungsi query
+    val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             result.data
             query()
