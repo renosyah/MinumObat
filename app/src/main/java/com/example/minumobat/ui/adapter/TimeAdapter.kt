@@ -12,26 +12,35 @@ import com.example.minumobat.model.SimpleModel
 import java.text.DecimalFormat
 import java.text.NumberFormat
 
+// kelas adapter yang digunakan untuk
+// menhadle repetitif task untuk
+// menampilkan data dengan recycleview
 class TimeAdapter : RecyclerView.Adapter<TimeAdapter.Holder> {
     var context: Context
     var list : ArrayList<SimpleModel>? = null
     var show_what = SHOW_HOUR
 
+    // kelas konstruktor
     constructor(context: Context, list : ArrayList<SimpleModel>, show_what: Int) : super() {
         this.context = context
         this.list = list
         this.show_what = show_what
     }
 
+    // fungsi untuk mengeset daftar list
+    // item yang digunakan untuk iterasi adapter
     fun setItems(list : ArrayList<SimpleModel>){
         this.list = list
         this.notifyDataSetChanged()
     }
 
+    // fungsi yang dipanggil
+    // saat layout akan ditampilkan
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         return Holder((context as Activity).layoutInflater.inflate(R.layout.time_adapter, parent, false))
     }
 
+    // fungsi untuk menampilkan data ke tampilan
     override fun onBindViewHolder(holder: Holder, position: Int) {
         if (list == null) return
         val item = list!!.get(position)
@@ -54,11 +63,19 @@ class TimeAdapter : RecyclerView.Adapter<TimeAdapter.Holder> {
             }
         }
     }
+
+    // fungsi untuk menentukan
+    // jumlah layout yang akan ditampilkan
+    // biasanya diambil dari jumlah
+    // data list
     override fun getItemCount(): Int {
         if (list == null) return 0
         return list!!.size
     }
-    
+
+    // kelas holder yang digunakan
+    // untuk deklarasi dan inisialisasi
+    // widget layout
     class Holder : RecyclerView.ViewHolder {
         var textview_time : TextView
 

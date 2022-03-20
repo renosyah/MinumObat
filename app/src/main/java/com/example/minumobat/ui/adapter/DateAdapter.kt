@@ -11,40 +11,57 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.minumobat.R
 import com.example.minumobat.model.date_picker_model.DateModel
 
+// kelas adapter yang digunakan untuk
+// menhadle repetitif task untuk
+// menampilkan data dengan recycleview
 class DateAdapter : RecyclerView.Adapter<DateAdapter.Holder> {
-
     var context: Context
     var list : ArrayList<DateModel> = ArrayList()
     var onClick : (DateModel, Int) -> Unit
 
+    // kelas konstruktor
     constructor(context: Context, list : ArrayList<DateModel>, onClick : (DateModel, Int) -> Unit) : super() {
         this.context = context
         this.list = list
         this.onClick = onClick
     }
 
+    // fungsi untuk mengeset daftar list
+    // item yang digunakan untuk iterasi adapter
     fun setItems(list : ArrayList<DateModel>){
         this.list = list
         this.notifyDataSetChanged()
     }
 
+    // fungsi yang dipanggil
+    // saat layout akan ditampilkan
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         return Holder((context as Activity).layoutInflater.inflate(R.layout.date_adapter,parent,false))
     }
 
+    // fungsi untuk menampilkan data ke tampilan
     override fun onBindViewHolder(holder: Holder, position: Int) {
         if (list == null) return
         val item = list!!.get(position)
 
+        // tamnpikan text tanggal hari
+        // dan setting warna latar belakang
+        // berdasarkan flag status
         holder.textview_day.text =  "${ item.day }"
         setBackgroundColor(holder, if (item.flag_action == DateModel.FLAG_NONE) item.flag else item.flag_action)
 
+        // inisialisasi fungsi callback
+        // dan jika hari tidak tersedia
+        // hentikan proses program
         if (item.flag == DateModel.FLAG_NOT_AVALIABLE) return
         holder.layout_background.setOnClickListener {
             onClick.invoke(item, position)
         }
     }
 
+    // fungsi untuk menentukan
+    // warna latar belakang berdasarkan
+    // flag yang diset
     private fun setBackgroundColor(holder: Holder, flag : Int){
         when (flag){
             DateModel.FLAG_SELECTED -> {
@@ -70,11 +87,18 @@ class DateAdapter : RecyclerView.Adapter<DateAdapter.Holder> {
         }
     }
 
+    // fungsi untuk menentukan
+    // jumlah layout yang akan ditampilkan
+    // biasanya diambil dari jumlah
+    // data list
     override fun getItemCount(): Int {
         if (list == null) return 0
         return list!!.size
     }
 
+    // kelas holder yang digunakan
+    // untuk deklarasi dan inisialisasi
+    // widget layout
     class Holder : RecyclerView.ViewHolder {
         var layout_background : CardView
         var layout_panel : CardView
