@@ -16,6 +16,8 @@ import com.example.minumobat.model.time_picker_model.TimeModel
 // dimenu home
 class LayoutDetailSchedule {
     var layoutID = 0
+    var enable = false
+
     lateinit var layoutDetailSchedule : CardView
 
     lateinit var imageTime : ImageView
@@ -99,6 +101,7 @@ class LayoutDetailSchedule {
     // sekaligus menyembunyikan
     // tampilan time picker
     private fun toggleLayoutTimePicker(){
+        if ( ! enable) return
         this.layoutTimePickerView.visibility = if (this.layoutTimePickerView.visibility == View.GONE) View.VISIBLE else View.GONE
     }
 }

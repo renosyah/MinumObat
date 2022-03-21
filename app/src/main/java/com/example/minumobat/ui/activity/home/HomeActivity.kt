@@ -152,6 +152,10 @@ class HomeActivity : AppCompatActivity() {
             scheduleModel = ScheduleModel()
             scheduleModel!!.startDate = start.parseToDate()
             scheduleModel!!.endDate = end.parseToDate()
+
+            layoutMorningDetailSchedule.enable = true
+            layoutAfternoonDetailSchedule.enable = true
+            layoutNightDetailSchedule.enable = true
         }
 
         // inisialisasi callback untuk detail schedule
