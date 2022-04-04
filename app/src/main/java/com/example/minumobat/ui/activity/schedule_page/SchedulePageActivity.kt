@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -51,6 +53,7 @@ class SchedulePageActivity : AppCompatActivity() {
     // activity di buat dan diproses serta ditampilkan
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        showOnLockScreenAndTurnScreenOn()
         setContentView(R.layout.activity_schedule_page)
         initWidget()
     }
@@ -127,6 +130,18 @@ class SchedulePageActivity : AppCompatActivity() {
         if (result.resultCode == Activity.RESULT_OK) {
             result.data
             query()
+        }
+    }
+
+    private fun showOnLockScreenAndTurnScreenOn() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            setShowWhenLocked(true)
+            setTurnScreenOn(true)
+        } else {
+            window.addFlags(
+                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                        or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+            )
         }
     }
 }

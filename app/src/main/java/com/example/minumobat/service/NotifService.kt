@@ -20,12 +20,15 @@ import com.example.minumobat.util.Utils.Companion.NOTIF_CHANNEL_NAME
 import kotlin.random.Random
 import android.content.IntentFilter
 import android.util.Log
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.*
 import com.example.minumobat.model.detail_schedule_model.DetailScheduleModel
 import com.example.minumobat.model.detail_schedule_model.DetailScheduleViewModel
 import com.example.minumobat.model.schedule_model.ScheduleModel
 import com.example.minumobat.model.schedule_model.ScheduleViewModel
 import com.example.minumobat.model.time_picker_model.TimeModel
+import com.example.minumobat.ui.activity.home.HomeActivity
+import com.example.minumobat.ui.activity.schedule_page.SchedulePageActivity
 import java.sql.Date
 import java.sql.Time
 import java.util.Calendar
@@ -205,18 +208,20 @@ class NotifService : LifecycleService() {
         )
         channel.description = NOTIF_CHANNEL_DES.toString() + "_FOREGROUND"
         channel.setShowBadge(false)
-        val notificationManager = getSystemService(
-            NotificationManager::class.java
-        )
-        if (notificationManager != null) {
-            notificationManager.createNotificationChannel(channel)
-            val notification: Notification = NotificationCompat.Builder(context, NOTIF_CHANNEL_ID.toString() + "_FOREGROUND")
-                    .setSmallIcon(R.drawable.icon)
-                    .setContentText(getText(R.string.foreground_notification_message))
-                    .build()
 
-            startForeground(ONGOING_NOTIFICATION_ID, notification)
-        }
+        val notificationManager by lazy { NotificationManagerCompat.from(context) }
+        notificationManager.createNotificationChannel(channel)
+
+        val fullScreenIntent = Intent(context, SchedulePageActivity::class.java)
+        val fullScreenPendingIntent = PendingIntent.getActivity(context, 0, fullScreenIntent, 0)
+
+        val notification = NotificationCompat.Builder(context, NOTIF_CHANNEL_ID.toString() + "_FOREGROUND")
+                .setSmallIcon(R.drawable.icon)
+                .setContentIntent(fullScreenPendingIntent)
+                .setContentText(getText(R.string.foreground_notification_message))
+                .build()
+
+        startForeground(ONGOING_NOTIFICATION_ID, notification)
     }
 
     // fungsi untuk memunculkan notifikasi
@@ -237,8 +242,11 @@ class NotifService : LifecycleService() {
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(description)
                 .setAutoCancel(true)
-                .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent)
+                .setFullScreenIntent(pendingIntent, true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_ALARM)
+                .setSound(defaultSoundUri)
 
         val id: Int = Random(System.currentTimeMillis()).nextInt(100)
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
