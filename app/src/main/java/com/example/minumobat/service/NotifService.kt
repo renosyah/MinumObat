@@ -153,7 +153,7 @@ class NotifService : LifecycleService() {
     // selama aplikasi tidak di stop oleh user
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        if (timeChangedReceiver != null){
+        if (timeChangedReceiver != null) {
             registerReceiver(timeChangedReceiver, s_intentFilter)
         }
         return START_STICKY

@@ -13,6 +13,7 @@ import com.example.minumobat.R
 import com.example.minumobat.model.date_picker_model.DateModel
 import com.example.minumobat.model.date_picker_model.DatePickerModel
 import com.example.minumobat.util.DatePickerUtil
+import com.example.minumobat.util.Utils.Companion.getDatesFromToEnd
 import com.example.range_date_picker.adapter.DateAdapter
 import java.time.LocalDate
 
@@ -21,22 +22,32 @@ import java.time.LocalDate
 // untuk tampilan time picker
 @RequiresApi(Build.VERSION_CODES.O)
 class LayoutDatePicker {
-    private var texview_title : TextView
-    private var prev : ImageView
-    private var next : ImageView
+    private lateinit var texview_title : TextView
+    private lateinit  var prev : ImageView
+    private lateinit  var next : ImageView
 
     private lateinit var dateAdapter : DateAdapter
-    private var recycleview_date : RecyclerView
+    private lateinit var recycleview_date : RecyclerView
 
     private var currentDate = LocalDate.now()
     private var datePickerModel = DatePickerUtil.setDateToNow(currentDate)
+
+    private var dateResults : ArrayList<DateModel> = ArrayList()
 
     private var startDate : DateModel = DateModel()
     private var endDate : DateModel = DateModel()
 
     // kontruktor kelas
-    constructor(c: Context, v : View , onClick : (DateModel, DateModel) -> Unit)  {
+    constructor(c: Context, v : View, callBack : (ArrayList<DateModel>) -> Unit)  {
 
+        // fungsi inisialisasi dialog
+        initDialog(c,v)
+
+        // fungsi untuk set adapter
+        setAdapter(c, datePickerModel, callBack)
+    }
+
+    private fun initDialog(c: Context, v : View){
         // inisialisasi tombol
         // next saat ditekan
         // akan ditambahkan 1
@@ -65,8 +76,6 @@ class LayoutDatePicker {
         texview_title = v.findViewById(R.id.texview_title)
         recycleview_date = v.findViewById(R.id.recycleview_date)
 
-        // fungsi untuk set adapter
-        setAdapter(c, datePickerModel, onClick)
     }
 
     // fungsi untuk refresh
@@ -82,7 +91,7 @@ class LayoutDatePicker {
     // fungsi set adapter
     // untuk menampilkan daftar
     // hari pada satu bulan
-    private fun setAdapter(c: Context, d : DatePickerModel, onClick : (DateModel, DateModel) -> Unit){
+    private fun setAdapter(c: Context, d : DatePickerModel, callBack : (ArrayList<DateModel>) -> Unit){
 
         // inisialisasi callback saat hari pilih
         // maka adapter akan memberikan data
@@ -129,12 +138,20 @@ class LayoutDatePicker {
             for (i in dateAdapter.list){
                 if (i.isMoreOrEqualThan(startDate) && i.isLessOrEqualThan(endDate)){
                    i.flag_action = DateModel.FLAG_SELECTED
+
                 }
             }
 
-            // kembalikan data ke tampilan utama
             dateAdapter.notifyDataSetChanged()
-            onClick.invoke(startDate, endDate)
+
+            dateResults.clear()
+            val dates = getDatesFromToEnd(startDate.parseToDate(), endDate.parseToDate())
+            for (date in dates){
+                dateResults.add(DateModel.parseFromDate(date))
+            }
+
+            // kembalikan data ke tampilan utama
+            callBack.invoke(dateResults)
         }
 
         // set adapter yang digunakan ke

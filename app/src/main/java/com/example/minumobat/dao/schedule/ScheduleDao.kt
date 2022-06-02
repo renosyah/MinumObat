@@ -1,6 +1,7 @@
 package com.example.minumobat.dao.schedule
 
 import androidx.room.*
+import com.example.minumobat.model.detail_schedule_model.DetailScheduleModel
 import com.example.minumobat.model.schedule_model.ScheduleModel
 import com.example.minumobat.util.DateConverter
 import java.sql.Date
@@ -9,14 +10,9 @@ import java.sql.Date
 @TypeConverters(DateConverter::class)
 interface ScheduleDao {
 
-    // fungsi inteface untuk query data schedule berdasarkan tanggal awal dan tanggal akhir schedule
-    // untuk memastikan apakah data range intersect dengan data yang ada di database
-    @Query("SELECT * FROM schedule WHERE (start_date <= :start AND end_date >= :start) OR (start_date <= :end AND end_date >= :end)")
-    suspend fun getAllExistingSchedule(start: Date, end: Date): List<ScheduleModel>
-
-    // fungsi inteface untuk query data schedule berdasarkan tanggal awal dan tanggal akhir schedule
-    @Query("SELECT * FROM schedule WHERE start_date <= :now AND end_date >= :now")
-    suspend fun getAllByCurrentDate(now: Date): List<ScheduleModel>
+    // fungsi inteface untuk query data schedule dengan bulan dan tahun
+    @Query("SELECT * FROM schedule WHERE STRFTIME('%m %Y', date) = STRFTIME('%m %Y', :current)")
+    suspend fun getAllByMonthAndYear(current: Date): List<ScheduleModel>
 
     // fungsi inteface untuk query insert data detail schedule
     @Insert(onConflict = OnConflictStrategy.REPLACE)

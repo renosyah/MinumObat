@@ -69,7 +69,8 @@ class HomeActivity : AppCompatActivity() {
     lateinit var layoutAfternoonDetailSchedule : LayoutDetailSchedule
     lateinit var layoutNightDetailSchedule : LayoutDetailSchedule
     lateinit var setAlarmButton : FrameLayout
-    var scheduleModel : ScheduleModel? = null
+
+    var scheduleModels : ArrayList<ScheduleModel> = ArrayList()
     val morningTime : DetailScheduleModel = DetailScheduleModel()
     val afternoonTime : DetailScheduleModel = DetailScheduleModel()
     val nightTime : DetailScheduleModel = DetailScheduleModel()
@@ -144,18 +145,23 @@ class HomeActivity : AppCompatActivity() {
         // inisialisasi callback untuk date picker
         // saat user memilih tanggal makan akan ditampilkan
         // dan di set ke variabel shcedule model
-        layoutDatePicker = LayoutDatePicker(context, findViewById(R.id.layout_date_picker)){ start,end ->
-            if (start.isEmpty() || end.isEmpty()){
+        layoutDatePicker = LayoutDatePicker(context, findViewById(R.id.layout_date_picker)){ results ->
+            if (results.isEmpty()){
                 return@LayoutDatePicker
             }
-            textChooseDate.text = "$start - $end"
-            scheduleModel = ScheduleModel()
-            scheduleModel!!.startDate = start.parseToDate()
-            scheduleModel!!.endDate = end.parseToDate()
+            textChooseDate.text = "${results[0]} - ${results[results.size - 1]}"
+            for (date in results){
+                Log.e("date picker", "$date")
+                val data = ScheduleModel()
+                data.typeMedicine = ScheduleModel.TYPE_REGULAR_MEDICINE
+                data.date = date.parseToDate()
+                scheduleModels.add(data)
+            }
 
             layoutMorningDetailSchedule.enable = true
             layoutAfternoonDetailSchedule.enable = true
             layoutNightDetailSchedule.enable = true
+
         }
 
         // inisialisasi callback untuk detail schedule
@@ -232,8 +238,8 @@ class HomeActivity : AppCompatActivity() {
     // apabila kondisi form telah sepenuhnya
     // semua diisi dengan benar oleh user
     private fun displaySaveButton(){
-        Log.e("valid", "${(scheduleModel == null)} ${! morningTime.isValid()} ${ ! afternoonTime.isValid()} ${ ! nightTime.isValid()}")
-        if (scheduleModel == null) return
+        Log.e("valid", "${(scheduleModels.isEmpty())} ${! morningTime.isValid()} ${ ! afternoonTime.isValid()} ${ ! nightTime.isValid()}")
+        if (scheduleModels.isEmpty()) return
         if ( ! morningTime.isValid()) return
         if ( ! afternoonTime.isValid()) return
         if ( ! nightTime.isValid()) return
@@ -245,31 +251,23 @@ class HomeActivity : AppCompatActivity() {
     // tanggal yang dipilih tidak intersect
     // dengan data yang telah ada di database
     private fun validate(){
-        if (scheduleModel == null) return
+        if (scheduleModels.isEmpty()) return
         if (isSaving) return
-
-        scheduleViewModel.getAllExistingSchedule(scheduleModel!!.startDate!!, scheduleModel!!.endDate!!, object : MutableLiveData<List<ScheduleModel>>() {
-            override fun setValue(value: List<ScheduleModel>) {
-                super.setValue(value)
-                if (value.isNotEmpty()){
-                    Toast.makeText(context, "Invalid date range!", Toast.LENGTH_SHORT).show()
-                    return
-                }
-                saveSchedule()
-            }
-        })
+        saveSchedule()
     }
 
     // fungsi untuk menyimpan data detail schedule
     // yang mana terdapat data siang, malam dan pagi
     private fun saveSchedule(){
-        scheduleViewModel.add(scheduleModel!!, object : MutableLiveData<Long>() {
-            override fun setValue(value: Long) {
-                super.setValue(value)
-                saveDetailSchedule(value)
-                Log.e("schedule_save", "id : ${value}")
-            }
-        })
+        for (scheduleModel in scheduleModels){
+            scheduleViewModel.add(scheduleModel, object : MutableLiveData<Long>() {
+                override fun setValue(value: Long) {
+                    super.setValue(value)
+                    saveDetailSchedule(value)
+                    Log.e("schedule_save", "id : ${value}")
+                }
+            })
+        }
     }
 
     private fun saveDetailSchedule(scheduleId : Long){

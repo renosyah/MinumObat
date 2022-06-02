@@ -14,8 +14,8 @@ interface DetailScheduleDao {
     suspend fun getAllByScheduleId(scheduleIds : List<Int>): List<DetailScheduleModel>
 
     // fungsi inteface untuk query data detail schedule berdasarkan tanggal awal dan tanggal akhir schedule
-    @Query("SELECT ds.* FROM detail_schedule ds LEFT JOIN schedule s ON ds.schedule_id = s.uid WHERE s.start_date <= :now AND s.end_date >= :now")
-    suspend fun getAllByCurrentDate(now: Date): List<DetailScheduleModel>
+    @Query("SELECT ds.* FROM detail_schedule ds LEFT JOIN schedule s ON ds.schedule_id = s.uid WHERE s.date = :current")
+    suspend fun getAllByCurrentDate(current: Date): List<DetailScheduleModel>
 
     // fungsi inteface untuk query insert data detail schedule
     @Insert(onConflict = OnConflictStrategy.REPLACE)

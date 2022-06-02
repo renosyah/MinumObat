@@ -1,0 +1,7 @@
+catatan revisi : 
+- halaman home page isi ada 2 button obat dan button suntik
+- untuk button obat tidak ada perubahan
+- untuk button suntik terdapat perubahan pada date picker dan logic jam
+- logic jamnya di set ke 10.00 am dan berdering di jam 9.30 am & 9.45 am dan jam 10.00 am
+- pada bagian 3 rentang waktu di hilangin, dan pada page date picker ditambhkan button save (sebagai trigger ke deskripsi box dan mergency call)
+- dibagian tampilan next schedule jam di rubah menjadi tanggal jika tipe obatnya suntik

@@ -14,6 +14,12 @@ class DateModel(var day : Int = 0, var month : Int = 0, var years : Int = 0, var
         val FLAG_CURRENT = 3
         val FLAG_UNREACH = 4
         val FLAG_NOT_AVALIABLE = 5
+
+        fun parseFromDate(d:Date) : DateModel{
+            val cal: Calendar = Calendar.getInstance()
+            cal.time = d
+            return DateModel(cal.get(Calendar.DAY_OF_MONTH),cal.get(Calendar.MONTH) + 1,cal.get(Calendar.YEAR))
+        }
     }
 
     // koneversi ke string

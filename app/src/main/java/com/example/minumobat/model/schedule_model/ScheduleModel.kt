@@ -9,21 +9,24 @@ import java.sql.Date
     tableName = "schedule"
 )
 class ScheduleModel {
+    companion object {
+        val TYPE_REGULAR_MEDICINE = 1
+        val TYPE_INJECTION_MEDICINE = 2
+    }
 
     // primary key dat uid
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "uid")
     var Uid: Long = 0L
 
-    // field tanggal mulai
-    @ColumnInfo(name = "start_date")
+    // field tanggal
+    @ColumnInfo(name = "date")
     @TypeConverters(DateConverter::class)
-    var startDate: Date? = null
+    var date: Date? = null
 
-    // field tanggal berakhir
-    @ColumnInfo(name = "end_date")
-    @TypeConverters(DateConverter::class)
-    var endDate: Date? = null
+    // field type obat
+    @ColumnInfo(name = "type_medicine")
+    var typeMedicine: Int = 0
 
     constructor() {}
 }

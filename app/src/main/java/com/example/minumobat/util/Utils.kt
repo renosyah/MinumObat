@@ -1,10 +1,9 @@
 package com.example.minumobat.util
 
-import com.example.minumobat.BuildConfig
-import android.app.NotificationManager
 import android.app.ActivityManager
+import android.app.NotificationManager
 import android.content.Context
-import android.util.Log
+import com.example.minumobat.BuildConfig
 import com.example.minumobat.model.time_picker_model.TimeModel
 import java.sql.Date
 import java.sql.Time
@@ -105,6 +104,22 @@ class Utils {
                 }
             }
             return false
+        }
+
+        fun getDatesFromToEnd(date1: Date, date2: Date): List<Date> {
+            val dates = ArrayList<Date>()
+
+            val cal1 = Calendar.getInstance()
+            cal1.time = date1
+
+            val cal2 = Calendar.getInstance()
+            cal2.time = date2
+
+            while (! cal1.after(cal2)) {
+                dates.add(Date(cal1.time.time))
+                cal1.add(Calendar.DATE, 1)
+            }
+            return dates
         }
     }
 }
