@@ -33,6 +33,7 @@ import com.example.minumobat.util.Utils
 import java.sql.Date
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.concurrent.schedule
 
 
 class HomeActivity : AppCompatActivity() {
@@ -62,7 +63,7 @@ class HomeActivity : AppCompatActivity() {
     lateinit var layoutNightDetailSchedule : LayoutDetailSchedule
     lateinit var setAlarmButton : FrameLayout
 
-    val dates : ArrayList<Date> = ArrayList()
+    val dates : ArrayList<DateModel> = ArrayList()
 
     val morningTime : ScheduleModel = ScheduleModel()
     val afternoonTime : ScheduleModel = ScheduleModel()
@@ -145,7 +146,7 @@ class HomeActivity : AppCompatActivity() {
             textChooseDate.text = "${results[0]} - ${results[results.size - 1]}"
 
             dates.clear()
-            dates.addAll(dates)
+            dates.addAll(results)
 
             layoutMorningDetailSchedule.enable = true
             layoutAfternoonDetailSchedule.enable = true
@@ -259,7 +260,7 @@ class HomeActivity : AppCompatActivity() {
             data.doctorName = morningTime.doctorName
             data.emergencyNumber = morningTime.emergencyNumber
 
-            data.schedule_date = date
+            data.schedule_date = date.parseToDate()
             data.typeMedicine = ScheduleModel.TYPE_REGULAR_MEDICINE
             data.status = ScheduleModel.STATUS_ON
             schedules.add(data)
@@ -274,7 +275,7 @@ class HomeActivity : AppCompatActivity() {
             data.doctorName = afternoonTime.doctorName
             data.emergencyNumber = afternoonTime.emergencyNumber
 
-            data.schedule_date = date
+            data.schedule_date = date.parseToDate()
             data.typeMedicine = ScheduleModel.TYPE_REGULAR_MEDICINE
             data.status = ScheduleModel.STATUS_ON
             schedules.add(data)
@@ -289,7 +290,7 @@ class HomeActivity : AppCompatActivity() {
             data.doctorName = nightTime.doctorName
             data.emergencyNumber = nightTime.emergencyNumber
 
-            data.schedule_date = date
+            data.schedule_date = date.parseToDate()
             data.typeMedicine = ScheduleModel.TYPE_REGULAR_MEDICINE
             data.status = ScheduleModel.STATUS_ON
             schedules.add(data)
@@ -304,10 +305,10 @@ class HomeActivity : AppCompatActivity() {
             })
         }
 
-//        Timer().schedule(500){
-//            startActivity(Intent(context, HomeActivity::class.java))
-//            finish()
-//        }
+        Timer().schedule(500){
+            startActivity(Intent(context, HomeActivity::class.java))
+            finish()
+        }
     }
 
     // fungsi untuk memutar gambar

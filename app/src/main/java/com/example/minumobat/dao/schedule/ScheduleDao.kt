@@ -10,11 +10,11 @@ import java.sql.Date
 interface ScheduleDao {
 
     // fungsi inteface untuk query data schedule dengan bulan dan tahun
-    @Query("SELECT * FROM schedule WHERE schedule_date = :current")
+    @Query("SELECT * FROM schedule WHERE date(datetime(schedule_date / 1000 , 'unixepoch')) = date(datetime(:current / 1000 , 'unixepoch'))")
     suspend fun getCurrent(current: Date): List<ScheduleModel>
 
     // fungsi inteface untuk query data schedule dengan bulan dan tahun
-    @Query("SELECT * FROM schedule WHERE schedule_date = :current AND type_medicine = :typeMedicine")
+    @Query("SELECT * FROM schedule WHERE date(datetime(schedule_date / 1000 , 'unixepoch')) = date(datetime(:current / 1000 , 'unixepoch')) AND type_medicine = :typeMedicine")
     suspend fun getCurrentByTypeMedicine(current: Date, typeMedicine : Int): List<ScheduleModel>
 
     // fungsi inteface untuk query insert data detail schedule
