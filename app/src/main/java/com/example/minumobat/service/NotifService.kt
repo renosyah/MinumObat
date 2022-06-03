@@ -93,44 +93,28 @@ class NotifService : LifecycleService() {
                             // iterasi dengan loop untuk
                             // setiap data yang berhasil di query
                             for (i in value){
+
                                 // jika status di off atau waktu tidak valid
                                 // lanjutkan ke iterasi selanjutnya
-                                if (i.status == ScheduleModel.STATUS_OFF || i.time == null) continue
+                                if (i.status == ScheduleModel.STATUS_OFF) continue
+                                if (i.time == null) continue
 
-                                // before 60 minute
-                                var currrentTime = getCurrentTime(60)
-                                Log.e("60 minute", "${i.time} ${currrentTime}")
-
-                                // jika sesuai waktu sekarang + 60 menit
-                                // apakah sesai dengan waktu yang ingin dinotif
-                                // kirimkan notifikasi
-                                if (isMatch(i.time!!,currrentTime)){
-                                    sendNotification(context, context.getString(R.string.six_ten_minute), TimeModel.fromTime(i.time).toString(), i.typeMedicine)
-                                    return
+                                // check type obat
+                                // apakah suntik
+                                // atau reguler
+                                when (i.typeMedicine){
+                                    ScheduleModel.TYPE_INJECTION_MEDICINE -> {
+                                        if (scheduleTypeMedicineInject(i)){
+                                            return
+                                        }
+                                    }
+                                    ScheduleModel.TYPE_REGULAR_MEDICINE -> {
+                                        if (scheduleTypeMedicineRegular(i)){
+                                            return
+                                        }
+                                    }
                                 }
 
-                                // jika sesuai waktu sekarang + 15 menit
-                                // apakah sesai dengan waktu yang ingin dinotif
-                                // kirimkan notifikasi
-                                currrentTime = getCurrentTime(15)
-                                Log.e("15 minute", "${i.time} ${currrentTime}")
-
-                                if (isMatch(i.time!!,currrentTime)){
-                                    sendNotification(context,context.getString(R.string.five_ten_minute), TimeModel.fromTime(i.time).toString(), i.typeMedicine)
-                                    return
-                                }
-
-                                // jika sesuai waktu sekarang
-                                // apakah sesai dengan waktu yang ingin dinotif
-                                // kirimkan notifikasi
-                                currrentTime = getCurrentTime(0)
-                                Log.e("on time", "${i.time} ${currrentTime}")
-                                Log.e("----", "----")
-
-                                if (isMatch(i.time!!,currrentTime)){
-                                    sendNotification(context, i.description, TimeModel.fromTime(i.time).toString(), i.typeMedicine)
-                                    return
-                                }
                             }
                         }
                     })
@@ -249,6 +233,54 @@ class NotifService : LifecycleService() {
         notificationManager.createNotificationChannel(channel)
         notificationManager.notify(id, notificationBuilder.build())
     }
+
+    // handle jika schedule tipe obat reguler
+    private fun scheduleTypeMedicineRegular(i: ScheduleModel) : Boolean {
+
+        // before 60 minute
+        var currrentTime = getCurrentTime(60)
+        Log.e("60 minute", "${i.time} ${currrentTime}")
+
+        // jika sesuai waktu sekarang + 60 menit
+        // apakah sesai dengan waktu yang ingin dinotif
+        // kirimkan notifikasi
+        if (isMatch(i.time!!,currrentTime)){
+            sendNotification(context, context.getString(R.string.six_ten_minute), TimeModel.fromTime(i.time).toString(), i.typeMedicine)
+            return true
+        }
+
+        // jika sesuai waktu sekarang + 15 menit
+        // apakah sesai dengan waktu yang ingin dinotif
+        // kirimkan notifikasi
+        currrentTime = getCurrentTime(15)
+        Log.e("15 minute", "${i.time} ${currrentTime}")
+
+        if (isMatch(i.time!!,currrentTime)){
+            sendNotification(context,context.getString(R.string.five_ten_minute), TimeModel.fromTime(i.time).toString(), i.typeMedicine)
+            return true
+        }
+
+        // jika sesuai waktu sekarang
+        // apakah sesai dengan waktu yang ingin dinotif
+        // kirimkan notifikasi
+        currrentTime = getCurrentTime(0)
+        Log.e("on time", "${i.time} ${currrentTime}")
+        Log.e("----", "----")
+
+        if (isMatch(i.time!!,currrentTime)){
+            sendNotification(context, i.description, TimeModel.fromTime(i.time).toString(), i.typeMedicine)
+            return true
+        }
+
+
+        return false
+    }
+
+    // handle jika schedule tipe obat suntik
+    private fun scheduleTypeMedicineInject(i: ScheduleModel) : Boolean {
+        return false
+    }
+
 
     // fungsi untuk mendapatkan waktu saat ini
     // tampa detik dan mili detik
