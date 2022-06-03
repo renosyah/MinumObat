@@ -1,7 +1,6 @@
 package com.example.minumobat.dao.schedule
 
 import androidx.room.*
-import com.example.minumobat.model.detail_schedule_model.DetailScheduleModel
 import com.example.minumobat.model.schedule_model.ScheduleModel
 import com.example.minumobat.util.DateConverter
 import java.sql.Date
@@ -11,8 +10,12 @@ import java.sql.Date
 interface ScheduleDao {
 
     // fungsi inteface untuk query data schedule dengan bulan dan tahun
-    @Query("SELECT * FROM schedule WHERE STRFTIME('%m %Y', date) = STRFTIME('%m %Y', :current)")
-    suspend fun getAllByMonthAndYear(current: Date): List<ScheduleModel>
+    @Query("SELECT * FROM schedule WHERE schedule_date = :current")
+    suspend fun getCurrent(current: Date): List<ScheduleModel>
+
+    // fungsi inteface untuk query data schedule dengan bulan dan tahun
+    @Query("SELECT * FROM schedule WHERE schedule_date = :current AND type_medicine = :typeMedicine")
+    suspend fun getCurrentByTypeMedicine(current: Date, typeMedicine : Int): List<ScheduleModel>
 
     // fungsi inteface untuk query insert data detail schedule
     @Insert(onConflict = OnConflictStrategy.REPLACE)

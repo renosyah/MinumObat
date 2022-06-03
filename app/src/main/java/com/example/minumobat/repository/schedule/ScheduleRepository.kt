@@ -20,8 +20,14 @@ class ScheduleRepository {
 
     // fungsi query ke database untuk
     // mendapatkan data berdasarkan tanggal
-    suspend fun getAllByMonthAndYear(current: Date): List<ScheduleModel> {
-        return sheduleDao.getAllByMonthAndYear(current)
+    suspend fun getCurrent(current: Date): List<ScheduleModel> {
+        return sheduleDao.getCurrent(current)
+    }
+
+    // fungsi query ke database untuk
+    // mendapatkan data berdasarkan tanggal
+    suspend fun getCurrentByTypeMedicine(current: Date, typeMedicine : Int): List<ScheduleModel> {
+        return sheduleDao.getCurrentByTypeMedicine(current, typeMedicine)
     }
 
     // fungsi query ke database untuk

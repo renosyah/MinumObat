@@ -6,21 +6,16 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.minumobat.BuildConfig
-import com.example.minumobat.dao.detail_schedule.DetailScheduleDao
 import com.example.minumobat.dao.schedule.ScheduleDao
-import com.example.minumobat.model.detail_schedule_model.DetailScheduleModel
 import com.example.minumobat.model.schedule_model.ScheduleModel
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-@Database(entities = arrayOf(ScheduleModel::class, DetailScheduleModel::class), version = 1, exportSchema = false)
+@Database(entities = arrayOf(ScheduleModel::class), version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     // implement fungsi dari class interface shedule dao
     abstract fun scheduleDao(): ScheduleDao
-
-    // implement fungsi dari class interface detail shedule dao
-    abstract fun detailScheduleDao(): DetailScheduleDao
 
     companion object {
         @Volatile

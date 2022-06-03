@@ -22,9 +22,17 @@ class ScheduleViewModel : AndroidViewModel {
 
     // fungsi query ke repository untuk
     // mendapatkan data berdasarkan tanggal  mulai dan berakhir
-    fun getAllByMonthAndYear(current: Date, result: MutableLiveData<List<ScheduleModel>>) {
+    fun getCurrent(current: Date, result: MutableLiveData<List<ScheduleModel>>) {
         viewModelScope.launch {
-            result.value = repository.getAllByMonthAndYear(current)
+            result.value = repository.getCurrent(current)
+        }
+    }
+
+    // fungsi query ke repository untuk
+    // mendapatkan data berdasarkan tanggal  mulai dan berakhir
+    fun getCurrentByTypeMedicine(current: Date, typeMedicine : Int, result: MutableLiveData<List<ScheduleModel>>) {
+        viewModelScope.launch {
+            result.value = repository.getCurrentByTypeMedicine(current, typeMedicine)
         }
     }
 

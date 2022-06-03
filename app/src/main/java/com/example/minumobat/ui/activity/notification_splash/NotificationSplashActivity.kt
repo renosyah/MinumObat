@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.minumobat.R
+import com.example.minumobat.model.schedule_model.ScheduleModel
 import com.example.minumobat.ui.activity.schedule_page.SchedulePageActivity
 import java.util.*
 import kotlin.concurrent.schedule
@@ -22,10 +23,11 @@ class NotificationSplashActivity : AppCompatActivity() {
         // fungsi static untuk intent
         // jika dari activity lain ingin
         // menjalankan activity ini
-        fun createIntent(ctx : Context, description: String, time:String) : Intent{
+        fun createIntent(ctx : Context, description: String, time:String, typeMedicine : Int) : Intent{
             val i = Intent(ctx, NotificationSplashActivity::class.java)
             i.putExtra("description", description)
             i.putExtra("time", time)
+            i.putExtra("type_medicine",typeMedicine)
             return i
         }
     }
@@ -37,6 +39,7 @@ class NotificationSplashActivity : AppCompatActivity() {
     lateinit var time : TextView
     lateinit var imageRing : ImageView
     lateinit var text : TextView
+    var typeMedicine : Int = ScheduleModel.TYPE_REGULAR_MEDICINE
 
     // fungsi yang akan dijalankan pertama kali saat
     // activity di buat dan diproses serta ditampilkan
@@ -64,6 +67,9 @@ class NotificationSplashActivity : AppCompatActivity() {
         if (intent.hasExtra("time")) time.text = intent.getStringExtra("time")
 
 
+        typeMedicine = intent.getIntExtra("type_medicine", typeMedicine)
+
+
         // inisialisasi gambar animasi bell dengan ring
         // lalu memulai animasinya
         imageRing = findViewById(R.id.image_ring)
@@ -75,7 +81,7 @@ class NotificationSplashActivity : AppCompatActivity() {
         // ke activity selanjutnya
         // yakni schedule page
         Timer().schedule(3500){
-            startActivity(SchedulePageActivity.createIntent(context))
+            startActivity(SchedulePageActivity.createIntent(context, typeMedicine))
             finish()
         }
     }

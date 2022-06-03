@@ -5,13 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.minumobat.R
 import com.example.minumobat.service.AppReceiver
-
 import android.content.Intent
 import com.example.minumobat.service.AppReceiver.Companion.ACTION_RESTART_SERVICE
-
 import com.example.minumobat.service.NotifService
 import com.example.minumobat.util.Utils.Companion.isMyServiceRunning
-
 import androidx.appcompat.app.AppCompatDelegate
 import android.content.res.Configuration
 import android.util.Log
@@ -20,26 +17,22 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
 import com.example.minumobat.ui.layout.LayoutDatePicker
 import android.view.animation.RotateAnimation
-
 import android.view.animation.DecelerateInterpolator
-
 import android.view.animation.AnimationSet
 import android.widget.*
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import com.example.minumobat.model.detail_schedule_model.DetailScheduleModel
 import com.example.minumobat.model.schedule_model.ScheduleModel
 import com.example.minumobat.model.schedule_model.ScheduleViewModel
 import com.example.minumobat.ui.layout.LayoutDetailSchedule
 import androidx.lifecycle.ViewModelStoreOwner
-import com.example.minumobat.model.detail_schedule_model.DetailScheduleViewModel
+import com.example.minumobat.model.date_picker_model.DateModel
 import com.example.minumobat.model.time_picker_model.TimeModel
-import com.example.minumobat.ui.activity.schedule_page.SchedulePageActivity
 import com.example.minumobat.ui.dialog.DialogEditDescription
 import com.example.minumobat.util.Utils
+import java.sql.Date
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.concurrent.schedule
 
 
 class HomeActivity : AppCompatActivity() {
@@ -64,16 +57,17 @@ class HomeActivity : AppCompatActivity() {
     lateinit var linearLayoutPickDate : LinearLayout
     lateinit var layoutDatePicker : LayoutDatePicker
     lateinit var scheduleViewModel : ScheduleViewModel
-    lateinit var detailScheduleViewModel : DetailScheduleViewModel
     lateinit var layoutMorningDetailSchedule : LayoutDetailSchedule
     lateinit var layoutAfternoonDetailSchedule : LayoutDetailSchedule
     lateinit var layoutNightDetailSchedule : LayoutDetailSchedule
     lateinit var setAlarmButton : FrameLayout
 
-    var scheduleModels : ArrayList<ScheduleModel> = ArrayList()
-    val morningTime : DetailScheduleModel = DetailScheduleModel()
-    val afternoonTime : DetailScheduleModel = DetailScheduleModel()
-    val nightTime : DetailScheduleModel = DetailScheduleModel()
+    val dates : ArrayList<Date> = ArrayList()
+
+    val morningTime : ScheduleModel = ScheduleModel()
+    val afternoonTime : ScheduleModel = ScheduleModel()
+    val nightTime : ScheduleModel = ScheduleModel()
+
     var isSaving = false
 
     // fungsi yang akan dijalankan pertama kali saat
@@ -97,7 +91,6 @@ class HomeActivity : AppCompatActivity() {
         // yang akan digunakan untuk query
         // ke database
         scheduleViewModel = ViewModelProvider(context as ViewModelStoreOwner).get(ScheduleViewModel::class.java)
-        detailScheduleViewModel = ViewModelProvider(context as ViewModelStoreOwner).get(DetailScheduleViewModel::class.java)
 
         // check apakah perangkat
         // user sedang menggunakan
@@ -150,18 +143,13 @@ class HomeActivity : AppCompatActivity() {
                 return@LayoutDatePicker
             }
             textChooseDate.text = "${results[0]} - ${results[results.size - 1]}"
-            for (date in results){
-                Log.e("date picker", "$date")
-                val data = ScheduleModel()
-                data.typeMedicine = ScheduleModel.TYPE_REGULAR_MEDICINE
-                data.date = date.parseToDate()
-                scheduleModels.add(data)
-            }
+
+            dates.clear()
+            dates.addAll(dates)
 
             layoutMorningDetailSchedule.enable = true
             layoutAfternoonDetailSchedule.enable = true
             layoutNightDetailSchedule.enable = true
-
         }
 
         // inisialisasi callback untuk detail schedule
@@ -210,21 +198,21 @@ class HomeActivity : AppCompatActivity() {
                         morningTime.doctorName = doctorName
                         morningTime.description = description
                         morningTime.emergencyNumber = phoneNumber
-                        morningTime.status = DetailScheduleModel.STATUS_ON
+                        morningTime.status = ScheduleModel.STATUS_ON
                     }
                     2 -> {
                         layoutAfternoonDetailSchedule.setDescription(description)
                         afternoonTime.doctorName = doctorName
                         afternoonTime.description = description
                         afternoonTime.emergencyNumber = phoneNumber
-                        afternoonTime.status = DetailScheduleModel.STATUS_ON
+                        afternoonTime.status = ScheduleModel.STATUS_ON
                     }
                     3 -> {
                         layoutNightDetailSchedule.setDescription(description)
                         nightTime.doctorName = doctorName
                         nightTime.description = description
                         nightTime.emergencyNumber = phoneNumber
-                        nightTime.status = DetailScheduleModel.STATUS_ON
+                        nightTime.status = ScheduleModel.STATUS_ON
                     }
                 }
                 displaySaveButton()
@@ -238,8 +226,8 @@ class HomeActivity : AppCompatActivity() {
     // apabila kondisi form telah sepenuhnya
     // semua diisi dengan benar oleh user
     private fun displaySaveButton(){
-        Log.e("valid", "${(scheduleModels.isEmpty())} ${! morningTime.isValid()} ${ ! afternoonTime.isValid()} ${ ! nightTime.isValid()}")
-        if (scheduleModels.isEmpty()) return
+        Log.e("valid", "${(dates.isEmpty())} ${! morningTime.isValid()} ${ ! afternoonTime.isValid()} ${ ! nightTime.isValid()}")
+        if (dates.isEmpty()) return
         if ( ! morningTime.isValid()) return
         if ( ! afternoonTime.isValid()) return
         if ( ! nightTime.isValid()) return
@@ -251,7 +239,7 @@ class HomeActivity : AppCompatActivity() {
     // tanggal yang dipilih tidak intersect
     // dengan data yang telah ada di database
     private fun validate(){
-        if (scheduleModels.isEmpty()) return
+        if (dates.isEmpty()) return
         if (isSaving) return
         saveSchedule()
     }
@@ -259,52 +247,68 @@ class HomeActivity : AppCompatActivity() {
     // fungsi untuk menyimpan data detail schedule
     // yang mana terdapat data siang, malam dan pagi
     private fun saveSchedule(){
-        for (scheduleModel in scheduleModels){
+        isSaving = true
+
+        val schedules = ArrayList<ScheduleModel>()
+        for (date in dates){
+            val data = ScheduleModel()
+
+            data.name = morningTime.name
+            data.description = morningTime.description
+            data.time = morningTime.time
+            data.doctorName = morningTime.doctorName
+            data.emergencyNumber = morningTime.emergencyNumber
+
+            data.schedule_date = date
+            data.typeMedicine = ScheduleModel.TYPE_REGULAR_MEDICINE
+            data.status = ScheduleModel.STATUS_ON
+            schedules.add(data)
+        }
+
+        for (date in dates){
+            val data = ScheduleModel()
+
+            data.name = afternoonTime.name
+            data.description = afternoonTime.description
+            data.time = afternoonTime.time
+            data.doctorName = afternoonTime.doctorName
+            data.emergencyNumber = afternoonTime.emergencyNumber
+
+            data.schedule_date = date
+            data.typeMedicine = ScheduleModel.TYPE_REGULAR_MEDICINE
+            data.status = ScheduleModel.STATUS_ON
+            schedules.add(data)
+        }
+
+        for (date in dates){
+            val data = ScheduleModel()
+
+            data.name = nightTime.name
+            data.description = nightTime.description
+            data.time = nightTime.time
+            data.doctorName = nightTime.doctorName
+            data.emergencyNumber = nightTime.emergencyNumber
+
+            data.schedule_date = date
+            data.typeMedicine = ScheduleModel.TYPE_REGULAR_MEDICINE
+            data.status = ScheduleModel.STATUS_ON
+            schedules.add(data)
+        }
+
+        for (scheduleModel in schedules){
             scheduleViewModel.add(scheduleModel, object : MutableLiveData<Long>() {
                 override fun setValue(value: Long) {
                     super.setValue(value)
-                    saveDetailSchedule(value)
                     Log.e("schedule_save", "id : ${value}")
                 }
             })
         }
+
+//        Timer().schedule(500){
+//            startActivity(Intent(context, HomeActivity::class.java))
+//            finish()
+//        }
     }
-
-    private fun saveDetailSchedule(scheduleId : Long){
-        morningTime.scheduleID = scheduleId
-        detailScheduleViewModel.add(morningTime, object : MutableLiveData<Long>() {
-            override fun setValue(value: Long) {
-                super.setValue(value)
-                Log.e("morning", "id : ${value}")
-                Log.e("morning", "time : ${morningTime.time}")
-            }
-        })
-
-        afternoonTime.scheduleID = scheduleId
-        detailScheduleViewModel.add(afternoonTime, object : MutableLiveData<Long>() {
-            override fun setValue(value: Long) {
-                super.setValue(value)
-                Log.e("afternoon", "id : ${value}")
-                Log.e("afternoon", "time : ${afternoonTime.time}")
-            }
-        })
-
-        nightTime.scheduleID = scheduleId
-        detailScheduleViewModel.add(nightTime, object : MutableLiveData<Long>() {
-            override fun setValue(value: Long) {
-                super.setValue(value)
-                Log.e("night", "id : ${value}")
-                Log.e("night", "time : ${nightTime.time}")
-            }
-        })
-
-        isSaving = true
-        Timer().schedule(500){
-            startActivity(Intent(context, HomeActivity::class.java))
-            finish()
-        }
-    }
-
 
     // fungsi untuk memutar gambar
     // arah panah saat date picker

@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -17,9 +18,9 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.minumobat.R
-import com.example.minumobat.model.detail_schedule_model.DetailScheduleModel
-import com.example.minumobat.model.detail_schedule_model.DetailScheduleViewModel
+import com.example.minumobat.model.date_picker_model.DateModel
 import com.example.minumobat.model.schedule_model.ScheduleModel
+import com.example.minumobat.model.schedule_model.ScheduleViewModel
 import com.example.minumobat.ui.activity.detail_schedule.DetailScheduleActivity
 import com.example.minumobat.ui.activity.home.HomeActivity
 import com.example.minumobat.ui.adapter.DetailScheduleAdapter
@@ -34,8 +35,10 @@ class SchedulePageActivity : AppCompatActivity() {
         // fungsi static untuk intent
         // jika dari activity lain ingin
         // menjalankan activity ini
-        fun createIntent(ctx : Context) : Intent {
-            return Intent(ctx, SchedulePageActivity::class.java)
+        fun createIntent(ctx : Context, typeMedicine : Int) : Intent {
+            val i = Intent(ctx, SchedulePageActivity::class.java)
+            i.putExtra("type_medicine",typeMedicine)
+            return i
         }
     }
 
@@ -45,9 +48,10 @@ class SchedulePageActivity : AppCompatActivity() {
     lateinit var context: Context
     lateinit var title : TextView
     lateinit var imageSwipe : LinearLayout
-    lateinit var detailScheduleViewModel: DetailScheduleViewModel
+    lateinit var scheduleViewModel: ScheduleViewModel
     lateinit var detailScheduleRecycleview : RecyclerView
     lateinit var detailScheduleAdapter: DetailScheduleAdapter
+    var typeMedicine : Int = ScheduleModel.TYPE_REGULAR_MEDICINE
 
     // fungsi yang akan dijalankan pertama kali saat
     // activity di buat dan diproses serta ditampilkan
@@ -65,6 +69,8 @@ class SchedulePageActivity : AppCompatActivity() {
     fun initWidget(){
         this.context = this@SchedulePageActivity
 
+        typeMedicine = intent.getIntExtra("type_medicine", typeMedicine)
+
         // inisialisasi judul halaman
         // dan latou yang digunakan untuk swipe
         this.title = findViewById(R.id.title_shcedule_page)
@@ -81,7 +87,7 @@ class SchedulePageActivity : AppCompatActivity() {
         // sekaligus inisialisasi intance yang digunakan
         // untuk query data2 dari database
         this.detailScheduleRecycleview = findViewById(R.id.detail_schedule_recycleview)
-        detailScheduleViewModel = ViewModelProvider(context as ViewModelStoreOwner).get(DetailScheduleViewModel::class.java)
+        scheduleViewModel = ViewModelProvider(context as ViewModelStoreOwner).get(ScheduleViewModel::class.java)
 
         // memanggil fungsi query
         query()
@@ -92,10 +98,16 @@ class SchedulePageActivity : AppCompatActivity() {
     // dan mengambil data schedule
     // berdasarkan tanggal wajtu saat ini
     private fun query(){
-        detailScheduleViewModel.getAllByCurrentDate(Date(Calendar.getInstance().time.time), object : MutableLiveData<List<DetailScheduleModel>>() {
-            override fun setValue(value: List<DetailScheduleModel>) {
+        scheduleViewModel.getCurrentByTypeMedicine(Date(Calendar.getInstance().time.time), typeMedicine, object : MutableLiveData<List<ScheduleModel>>() {
+            override fun setValue(value: List<ScheduleModel>) {
                 super.setValue(value)
-                val list = ArrayList<DetailScheduleModel>()
+                for (i in value){
+                    Log.e(i.name, "id : ${i.Uid}")
+                    Log.e(i.name, "time : ${i.time}")
+                    Log.e(i.name, "date : ${i.schedule_date}")
+                }
+
+                val list = ArrayList<ScheduleModel>()
                 list.addAll(value)
                 setAdapter(list)
             }
@@ -105,7 +117,7 @@ class SchedulePageActivity : AppCompatActivity() {
     // fungsi untuk mengeset adapter
     // daftar schedule yang berhasil
     // diambil dari database
-    private fun setAdapter(details : ArrayList<DetailScheduleModel>){
+    private fun setAdapter(details : ArrayList<ScheduleModel>){
         this.detailScheduleAdapter = DetailScheduleAdapter(context,details, { detail, pos ->
 
             // saat data di tekan maka
@@ -116,7 +128,7 @@ class SchedulePageActivity : AppCompatActivity() {
 
             // saat tombol switch di klik
             // update data
-            detailScheduleViewModel.update(detail)
+            scheduleViewModel.update(detail)
         })
         this.detailScheduleRecycleview.adapter = detailScheduleAdapter
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)

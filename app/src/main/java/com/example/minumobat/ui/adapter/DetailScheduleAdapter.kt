@@ -10,10 +10,10 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.minumobat.R
-import com.example.minumobat.model.detail_schedule_model.DetailScheduleModel
+import com.example.minumobat.model.date_picker_model.DateModel
+import com.example.minumobat.model.schedule_model.ScheduleModel
 import com.example.minumobat.model.time_picker_model.TimeModel
 import com.example.minumobat.util.Utils
-import java.util.*
 import kotlin.collections.ArrayList
 
 // kelas adapter yang digunakan untuk
@@ -21,12 +21,12 @@ import kotlin.collections.ArrayList
 // menampilkan data dengan recycleview
 class DetailScheduleAdapter : RecyclerView.Adapter<DetailScheduleAdapter.Holder>  {
     var context: Context
-    var list : ArrayList<DetailScheduleModel> = ArrayList()
-    var onClick : (DetailScheduleModel, Int) -> Unit
-    var onSwitch : (DetailScheduleModel, Int) -> Unit
+    var list : ArrayList<ScheduleModel> = ArrayList()
+    var onClick : (ScheduleModel, Int) -> Unit
+    var onSwitch : (ScheduleModel, Int) -> Unit
 
     // kelas konstruktor
-    constructor(context: Context, list : ArrayList<DetailScheduleModel>, onClick : (DetailScheduleModel, Int) -> Unit, onSwitch : (DetailScheduleModel, Int) -> Unit) : super() {
+    constructor(context: Context, list : ArrayList<ScheduleModel>, onClick : (ScheduleModel, Int) -> Unit, onSwitch : (ScheduleModel, Int) -> Unit) : super() {
         this.context = context
         this.list = list
         this.onClick = onClick
@@ -43,6 +43,7 @@ class DetailScheduleAdapter : RecyclerView.Adapter<DetailScheduleAdapter.Holder>
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val item = list.get(position)
         val current = TimeModel.fromTime(item.time)
+        val currentDate = DateModel.parseFromDate(item.schedule_date!!).toString()
 
         // set warna latar belakang
         // dengan kondisi apakah
@@ -57,14 +58,19 @@ class DetailScheduleAdapter : RecyclerView.Adapter<DetailScheduleAdapter.Holder>
         holder.time.text = current.toString()
         holder.mode.text = current.mode
         holder.description.text = item.description
-        holder.switch.isChecked = (item.status == DetailScheduleModel.STATUS_ON)
+        holder.switch.isChecked = (item.status == ScheduleModel.STATUS_ON)
+
+        if (item.typeMedicine == ScheduleModel.TYPE_INJECTION_MEDICINE){
+            holder.time.text = currentDate
+            holder.mode.visibility = View.GONE
+        }
 
         // set callback untuk tombol switch
         // saat tombol switch di slide oleh user
         // maka warnanya akan diubah sesuai flag
         // dan mengembalika value set nya
         holder.switch.setOnCheckedChangeListener {compoundButton, b ->
-            item.status = if (b) DetailScheduleModel.STATUS_ON else DetailScheduleModel.STATUS_OFF
+            item.status = if (b) ScheduleModel.STATUS_ON else ScheduleModel.STATUS_OFF
             checkSwitch(holder, item, current)
             onSwitch.invoke(item, position)
         }
@@ -84,8 +90,8 @@ class DetailScheduleAdapter : RecyclerView.Adapter<DetailScheduleAdapter.Holder>
     // fungsi untuk menentukan
     // warna latar switch berdasarkan
     // flag yang diset
-    private fun checkSwitch(holder: Holder, item : DetailScheduleModel, current : TimeModel){
-        val check = (item.status == DetailScheduleModel.STATUS_ON)
+    private fun checkSwitch(holder: Holder, item : ScheduleModel, current : TimeModel){
+        val check = (item.status == ScheduleModel.STATUS_ON)
 
         var thumbDrawable = ContextCompat.getDrawable(context,R.drawable.switch_rounded_thumb_disable)
         var trackDrawable = ContextCompat.getDrawable(context, R.drawable.switch_rounded_track_disable)

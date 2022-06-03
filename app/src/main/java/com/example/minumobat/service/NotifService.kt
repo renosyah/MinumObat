@@ -1,6 +1,5 @@
 package com.example.minumobat.service
 
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -22,12 +21,10 @@ import android.content.IntentFilter
 import android.util.Log
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.*
-import com.example.minumobat.model.detail_schedule_model.DetailScheduleModel
-import com.example.minumobat.model.detail_schedule_model.DetailScheduleViewModel
+import com.example.minumobat.model.date_picker_model.DateModel
 import com.example.minumobat.model.schedule_model.ScheduleModel
 import com.example.minumobat.model.schedule_model.ScheduleViewModel
 import com.example.minumobat.model.time_picker_model.TimeModel
-import com.example.minumobat.ui.activity.home.HomeActivity
 import com.example.minumobat.ui.activity.schedule_page.SchedulePageActivity
 import java.sql.Date
 import java.sql.Time
@@ -48,7 +45,6 @@ class NotifService : LifecycleService() {
     private val s_intentFilter = IntentFilter()
 
     lateinit var scheduleViewModel: ScheduleViewModel
-    lateinit var detailScheduleViewModel : DetailScheduleViewModel
 
     // fungsi pada saat
     // instance service
@@ -59,7 +55,6 @@ class NotifService : LifecycleService() {
         // inisalisasi intance
         context = this@NotifService
         lifecycleOwner = this@NotifService
-        detailScheduleViewModel = DetailScheduleViewModel(application)
         scheduleViewModel = ScheduleViewModel(application)
 
         // mulai foreground service
@@ -83,11 +78,11 @@ class NotifService : LifecycleService() {
 
                 // jika perintah adalah menit yang berganti
                 if (intent.action == Intent.ACTION_TIME_TICK){
-                    val now = Date(Calendar.getInstance().time.time)
 
                     // query schedule dengan tanggal saat ini
-                    detailScheduleViewModel.getAllByCurrentDate(now, object : MutableLiveData<List<DetailScheduleModel>>() {
-                        override fun setValue(value: List<DetailScheduleModel>) {
+                    // untuk yang tipe obat regular
+                    scheduleViewModel.getCurrent(Date(Calendar.getInstance().time.time), object : MutableLiveData<List<ScheduleModel>>() {
+                        override fun setValue(value: List<ScheduleModel>) {
                             super.setValue(value)
 
                             // stop jika data kosong
@@ -100,7 +95,7 @@ class NotifService : LifecycleService() {
                             for (i in value){
                                 // jika status di off atau waktu tidak valid
                                 // lanjutkan ke iterasi selanjutnya
-                                if (i.status == DetailScheduleModel.STATUS_OFF || i.time == null) continue
+                                if (i.status == ScheduleModel.STATUS_OFF || i.time == null) continue
 
                                 // before 60 minute
                                 var currrentTime = getCurrentTime(60)
@@ -110,7 +105,7 @@ class NotifService : LifecycleService() {
                                 // apakah sesai dengan waktu yang ingin dinotif
                                 // kirimkan notifikasi
                                 if (isMatch(i.time!!,currrentTime)){
-                                    sendNotification(context, context.getString(R.string.six_ten_minute), TimeModel.fromTime(i.time).toString())
+                                    sendNotification(context, context.getString(R.string.six_ten_minute), TimeModel.fromTime(i.time).toString(), i.typeMedicine)
                                     return
                                 }
 
@@ -121,7 +116,7 @@ class NotifService : LifecycleService() {
                                 Log.e("15 minute", "${i.time} ${currrentTime}")
 
                                 if (isMatch(i.time!!,currrentTime)){
-                                    sendNotification(context,context.getString(R.string.five_ten_minute), TimeModel.fromTime(i.time).toString())
+                                    sendNotification(context,context.getString(R.string.five_ten_minute), TimeModel.fromTime(i.time).toString(), i.typeMedicine)
                                     return
                                 }
 
@@ -133,7 +128,7 @@ class NotifService : LifecycleService() {
                                 Log.e("----", "----")
 
                                 if (isMatch(i.time!!,currrentTime)){
-                                    sendNotification(context, i.description, TimeModel.fromTime(i.time).toString())
+                                    sendNotification(context, i.description, TimeModel.fromTime(i.time).toString(), i.typeMedicine)
                                     return
                                 }
                             }
@@ -227,8 +222,8 @@ class NotifService : LifecycleService() {
     // fungsi untuk memunculkan notifikasi
     // yang mana saat dilik akan diarahkan
     // ke halama splash notifikasi
-    private fun sendNotification(ctx : Context, description : String, time : String) {
-        val mapIntent = NotificationSplashActivity.createIntent(ctx, description, time)
+    private fun sendNotification(ctx : Context, description : String, time : String, typeMedicine : Int) {
+        val mapIntent = NotificationSplashActivity.createIntent(ctx, description, time, typeMedicine)
         mapIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         mapIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         mapIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
