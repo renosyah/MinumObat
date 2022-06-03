@@ -72,8 +72,8 @@ class DetailScheduleActivity : AppCompatActivity() {
         // jika intent yang diminta
         // tidak memiliki nilai variabel
         // yang telah di set maka stop proses
-        if ( ! intent.hasExtra("detail_schedule")) return
-        if ( ! intent.hasExtra("next_detail_schedule")) return
+        if ( ! intent.hasExtra("schedule")) return
+        if ( ! intent.hasExtra("next_schedule")) return
 
         // inisialisasi instance yang digunakan
         // sebagai kelas untuk query ke database
@@ -82,8 +82,8 @@ class DetailScheduleActivity : AppCompatActivity() {
 
         // inisialisasi instance detail schedule
         // dan next detail schedule dari intent
-        scheduleModel = intent.getSerializableExtra("detail_schedule") as ScheduleModel
-        nextScheduleModel = intent.getSerializableExtra("next_detail_schedule") as ScheduleModel
+        scheduleModel = intent.getSerializableExtra("schedule") as ScheduleModel
+        nextScheduleModel = intent.getSerializableExtra("next_schedule") as ScheduleModel
 
         // inisialissi text untuk
         // menampilkan waktu schedule
