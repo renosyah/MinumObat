@@ -139,7 +139,7 @@ class HomeActivity : AppCompatActivity() {
         // inisialisasi callback untuk date picker
         // saat user memilih tanggal makan akan ditampilkan
         // dan di set ke variabel shcedule model
-        layoutDatePicker = LayoutDatePicker(context, findViewById(R.id.layout_date_picker)){ results ->
+        layoutDatePicker = LayoutDatePicker(context, findViewById(R.id.layout_date_picker), LayoutDatePicker.PICKER_TYPE_RANGE){ results ->
             if (results.isEmpty()){
                 return@LayoutDatePicker
             }

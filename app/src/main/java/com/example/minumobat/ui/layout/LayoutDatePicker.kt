@@ -22,6 +22,11 @@ import java.time.LocalDate
 // untuk tampilan time picker
 @RequiresApi(Build.VERSION_CODES.O)
 class LayoutDatePicker {
+    companion object {
+        val PICKER_TYPE_RANGE = 1
+        val PICKER_TYPE_STEP = 2
+    }
+
     private lateinit var texview_title : TextView
     private lateinit  var prev : ImageView
     private lateinit  var next : ImageView
@@ -38,13 +43,15 @@ class LayoutDatePicker {
     private var endDate : DateModel = DateModel()
 
     // kontruktor kelas
-    constructor(c: Context, v : View, callBack : (ArrayList<DateModel>) -> Unit)  {
+    constructor(c: Context, v : View,pickerType : Int, callBack : (ArrayList<DateModel>) -> Unit)  {
 
         // fungsi inisialisasi dialog
         initDialog(c,v)
 
-        // fungsi untuk set adapter
-        setAdapter(c, datePickerModel, callBack)
+        when (pickerType){
+            PICKER_TYPE_RANGE -> setAdapterPickerTypeRange(c, datePickerModel, callBack)
+            PICKER_TYPE_STEP -> setAdapterPickerTypeStep(c, datePickerModel, callBack)
+        }
     }
 
     private fun initDialog(c: Context, v : View){
@@ -91,7 +98,7 @@ class LayoutDatePicker {
     // fungsi set adapter
     // untuk menampilkan daftar
     // hari pada satu bulan
-    private fun setAdapter(c: Context, d : DatePickerModel, callBack : (ArrayList<DateModel>) -> Unit){
+    private fun setAdapterPickerTypeRange(c: Context, d : DatePickerModel, callBack : (ArrayList<DateModel>) -> Unit){
 
         // inisialisasi callback saat hari pilih
         // maka adapter akan memberikan data
@@ -152,6 +159,26 @@ class LayoutDatePicker {
 
             // kembalikan data ke tampilan utama
             callBack.invoke(dateResults)
+        }
+
+        // set adapter yang digunakan ke
+        // recycleview dan juga set layout
+        // manager recycleview dengan tampilan grid
+        recycleview_date.adapter = dateAdapter
+        recycleview_date.apply {
+            layoutManager = GridLayoutManager(c, 7)
+        }
+
+        // refresh layout
+        refreshLayout(c, datePickerModel)
+    }
+
+    private fun setAdapterPickerTypeStep(c: Context, d : DatePickerModel, callBack : (ArrayList<DateModel>) -> Unit){
+        // inisialisasi callback saat hari pilih
+        // maka adapter akan memberikan data
+        // tanggal brapa yang dipilih
+        dateAdapter = DateAdapter(c, d.days){ item, pos ->
+
         }
 
         // set adapter yang digunakan ke
