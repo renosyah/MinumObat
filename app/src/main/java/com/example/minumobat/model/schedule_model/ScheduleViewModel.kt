@@ -37,6 +37,14 @@ class ScheduleViewModel : AndroidViewModel {
     }
 
     // fungsi query ke repository untuk
+    // mendapatkan data berdasarkan tanggal  mulai dan berakhir
+    fun getAll(result: MutableLiveData<List<ScheduleModel>>) {
+        viewModelScope.launch {
+            result.value = repository.getAll()
+        }
+    }
+
+    // fungsi query ke repository untuk
     // insert ke repository
     fun add(c: ScheduleModel, result : MutableLiveData<Long>){
         viewModelScope.launch {

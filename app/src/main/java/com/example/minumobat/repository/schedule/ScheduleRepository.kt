@@ -31,6 +31,12 @@ class ScheduleRepository {
     }
 
     // fungsi query ke database untuk
+    // mendapatkan data berdasarkan tanggal
+    suspend fun getAll(): List<ScheduleModel> {
+        return sheduleDao.getAll()
+    }
+
+    // fungsi query ke database untuk
     // insert ke repository
     suspend fun add(c: ScheduleModel): Long {
         return sheduleDao.add(c)

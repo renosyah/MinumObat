@@ -27,6 +27,8 @@ class LayoutDatePicker {
         val PICKER_TYPE_STEP = 2
     }
 
+    private lateinit var ctx: Context
+
     private lateinit var texview_title : TextView
     private lateinit  var prev : ImageView
     private lateinit  var next : ImageView
@@ -37,6 +39,7 @@ class LayoutDatePicker {
     private var currentDate = LocalDate.now()
     private var datePickerModel = DatePickerUtil.setDateToNow(currentDate)
 
+    val selected : ArrayList<DateModel> = ArrayList()
     private var dateResults : ArrayList<DateModel> = ArrayList()
 
     private var startDate : DateModel = DateModel()
@@ -55,6 +58,9 @@ class LayoutDatePicker {
     }
 
     private fun initDialog(c: Context, v : View){
+
+        ctx = c
+
         // inisialisasi tombol
         // next saat ditekan
         // akan ditambahkan 1
@@ -83,6 +89,10 @@ class LayoutDatePicker {
         texview_title = v.findViewById(R.id.texview_title)
         recycleview_date = v.findViewById(R.id.recycleview_date)
 
+    }
+
+    fun refresh(){
+        refreshLayout(ctx, datePickerModel)
     }
 
     // fungsi untuk refresh
@@ -145,7 +155,6 @@ class LayoutDatePicker {
             for (i in dateAdapter.list){
                 if (i.isMoreOrEqualThan(startDate) && i.isLessOrEqualThan(endDate)){
                    i.flag_action = DateModel.FLAG_SELECTED
-
                 }
             }
 
@@ -179,6 +188,19 @@ class LayoutDatePicker {
         // tanggal brapa yang dipilih
         dateAdapter = DateAdapter(c, d.days){ item, pos ->
 
+            if (isAlreadyInSelected(item, dateResults)){
+                item.flag_action = item.flag
+                dateResults.remove(item)
+
+            } else {
+                item.flag_action = DateModel.FLAG_SELECTED
+                dateResults.add(item)
+            }
+
+            dateAdapter.notifyDataSetChanged()
+
+            // kembalikan data ke tampilan utama
+            callBack.invoke(dateResults)
         }
 
         // set adapter yang digunakan ke
@@ -210,5 +232,21 @@ class LayoutDatePicker {
                 }
             }
         }
+        for (select in selected){
+            for (i in days){
+                if (i.toString() == select.toString()){
+                    i.flag = DateModel.FLAG_NOT_AVALIABLE
+                }
+            }
+        }
+    }
+
+    private fun isAlreadyInSelected(d : DateModel, arr : ArrayList<DateModel>) : Boolean {
+        for (i in arr){
+            if (d.toString() == i.toString()){
+                return true
+            }
+        }
+        return false
     }
 }

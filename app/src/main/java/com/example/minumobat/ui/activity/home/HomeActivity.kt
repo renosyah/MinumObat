@@ -185,6 +185,25 @@ class HomeActivity : AppCompatActivity() {
                 nightTime.time = TimeModel(it.hour, it.minute, 0, it.mode).parseToTime()
 
         }, { displayDescriptionDialogForLayout(it) })
+
+        query()
+    }
+
+    // fungsi query untuk
+    // melakukan query ke database
+    // dan mengambil data schedule
+    // berdasarkan tanggal wajtu saat ini
+    private fun query(){
+        scheduleViewModel.getAll(object : MutableLiveData<List<ScheduleModel>>() {
+            override fun setValue(value: List<ScheduleModel>) {
+                super.setValue(value)
+                layoutDatePicker.selected.clear()
+                for (i in value){
+                    layoutDatePicker.selected.add(DateModel.parseFromDate(i.schedule_date!!))
+                }
+                layoutDatePicker.refresh()
+            }
+        })
     }
 
     // fungsi untuk menampikan dialog

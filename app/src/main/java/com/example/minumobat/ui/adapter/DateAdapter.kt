@@ -41,8 +41,7 @@ class DateAdapter : RecyclerView.Adapter<DateAdapter.Holder> {
 
     // fungsi untuk menampilkan data ke tampilan
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        if (list == null) return
-        val item = list!!.get(position)
+        val item = list[position]
 
         // tamnpikan text tanggal hari
         // dan setting warna latar belakang
@@ -53,7 +52,6 @@ class DateAdapter : RecyclerView.Adapter<DateAdapter.Holder> {
         // inisialisasi fungsi callback
         // dan jika hari tidak tersedia
         // hentikan proses program
-        if (item.flag == DateModel.FLAG_NOT_AVALIABLE) return
         holder.layout_background.setOnClickListener {
             onClick.invoke(item, position)
         }
@@ -81,6 +79,11 @@ class DateAdapter : RecyclerView.Adapter<DateAdapter.Holder> {
             }
             DateModel.FLAG_UNREACH -> {
                 holder.textview_day.setTextColor(ContextCompat.getColor(context, R.color.textColorUnreach))
+                holder.layout_panel.setCardBackgroundColor(ContextCompat.getColor(context, R.color.layoutPanelUreach))
+                holder.layout_background.setCardBackgroundColor(ContextCompat.getColor(context, R.color.layoutBackgroundUnreach))
+            }
+            DateModel.FLAG_NOT_AVALIABLE-> {
+                holder.textview_day.setTextColor(ContextCompat.getColor(context, R.color.green_button))
                 holder.layout_panel.setCardBackgroundColor(ContextCompat.getColor(context, R.color.layoutPanelUreach))
                 holder.layout_background.setCardBackgroundColor(ContextCompat.getColor(context, R.color.layoutBackgroundUnreach))
             }

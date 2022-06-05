@@ -17,6 +17,10 @@ interface ScheduleDao {
     @Query("SELECT * FROM schedule WHERE date(datetime(schedule_date / 1000 , 'unixepoch')) = date(datetime(:current / 1000 , 'unixepoch')) AND type_medicine = :typeMedicine")
     suspend fun getCurrentByTypeMedicine(current: Date, typeMedicine : Int): List<ScheduleModel>
 
+    // fungsi inteface untuk query data schedule dengan bulan dan tahun
+    @Query("SELECT * FROM schedule")
+    suspend fun getAll(): List<ScheduleModel>
+
     // fungsi inteface untuk query insert data detail schedule
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun add(data : ScheduleModel): Long
