@@ -278,6 +278,19 @@ class NotifService : LifecycleService() {
 
     // handle jika schedule tipe obat suntik
     private fun scheduleTypeMedicineInject(i: ScheduleModel) : Boolean {
+
+        // jika sesuai waktu sekarang
+        // apakah sesai dengan waktu yang ingin dinotif
+        // kirimkan notifikasi
+        val currrentTime = getCurrentTime(0)
+        Log.e("on time", "${i.time} ${currrentTime}")
+        Log.e("----", "----")
+
+        if (isMatch(i.time!!, currrentTime)){
+            sendNotification(context, i.description, TimeModel.fromTime(i.time).toString(), i.typeMedicine)
+            return true
+        }
+
         return false
     }
 

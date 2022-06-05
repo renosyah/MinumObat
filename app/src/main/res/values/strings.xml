@@ -31,4 +31,9 @@
     <string name="emergency_phone">Emergency call</string>
     <string name="edit_doctor_name">Doctor Name</string>
     <string name="next_schedule">Next schedule</string>
+    <string name="choose_medicine_type">Choose Type Medicine</string>
+    <string name="reguler">Regular</string>
+    <string name="reguler_type_description">Normal type medicine</string>
+    <string name="inject">Injection</string>
+    <string name="inject_type_description">Medicine type that need to be inject</string>
 </resources>

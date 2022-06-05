@@ -15,23 +15,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MinumObat">
-
         <activity
-            android:name=".ui.activity.detail_schedule.DetailScheduleActivity"
-            android:exported="true"></activity>>
-
+            android:name=".ui.activity.home_inject.HomeInjectActivity"
+            android:exported="false" />
         <activity
-            android:launchMode="singleTop"
-            android:showOnLockScreen="true"
-            android:name=".ui.activity.schedule_page.SchedulePageActivity"
+            android:name=".ui.activity.landing.LandingActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
+        <activity
+            android:name=".ui.activity.detail_schedule.DetailScheduleActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".ui.activity.schedule_page.SchedulePageActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:showOnLockScreen="true">
+        </activity>
+
         <activity
             android:name=".ui.activity.notification_splash.NotificationSplashActivity"
             android:exported="true" />
@@ -57,11 +63,7 @@
 
         <activity
             android:name=".ui.activity.home.HomeActivity"
-            android:exported="true">
-
-
-
-        </activity>
+            android:exported="true" />
     </application>
 
 </manifest>
