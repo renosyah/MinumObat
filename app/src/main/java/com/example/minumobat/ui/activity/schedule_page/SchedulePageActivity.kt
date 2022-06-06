@@ -98,7 +98,7 @@ class SchedulePageActivity : AppCompatActivity() {
     // dan mengambil data schedule
     // berdasarkan tanggal wajtu saat ini
     private fun query(){
-        scheduleViewModel.getCurrentByTypeMedicine(Date(Calendar.getInstance().time.time), typeMedicine, object : MutableLiveData<List<ScheduleModel>>() {
+        val callback = object : MutableLiveData<List<ScheduleModel>>() {
             override fun setValue(value: List<ScheduleModel>) {
                 super.setValue(value)
                 for (i in value){
@@ -111,7 +111,24 @@ class SchedulePageActivity : AppCompatActivity() {
                 list.addAll(value)
                 setAdapter(list)
             }
-        })
+        }
+
+        if (typeMedicine == ScheduleModel.TYPE_INJECTION_MEDICINE) {
+            scheduleViewModel.getCurrentByTypeMedicine(
+                Date(Calendar.getInstance().time.time),
+                typeMedicine,
+                1,
+                callback
+            )
+
+        } else {
+            scheduleViewModel.getCurrentByTypeMedicine(
+                Date(Calendar.getInstance().time.time),
+                typeMedicine,
+                callback
+            )
+
+        }
     }
 
     // fungsi untuk mengeset adapter

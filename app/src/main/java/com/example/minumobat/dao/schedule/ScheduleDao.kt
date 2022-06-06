@@ -18,6 +18,10 @@ interface ScheduleDao {
     suspend fun getCurrentByTypeMedicine(current: Date, typeMedicine : Int): List<ScheduleModel>
 
     // fungsi inteface untuk query data schedule dengan bulan dan tahun
+    @Query("SELECT * FROM schedule WHERE date(datetime(schedule_date / 1000 , 'unixepoch')) = date(datetime(:current / 1000 , 'unixepoch')) AND type_medicine = :typeMedicine LIMIT :limit")
+    suspend fun getCurrentByTypeMedicine(current: Date, typeMedicine : Int, limit: Int): List<ScheduleModel>
+
+    // fungsi inteface untuk query data schedule dengan bulan dan tahun
     @Query("SELECT * FROM schedule")
     suspend fun getAll(): List<ScheduleModel>
 
