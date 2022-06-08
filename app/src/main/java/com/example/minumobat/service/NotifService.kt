@@ -196,7 +196,7 @@ class NotifService : LifecycleService() {
 
         val notification = NotificationCompat.Builder(context, NOTIF_CHANNEL_ID.toString() + "_FOREGROUND")
                 .setSmallIcon(R.drawable.icon)
-                .setContentIntent(fullScreenPendingIntent)
+                //.setContentIntent(fullScreenPendingIntent)
                 .setContentText(getText(R.string.foreground_notification_message))
                 .build()
 
