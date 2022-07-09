@@ -14,7 +14,7 @@ import com.example.minumobat.model.time_picker_model.TimeModel
 // dimana kelass ini menghandle
 // tampilan detail schedule
 // dimenu home
-class LayoutDetailSchedule {
+open class LayoutDetailSchedule {
     var layoutID = 0
     var enable = false
 

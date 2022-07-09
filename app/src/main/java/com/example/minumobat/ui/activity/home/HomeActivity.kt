@@ -15,7 +15,6 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
-import com.example.minumobat.ui.layout.LayoutDatePicker
 import android.view.animation.RotateAnimation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.AnimationSet
@@ -24,11 +23,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.minumobat.model.schedule_model.ScheduleModel
 import com.example.minumobat.model.schedule_model.ScheduleViewModel
-import com.example.minumobat.ui.layout.LayoutDetailSchedule
 import androidx.lifecycle.ViewModelStoreOwner
 import com.example.minumobat.model.date_picker_model.DateModel
 import com.example.minumobat.model.time_picker_model.TimeModel
 import com.example.minumobat.ui.dialog.DialogEditDescription
+import com.example.minumobat.ui.layout.*
 import com.example.minumobat.util.Utils
 import java.sql.Date
 import java.util.*
@@ -58,9 +57,9 @@ class HomeActivity : AppCompatActivity() {
     lateinit var linearLayoutPickDate : LinearLayout
     lateinit var layoutDatePicker : LayoutDatePicker
     lateinit var scheduleViewModel : ScheduleViewModel
-    lateinit var layoutMorningDetailSchedule : LayoutDetailSchedule
-    lateinit var layoutAfternoonDetailSchedule : LayoutDetailSchedule
-    lateinit var layoutNightDetailSchedule : LayoutDetailSchedule
+    lateinit var layoutMorningDetailSchedule : JamPagi
+    lateinit var layoutAfternoonDetailSchedule : JamSiang
+    lateinit var layoutNightDetailSchedule : JamMalam
     lateinit var setAlarmButton : FrameLayout
 
     val dates : ArrayList<DateModel> = ArrayList()
@@ -157,7 +156,7 @@ class HomeActivity : AppCompatActivity() {
         // saat user memilih time makan akan ditampilkan
         // dan di set ke variabel detal shcedule model
         // dimana layout ini khusus untuk menangani schedule pagi
-        layoutMorningDetailSchedule = LayoutDetailSchedule(context, 1,
+        layoutMorningDetailSchedule = JamPagi(context, 1,
             findViewById(R.id.morning_detail_schedule),R.drawable.morning, context.getString(R.string.morning), ArrayList<Int>(listOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)), {
                 morningTime.name = Utils.NAME_MORNING
                 morningTime.time = TimeModel(it.hour, it.minute, 0, it.mode).parseToTime()
@@ -168,7 +167,7 @@ class HomeActivity : AppCompatActivity() {
         // saat user memilih time makan akan ditampilkan
         // dan di set ke variabel detal shcedule model
         // dimana layout ini khusus untuk menangani schedule siang
-        layoutAfternoonDetailSchedule = LayoutDetailSchedule(context,2,
+        layoutAfternoonDetailSchedule = JamSiang(context,2,
             findViewById(R.id.afternoon_detail_schedule),R.drawable.afternoon, context.getString(R.string.afternoon), ArrayList<Int>(listOf(10, 11, 12, 1, 2, 3)), {
                 afternoonTime.name = Utils.NAME_AFTERNOON
                 afternoonTime.time = TimeModel(it.hour, it.minute, 0, it.mode).parseToTime()
@@ -179,7 +178,7 @@ class HomeActivity : AppCompatActivity() {
         // saat user memilih time makan akan ditampilkan
         // dan di set ke variabel detal shcedule model
         // dimana layout ini khusus untuk menangani schedule malam
-        layoutNightDetailSchedule = LayoutDetailSchedule(context, 3,
+        layoutNightDetailSchedule = JamMalam(context, 3,
             findViewById(R.id.night_detail_schedule),R.drawable.night, context.getString(R.string.night), ArrayList<Int>(listOf(3, 4, 5, 6, 7, 8, 9, 10, 11)), {
                 nightTime.name = Utils.NAME_NIGHT
                 nightTime.time = TimeModel(it.hour, it.minute, 0, it.mode).parseToTime()
