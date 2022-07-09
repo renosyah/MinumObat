@@ -21,14 +21,7 @@ import java.time.LocalDate
 // class ini yang akan menghandle proses
 // untuk tampilan time picker
 @RequiresApi(Build.VERSION_CODES.O)
-class LayoutDatePicker {
-    companion object {
-        val PICKER_TYPE_RANGE = 1
-        val PICKER_TYPE_STEP = 2
-    }
-
-    private lateinit var ctx: Context
-
+class LayoutDatePicker : DatePickerBase {
     private lateinit var texview_title : TextView
     private lateinit  var prev : ImageView
     private lateinit  var next : ImageView
@@ -46,20 +39,20 @@ class LayoutDatePicker {
     private var endDate : DateModel = DateModel()
 
     // kontruktor kelas
-    constructor(c: Context, v : View,pickerType : Int, callBack : (ArrayList<DateModel>) -> Unit)  {
-
-        // fungsi inisialisasi dialog
+    constructor(c: Context, v : View, callBack : RangeDatePickerCallback)  {
         initDialog(c,v)
+        setAdapterPickerTypeRange(c, datePickerModel, callBack)
+    }
 
-        when (pickerType){
-            PICKER_TYPE_RANGE -> setAdapterPickerTypeRange(c, datePickerModel, callBack)
-            PICKER_TYPE_STEP -> setAdapterPickerTypeStep(c, datePickerModel, callBack)
-        }
+    constructor(c: Context, v : View, callBack : StepDatePickerCallback)  {
+        initDialog(c,v)
+        setAdapterPickerTypeStep(c, datePickerModel, callBack)
+
     }
 
     private fun initDialog(c: Context, v : View){
 
-        ctx = c
+        super.ctx = c
 
         // inisialisasi tombol
         // next saat ditekan
@@ -92,7 +85,7 @@ class LayoutDatePicker {
     }
 
     fun refresh(){
-        refreshLayout(ctx, datePickerModel)
+        refreshLayout(super.ctx, datePickerModel)
     }
 
     // fungsi untuk refresh
@@ -108,7 +101,7 @@ class LayoutDatePicker {
     // fungsi set adapter
     // untuk menampilkan daftar
     // hari pada satu bulan
-    private fun setAdapterPickerTypeRange(c: Context, d : DatePickerModel, callBack : (ArrayList<DateModel>) -> Unit){
+    private fun setAdapterPickerTypeRange(c: Context, d : DatePickerModel, callBack : RangeDatePickerCallback){
 
         // inisialisasi callback saat hari pilih
         // maka adapter akan memberikan data
@@ -167,7 +160,7 @@ class LayoutDatePicker {
             }
 
             // kembalikan data ke tampilan utama
-            callBack.invoke(dateResults)
+            callBack.onDateResults(dateResults)
         }
 
         // set adapter yang digunakan ke
@@ -182,7 +175,7 @@ class LayoutDatePicker {
         refreshLayout(c, datePickerModel)
     }
 
-    private fun setAdapterPickerTypeStep(c: Context, d : DatePickerModel, callBack : (ArrayList<DateModel>) -> Unit){
+    private fun setAdapterPickerTypeStep(c: Context, d : DatePickerModel, callBack : StepDatePickerCallback){
         // inisialisasi callback saat hari pilih
         // maka adapter akan memberikan data
         // tanggal brapa yang dipilih
@@ -200,7 +193,7 @@ class LayoutDatePicker {
             dateAdapter.notifyDataSetChanged()
 
             // kembalikan data ke tampilan utama
-            callBack.invoke(dateResults)
+            callBack.onDateResults(dateResults)
         }
 
         // set adapter yang digunakan ke

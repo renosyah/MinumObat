@@ -138,19 +138,21 @@ class HomeActivity : AppCompatActivity() {
         // inisialisasi callback untuk date picker
         // saat user memilih tanggal makan akan ditampilkan
         // dan di set ke variabel shcedule model
-        layoutDatePicker = LayoutDatePicker(context, findViewById(R.id.layout_date_picker), LayoutDatePicker.PICKER_TYPE_RANGE){ results ->
-            if (results.isEmpty()){
-                return@LayoutDatePicker
+        layoutDatePicker = LayoutDatePicker(context, findViewById(R.id.layout_date_picker), object : DatePickerBase.RangeDatePickerCallback {
+            override fun onDateResults(results: ArrayList<DateModel>) {
+                if (results.isEmpty()){
+                    return
+                }
+                textChooseDate.text = "${results[0]} - ${results[results.size - 1]}"
+
+                dates.clear()
+                dates.addAll(results)
+
+                layoutMorningDetailSchedule.enable = true
+                layoutAfternoonDetailSchedule.enable = true
+                layoutNightDetailSchedule.enable = true
             }
-            textChooseDate.text = "${results[0]} - ${results[results.size - 1]}"
-
-            dates.clear()
-            dates.addAll(results)
-
-            layoutMorningDetailSchedule.enable = true
-            layoutAfternoonDetailSchedule.enable = true
-            layoutNightDetailSchedule.enable = true
-        }
+        })
 
         // inisialisasi callback untuk detail schedule
         // saat user memilih time makan akan ditampilkan

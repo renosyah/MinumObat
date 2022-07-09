@@ -29,6 +29,7 @@ import com.example.minumobat.service.AppReceiver
 import com.example.minumobat.service.NotifService
 import com.example.minumobat.ui.activity.home.HomeActivity
 import com.example.minumobat.ui.dialog.DialogEditDescription
+import com.example.minumobat.ui.layout.DatePickerBase
 import com.example.minumobat.ui.layout.LayoutDatePicker
 import com.example.minumobat.ui.layout.LayoutDetailSchedule
 import com.example.minumobat.util.Utils
@@ -134,17 +135,19 @@ class HomeInjectActivity : AppCompatActivity() {
         // inisialisasi callback untuk date picker
         // saat user memilih tanggal makan akan ditampilkan
         // dan di set ke variabel shcedule model
-        layoutDatePicker = LayoutDatePicker(context, findViewById(R.id.layout_date_picker), LayoutDatePicker.PICKER_TYPE_STEP){ results ->
-            if (results.isEmpty()){
-                return@LayoutDatePicker
+        layoutDatePicker = LayoutDatePicker(context, findViewById(R.id.layout_date_picker), object : DatePickerBase.StepDatePickerCallback {
+            override fun onDateResults(results: ArrayList<DateModel>) {
+                if (results.isEmpty()){
+                    return
+                }
+                textChooseDate.text = "${results[0]} - ${results[results.size - 1]}"
+
+                dates.clear()
+                dates.addAll(results)
+
+                setAlarmButton.visibility = if (dates.isNotEmpty()) View.VISIBLE else View.GONE
             }
-            textChooseDate.text = "${results[0]} - ${results[results.size - 1]}"
-
-            dates.clear()
-            dates.addAll(results)
-
-            setAlarmButton.visibility = if (dates.isNotEmpty()) View.VISIBLE else View.GONE
-        }
+        })
         query()
     }
 
